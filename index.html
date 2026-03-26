@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LivAround — Open-Source Property Operations Platform</title>
+<meta name="description" content="Manage properties, dispatch workers, track inventory, resolve issues, and report revenue — all from one open-source platform. Self-host free or use managed cloud.">
+<meta property="og:title" content="LivAround — The OS for Property Operations">
+<meta property="og:description" content="Open-source property operations platform for short-term rental hosts. 10 modules. One dashboard. Self-host free or start at $10/property/mo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://livaround.com">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%230EA5E9'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='white'>⌂</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0B1120;--card:#111827;--card2:#1E293B;--teal:#0EA5E9;--mint:#10B981;--orange:#F59E0B;--coral:#F43F5E;--purple:#8B5CF6;--white:#F8FAFC;--light:#CBD5E1;--muted:#64748B;--border:rgba(148,163,184,0.15)}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans','Segoe UI',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.serif{font-family:'Playfair Display',serif}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+.section{padding:80px 0}
+.badge{display:inline-block;padding:4px 14px;font-size:12px;font-weight:600;border-radius:100px;letter-spacing:0.5px}
+.fade{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.fade.visible{opacity:1;transform:translateY(0)}
+nav{position:sticky;top:0;z-index:50;background:rgba(11,17,32,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .inner{height:64px;display:flex;align-items:center;justify-content:space-between}
+nav .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;letter-spacing:-0.5px}
+nav .logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--teal),var(--mint));display:flex;align-items:center;justify-content:center}
+nav .links{display:flex;gap:24px;align-items:center;font-size:14px;color:var(--light)}
+nav .links a:hover{color:var(--teal)}
+.btn{padding:10px 24px;border-radius:8px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{background:#0284C7;transform:translateY(-1px)}
+.btn-outline{border:1px solid var(--border);color:var(--light)}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.hero{position:relative;text-align:center;padding:120px 0 80px}
+.hero h1{font-size:clamp(40px,6vw,68px);font-weight:800;line-height:1.08;letter-spacing:-2px;margin-bottom:20px}
+.hero .gradient-text{background:linear-gradient(135deg,var(--teal),var(--mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:18px;color:var(--light);line-height:1.6;max-width:580px;margin:0 auto 32px}
+.hero .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hero .ctas .btn{padding:14px 32px;border-radius:10px;font-size:15px}
+.stats{display:flex;gap:40px;justify-content:center;margin-top:48px;flex-wrap:wrap}
+.stats .stat-val{font-size:28px;font-weight:700;color:var(--teal)}
+.stats .stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+.orb{position:absolute;border-radius:50%;pointer-events:none}
+.orb-1{top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(14,165,233,0.08),transparent 70%)}
+.orb-2{bottom:-100px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,0.06),transparent 70%)}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.mod-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:24px 20px;transition:border-color 0.3s,transform 0.2s}
+.mod-card:hover{transform:translateY(-2px)}
+.mod-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.mod-card h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.mod-card p{font-size:13px;color:var(--muted);line-height:1.5}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.terminal{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:32px}
+.terminal .dots{display:flex;gap:6px;margin-bottom:20px}
+.terminal .dot{width:12px;height:12px;border-radius:50%}
+.terminal pre{margin:0;font-size:13px;line-height:1.8;color:var(--light);overflow:auto;font-family:'DM Mono',monospace}
+.check-list{display:flex;flex-direction:column;gap:14px}
+.check-item{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--light)}
+.check-icon{color:var(--mint);flex-shrink:0;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{padding:12px 16px;font-weight:600;font-size:13px;border-bottom:2px solid var(--border)}
+td{padding:12px 16px;border-bottom:1px solid var(--border)}
+.tbl-highlight td{background:var(--card2)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:20px}
+.price-card{background:var(--card);border-radius:16px;padding:32px 24px;border:1px solid var(--border);position:relative;display:flex;flex-direction:column}
+.price-card.featured{border:2px solid var(--teal)}
+.price-pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--teal);color:#fff;font-size:11px;font-weight:600;padding:4px 14px;border-radius:100px}
+.price-card .tier-name{font-size:13px;font-weight:600;margin-bottom:4px}
+.price-card .price{font-size:36px;font-weight:700}
+.price-card .period{font-size:14px;color:var(--muted)}
+.price-card .desc{font-size:13px;color:var(--muted);margin-bottom:24px}
+.price-card .features{display:flex;flex-direction:column;gap:10px;flex:1}
+.price-card .features span{font-size:13px;color:var(--light);display:flex;gap:8px;align-items:center}
+.price-card .card-btn{display:block;margin-top:24px;padding:12px 0;border-radius:10px;text-align:center;font-weight:600;font-size:14px;transition:all 0.2s}
+.partner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.partner-card{background:var(--card2);border-radius:14px;padding:28px 24px}
+.partner-card .comm{font-size:32px;font-weight:700;margin:8px 0}
+.cta-box{text-align:center;padding:60px 40px;border-radius:20px;background:linear-gradient(135deg,rgba(14,165,233,0.07),rgba(139,92,246,0.07));border:1px solid var(--border)}
+footer{border-top:1px solid var(--border);padding:40px 0}
+footer .inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+footer .cols{display:flex;gap:48px;font-size:13px;color:var(--muted)}
+footer .col{display:flex;flex-direction:column;gap:8px}
+footer .col-title{font-weight:600;color:var(--light);margin-bottom:4px}
+footer .bottom{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);text-align:center}
+@media(max-width:768px){
+  .two-col{grid-template-columns:1fr;gap:32px}
+  nav .links span{display:none}
+  .stats{gap:24px}
+  footer .cols{gap:32px}
+  .hero h1{font-size:36px}
+  .pricing-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+<div class="container inner">
+  <a href="#" class="logo">
+    <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg></div>
+    LivAround
+  </a>
+  <div class="links">
+    <span><a href="#features">Features</a></span>
+    <span><a href="#pricing">Pricing</a></span>
+    <span><a href="#open-source">Open Source</a></span>
+    <span><a href="#partners">Partners</a></span>
+    <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" style="display:flex;align-items:center;gap:6px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+    <a href="https://app.livaround.com" class="btn btn-primary" style="padding:8px 20px;font-size:13px">Get Started</a>
+  </div>
+</div>
+</nav>
+
+<!-- HERO -->
+<div class="container" style="position:relative">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero">
+    <div class="fade"><span class="badge" style="background:rgba(14,165,233,0.12);color:var(--teal)">Open Source · AGPL Licensed</span></div>
+    <h1 class="fade serif" style="transition-delay:0.1s">The operating system for<br><span class="gradient-text">property operations</span></h1>
+    <p class="fade" style="transition-delay:0.2s">Manage properties, dispatch workers, track inventory, resolve issues, and report revenue — all from one platform. Self-host for free or use our managed cloud.</p>
+    <div class="ctas fade" style="transition-delay:0.3s">
+      <a href="https://app.livaround.com" class="btn btn-primary">Start free trial <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="https://github.com/mohiteu811-cloud/Livaround" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        View on GitHub
+      </a>
+    </div>
+    <div class="stats fade" style="transition-delay:0.4s">
+      <div><div class="stat-val">10</div><div class="stat-label">Modules</div></div>
+      <div><div class="stat-val">30+</div><div class="stat-label">Properties managed</div></div>
+      <div><div class="stat-val">$10</div><div class="stat-label">Per property/mo</div></div>
+      <div><div class="stat-val">100%</div><div class="stat-label">AI-built</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div id="features" style="background:var(--card)">
+<div class="container section">
+  <div class="fade"><span class="badge" style="background:rgba(16,185,129,0.12);color:var(--mint)">Platform</span></div>
+  <h2 class="fade serif" style="font-size:36px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">10 modules. One dashboard.</h2>
+  <p class="fade" style="color:var(--light);font-size:16px;max-width:500px;margin-bottom:40px;transition-delay:0.15s">Everything a property manager needs to run day-to-day operations, built into a single cohesive platform.</p>
+  <div class="modules-grid" id="mod-grid"></div>
+</div>
+</div>
+
+<!-- OPEN SOURCE -->
+<div id="open-source" class="container section">
+<div class="two-col">
+  <div>
+    <div class="fade"><span class="badge" style="background:rgba(139,92,246,0.12);color:var(--purple)">Open Source</span></div>
+    <h2 class="fade serif" style="font-size:34px;margin:16px 0 16px;letter-spacing:-1px;transition-delay:0.1s">Your data. Your server.<br>Your rules.</h2>
+    <p class="fade" style="color:var(--light);font-size:15px;line-height:1.7;margin-bottom:24px;transition-delay:0.15s">LivAround is released under the AGPL license. Self-host on your own infrastructure with full control, or use our managed cloud. No vendor lock-in, ever.</p>
+    <div class="check-list fade" style="transition-delay:0.2s">
+      <div class="check-item"><span class="check-icon">✓</span> Full source code on GitHub — fork, modify, contribute</div>
+      <div class="check-item"><span class="check-icon">✓</span> Community-driven roadmap with public feature voting</div>
+      <div class="check-item"><span class="check-icon">✓</span> Plugin marketplace for integrations and add-ons</div>
+      <div class="check-item"><span class="check-icon">✓</span> Self-hosting docs with Docker Compose setup</div>
+    </div>
+  </div>
+  <div class="fade terminal" style="transition-delay:0.25s">
+    <div class="dots"><div class="dot" style="background:#EF4444"></div><div class="dot" style="background:#F59E0B"></div><div class="dot" style="background:#10B981"></div></div>
+    <pre>$ git clone github.com/mohiteu811-cloud/Livaround
+$ cd Livaround
+$ cp .env.example .env
+$ docker compose up -d
+
+✓ PostgreSQL ready
+✓ Redis ready
+✓ LivAround running at localhost:3000
+
+# You're live. Zero vendor lock-in.</pre>
+  </div>
+</div>
+</div>
+
+<!-- COMPARISON -->
+<div style="background:var(--card)">
+<div class="container section">
+  <div class="fade"><span class="badge" style="background:rgba(244,63,94,0.12);color:var(--coral)">Comparison</span></div>
+  <h2 class="fade serif" style="font-size:34px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">What others miss, we cover.</h2>
+  <p class="fade" style="color:var(--muted);font-size:15px;margin-bottom:32px;transition-delay:0.15s">Guesty, Hostaway, and Lodgify handle bookings. LivAround handles everything else.</p>
+  <div class="fade" style="overflow-x:auto;transition-delay:0.2s">
+    <table>
+      <thead><tr>
+        <th style="text-align:left">Feature</th>
+        <th style="text-align:center;color:var(--teal)">LivAround</th>
+        <th style="text-align:center;color:var(--muted)">Guesty</th>
+        <th style="text-align:center;color:var(--muted)">Hostaway</th>
+        <th style="text-align:center;color:var(--muted)">Lodgify</th>
+      </tr></thead>
+      <tbody id="comp-table"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="container section">
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="fade"><span class="badge" style="background:rgba(14,165,233,0.12);color:var(--teal)">Pricing</span></div>
+    <h2 class="fade serif" style="font-size:36px;margin:16px 0 8px;letter-spacing:-1px;transition-delay:0.1s">Simple, transparent pricing</h2>
+    <p class="fade" style="color:var(--muted);font-size:15px;transition-delay:0.15s">Self-host for free, pay per property on cloud, or go unlimited.</p>
+  </div>
+  <div class="pricing-grid" id="pricing-cards"></div>
+</div>
+
+<!-- PARTNERS -->
+<div id="partners" style="background:var(--card)">
+<div class="container section">
+  <div class="fade"><span class="badge" style="background:rgba(245,158,11,0.12);color:var(--orange)">Earn with us</span></div>
+  <h2 class="fade serif" style="font-size:34px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">Partner program — earn 25% recurring</h2>
+  <p class="fade" style="color:var(--light);font-size:15px;max-width:600px;margin-bottom:40px;line-height:1.7;transition-delay:0.15s">Property management is relationship-driven. Earn recurring commissions by referring hosts, or become a certified channel partner with white-label rights.</p>
+  <div class="partner-grid" id="partner-cards"></div>
+</div>
+</div>
+
+<!-- CTA -->
+<div class="container section">
+  <div class="fade cta-box">
+    <h2 class="serif" style="font-size:36px;margin-bottom:12px;letter-spacing:-1px">Ready to simplify your operations?</h2>
+    <p style="color:var(--light);font-size:16px;max-width:480px;margin:0 auto 28px">Join property managers running 30+ properties on LivAround. Start free, upgrade when you're ready.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://app.livaround.com" class="btn btn-primary" style="padding:14px 32px;font-size:15px;border-radius:10px">Start free trial</a>
+      <a href="https://github.com/mohiteu811-cloud/Livaround" class="btn btn-outline" style="padding:14px 32px;font-size:15px;border-radius:10px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        Star on GitHub
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="container">
+  <div class="inner">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div class="logo-icon" style="width:24px;height:24px;border-radius:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg></div>
+        <span style="font-weight:700">LivAround</span>
+      </div>
+      <p style="font-size:13px;color:var(--muted);max-width:260px">Open-source property operations platform. Built with AI, powered by community.</p>
+    </div>
+    <div class="cols">
+      <div class="col"><span class="col-title">Product</span><span>Features</span><span>Pricing</span><span>Self-hosting</span><span>API Docs</span></div>
+      <div class="col"><span class="col-title">Community</span><a href="https://github.com/mohiteu811-cloud/Livaround">GitHub</a><span>Discord</span><span>Blog</span><span>Changelog</span></div>
+      <div class="col"><span class="col-title">Company</span><span>About</span><span>Partners</span><span>Contact</span><span>Privacy</span></div>
+    </div>
+  </div>
+  <div class="bottom">© 2026 LivAround. Open source under AGPL-3.0 license.</div>
+</div>
+</footer>
+
+<script>
+// Intersection observer for fade-in
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+// Modules grid
+const mods = [
+  { icon: "🏠", title: "Properties", desc: "Profiles with amenities, WiFi codes, owner linkage, and staff assignments", color: "var(--teal)" },
+  { icon: "📅", title: "Bookings", desc: "Multi-channel log from Airbnb, Booking.com, VRBO, and direct with guest stay links", color: "var(--orange)" },
+  { icon: "⚡", title: "Jobs & Dispatch", desc: "Create jobs, attach checklists, dispatch to the best available worker instantly", color: "var(--mint)" },
+  { icon: "👥", title: "Workers", desc: "Roster with skills, availability, property assignments, ratings, and mobile app", color: "var(--purple)" },
+  { icon: "📦", title: "Inventory", desc: "Per-property stock tracking with thresholds, low-stock alerts, and one-click restock", color: "var(--teal)" },
+  { icon: "🔧", title: "Issues & Maintenance", desc: "Workers report with photos and severity. You review, approve, and assign tradespeople", color: "var(--coral)" },
+  { icon: "📊", title: "Revenue Reports", desc: "Owner statements with gross/net breakdowns, CSV import, and commission tracking", color: "var(--mint)" },
+  { icon: "📍", title: "Live GPS Tracking", desc: "Real-time worker locations on a map with 15-second updates and arrival confirmation", color: "var(--orange)" },
+  { icon: "🛡️", title: "Operations Guide", desc: "Per-property knowledge base with room-by-room docs and QR code labels", color: "var(--purple)" },
+  { icon: "📱", title: "Worker Mobile App", desc: "Android app with push notifications, checklists, issue reporting, and GPS sharing", color: "var(--teal)" },
+];
+const modGrid = document.getElementById('mod-grid');
+mods.forEach((m, i) => {
+  const card = document.createElement('div');
+  card.className = 'mod-card fade';
+  card.style.transitionDelay = (0.05 * i) + 's';
+  card.innerHTML = `<div class="mod-icon" style="background:${m.color}18;font-size:20px">${m.icon}</div><h3>${m.title}</h3><p>${m.desc}</p>`;
+  card.onmouseenter = () => card.style.borderColor = m.color + '60';
+  card.onmouseleave = () => card.style.borderColor = 'var(--border)';
+  modGrid.appendChild(card);
+  obs.observe(card);
+});
+
+// Comparison table
+const compRows = [
+  ["Worker dispatch", true, false, false, false],
+  ["Inventory tracking", true, false, false, false],
+  ["Live GPS tracking", true, false, false, false],
+  ["Issue reporting", true, false, false, false],
+  ["Maintenance workflow", true, false, false, false],
+  ["Ops guide / QR codes", true, false, false, false],
+  ["Owner revenue reports", true, "partial", "partial", false],
+  ["Open source", true, false, false, false],
+  ["Channel management", "add-on", true, true, true],
+];
+const tbody = document.getElementById('comp-table');
+compRows.forEach(([feat, ...vals]) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td style="font-weight:500">${feat}</td>` + vals.map((v, ci) =>
+    `<td style="text-align:center">${v === true ? `<span style="color:${ci === 0 ? 'var(--mint)' : 'var(--muted)'}">✓</span>` : v === false ? `<span style="color:rgba(100,116,139,0.35)">✗</span>` : `<span style="color:var(--orange);font-size:12px">${v}</span>`}</td>`
+  ).join('');
+  tbody.appendChild(tr);
+});
+const pricingRow = document.createElement('tr');
+pricingRow.className = 'tbl-highlight';
+pricingRow.innerHTML = `<td style="font-weight:600">Pricing (30 properties)</td><td style="text-align:center;color:var(--teal);font-weight:700">$100/mo</td><td style="text-align:center;color:var(--muted)">$480–810</td><td style="text-align:center;color:var(--muted)">$600–1,200</td><td style="text-align:center;color:var(--muted)">$500+</td>`;
+tbody.appendChild(pricingRow);
+
+// Pricing cards
+const tiers = [
+  { name: "Community", price: "Free", period: "forever", desc: "Self-hosted", features: ["All 10 modules", "Worker mobile app", "REST API access", "Community support", "Unlimited properties"], color: "var(--muted)", featured: false },
+  { name: "Pro", price: "$10", period: "/property/mo", desc: "Managed cloud · Pay as you grow", features: ["Everything in Community", "Managed hosting & backups", "Email support", "Basic integrations", "Scales with your portfolio"], color: "var(--teal)", featured: true },
+  { name: "Agency", price: "$100", period: "/month", desc: "Unlimited properties", features: ["Everything in Pro", "Unlimited properties", "White-label branding", "Channel sync (Airbnb etc.)", "Multi-organization", "Priority support"], color: "var(--orange)", featured: false },
+];
+const pGrid = document.getElementById('pricing-cards');
+tiers.forEach((t, i) => {
+  const card = document.createElement('div');
+  card.className = `price-card fade${t.featured ? ' featured' : ''}`;
+  card.style.transitionDelay = (0.1 * i) + 's';
+  card.innerHTML = `
+    ${t.featured ? '<div class="price-pop">Most popular</div>' : ''}
+    <div class="tier-name" style="color:${t.color}">${t.name}</div>
+    <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:4px"><span class="price">${t.price}</span><span class="period">${t.period}</span></div>
+    <div class="desc">${t.desc}</div>
+    <div class="features">${t.features.map(f => `<span><span style="color:var(--mint)">✓</span> ${f}</span>`).join('')}</div>
+    <a href="https://app.livaround.com" class="card-btn" style="background:${t.featured ? 'var(--teal)' : 'transparent'};color:${t.featured ? '#fff' : 'var(--light)'};border:${t.featured ? 'none' : '1px solid var(--border)'}">Get started</a>
+  `;
+  pGrid.appendChild(card);
+  obs.observe(card);
+});
+
+// Partner cards
+const partners = [
+  { tier: "Referral Partner", commission: "15–20%", desc: "Any paying customer. Share your link, earn recurring commission for every referral that converts.", who: "Hosts, property managers", color: "var(--teal)" },
+  { tier: "Channel Partner", commission: "25–30%", desc: "Certified local agencies. Direct commission plus 5–10% override on your referrals' referrals.", who: "PM consultants, hospitality agencies", color: "var(--orange)" },
+  { tier: "Strategic Partner", commission: "5% network", desc: "Regional distributors with exclusive territory rights and dedicated account management.", who: "Large PM companies, hospitality networks", color: "var(--purple)" },
+];
+const partGrid = document.getElementById('partner-cards');
+partners.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'partner-card fade';
+  card.style.transitionDelay = (0.1 * i) + 's';
+  card.style.borderLeft = `3px solid ${p.color}`;
+  card.innerHTML = `
+    <div style="font-size:13px;color:${p.color};font-weight:600">${p.tier}</div>
+    <div class="comm">${p.commission}</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px">recurring commission</div>
+    <p style="font-size:13px;color:var(--light);line-height:1.6;margin-bottom:12px">${p.desc}</p>
+    <div style="font-size:12px;color:var(--muted)">For: ${p.who}</div>
+  `;
+  partGrid.appendChild(card);
+  obs.observe(card);
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
