@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — LivAround</title>
+<meta name="description" content="The story behind LivAround — how a solo founder built an open-source property operations platform with AI after experiencing the chaos of managing an Airbnb villa in Goa.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%230EA5E9'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='white'>⌂</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0B1120;--card:#111827;--card2:#1E293B;--teal:#0EA5E9;--mint:#10B981;--orange:#F59E0B;--coral:#F43F5E;--purple:#8B5CF6;--white:#F8FAFC;--light:#CBD5E1;--muted:#64748B;--border:rgba(148,163,184,0.15)}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans','Segoe UI',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+.serif{font-family:'Playfair Display',serif}
+.container{max-width:760px;margin:0 auto;padding:0 24px}
+.wide{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* Nav — same as index.html */
+nav{position:sticky;top:0;z-index:50;background:rgba(11,17,32,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .inner{height:64px;display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:0 24px}
+nav .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--white);text-decoration:none}
+nav .logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--teal),var(--mint));display:flex;align-items:center;justify-content:center}
+nav .links{display:flex;gap:24px;align-items:center;font-size:14px;color:var(--light)}
+nav .links a{color:inherit;text-decoration:none;transition:color 0.2s}
+nav .links a:hover{color:var(--teal);text-decoration:none}
+.btn-sm{padding:8px 20px;border-radius:8px;background:var(--teal);color:#fff!important;font-weight:600;font-size:13px}
+
+/* Hero section */
+.about-hero{padding:80px 0 40px;text-align:center;position:relative}
+.about-hero::before{content:'';position:absolute;top:-100px;right:-200px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,0.08),transparent 70%);pointer-events:none}
+.photo-frame{width:140px;height:140px;border-radius:50%;overflow:hidden;margin:0 auto 24px;border:3px solid var(--teal);background:var(--card2);display:flex;align-items:center;justify-content:center}
+.photo-frame img{width:100%;height:100%;object-fit:cover}
+.photo-placeholder{font-size:48px;color:var(--teal);font-weight:700}
+.about-hero h1{font-size:40px;font-weight:800;letter-spacing:-1.5px;margin-bottom:8px}
+.about-hero .subtitle{font-size:16px;color:var(--muted);margin-bottom:16px}
+.social-links{display:flex;gap:16px;justify-content:center;align-items:center}
+.social-links a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid var(--border);color:var(--light);font-size:13px;font-weight:500;transition:all 0.2s;text-decoration:none}
+.social-links a:hover{border-color:var(--teal);color:var(--teal);text-decoration:none}
+
+/* Article */
+article{padding:40px 0 80px;line-height:1.85;font-size:16.5px;color:var(--light)}
+article h2{font-size:28px;font-weight:700;color:var(--white);margin:48px 0 16px;letter-spacing:-0.5px}
+article h2:first-of-type{margin-top:0}
+article p{margin-bottom:20px}
+article strong{color:var(--white)}
+article .highlight{background:var(--card);border-left:3px solid var(--teal);padding:20px 24px;border-radius:0 10px 10px 0;margin:28px 0;font-size:15px}
+article .highlight strong{color:var(--teal)}
+article ul{margin:16px 0 24px;padding-left:0;list-style:none}
+article ul li{padding:6px 0 6px 24px;position:relative;font-size:15px}
+article ul li::before{content:'';position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.modules-grid-sm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0 28px}
+.mod-pill{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:10px}
+.mod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* CTA */
+.about-cta{padding:48px 32px;border-radius:16px;background:var(--card);border:1px solid var(--border);text-align:center;margin-bottom:80px}
+.about-cta h3{font-size:24px;font-weight:700;margin-bottom:8px}
+.about-cta p{color:var(--muted);font-size:15px;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto}
+.about-cta .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.about-cta .btn{padding:12px 28px;border-radius:10px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
+.btn-primary{background:var(--teal);color:#fff!important}
+.btn-outline{border:1px solid var(--border);color:var(--light)!important}
+
+/* Footer */
+footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-size:12px;color:var(--muted)}
+
+/* Fade */
+.fade{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease}
+.fade.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:640px){
+  .about-hero h1{font-size:30px}
+  .modules-grid-sm{grid-template-columns:1fr}
+  nav .links span{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+<div class="inner">
+  <a href="/" class="logo">
+    <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg></div>
+    LivAround
+  </a>
+  <div class="links">
+    <span><a href="/#features">Features</a></span>
+    <span><a href="/#pricing">Pricing</a></span>
+    <span><a href="/#open-source">Open Source</a></span>
+    <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+    <a href="https://app.livaround.com" class="btn-sm">Get Started</a>
+  </div>
+</div>
+</nav>
+
+<!-- HERO -->
+<div class="container about-hero">
+  <div class="fade photo-frame">
+    <!-- REPLACE: Add your photo as <img src="your-photo.jpg" alt="Mohit"> -->
+    <!-- For now, showing initials placeholder -->
+    <div class="photo-placeholder">M</div>
+  </div>
+  <h1 class="fade serif" style="transition-delay:0.1s">Mohit</h1>
+  <div class="fade subtitle" style="transition-delay:0.15s">Founder, LivAround &middot; Goa, India</div>
+  <div class="fade social-links" style="transition-delay:0.2s">
+    <!-- REPLACE: Update the LinkedIn URL below with your actual profile -->
+    <a href="https://www.linkedin.com/in/mohitl/" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/mohiteu811-cloud" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+    <a href="/cdn-cgi/l/email-protection#fc9499909093bc90958a9d8e93899298d29f9391">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email
+    </a>
+  </div>
+</div>
+
+<!-- ARTICLE -->
+<div class="container">
+<article>
+
+<h2 class="fade serif">It started with a villa in Goa</h2>
+
+<p class="fade" style="transition-delay:0.05s">I didn't set out to build a property management platform. I set out to fix a problem that was costing me money every month.</p>
+
+<p class="fade" style="transition-delay:0.1s">In 2025, I tied up with an Airbnb Superhost to manage <a href="https://airbnb.com/h/movilla" target="_blank" rel="noopener">my villa in Goa</a>. On paper, it was straightforward — they handle the guests, the cleaning, the maintenance, and I receive my share of the revenue. In practice, it was chaos.</p>
+
+<div class="fade highlight" style="transition-delay:0.2s">
+I watched my property manager juggle <strong>WhatsApp groups, spreadsheets, phone calls, and paper checklists</strong> to coordinate everything. It worked for two or three properties. But at 30+, the cracks were impossible to ignore.
+</div>
+
+<p class="fade">Cleaners showed up at the wrong property. Inventory restocking was reactive, not proactive. There was zero visibility into where workers were or what they'd actually done. Revenue reporting to property owners was a manual, error-prone process that happened weeks late.</p>
+
+<p class="fade">The tools that existed — Guesty, Hostaway, Lodgify — were built for <strong>channel management and booking</strong>. They're good at syncing your Airbnb calendar with Booking.com. But none of them touched the operational layer — the stuff that happens <em>between</em> bookings. The worker dispatch, the checklists, the inventory, the issue reporting, the live tracking, the owner transparency. That whole layer was still running on WhatsApp and hope.</p>
+
+<h2 class="fade serif">I'd seen what a real engineering team could build</h2>
+
+<p class="fade">Before LivAround, I founded <strong>LivQuik</strong>, where we had a 30+ person software engineering team building fintech products. I saw firsthand how complex, enterprise-grade systems get built — the architecture decisions, the deployment pipelines, the product thinking that goes into scalable software.</p>
+
+<p class="fade">I understood what good software looked like. I just couldn't build it myself.</p>
+
+<p class="fade">Then I discovered <strong>Claude Code</strong>.</p>
+
+<h2 class="fade serif">One founder. One AI. One platform.</h2>
+
+<p class="fade">I started using Claude Code and realised something remarkable: the gap between "knowing what to build" and "being able to build it" had essentially closed. I could describe the property management workflows I'd seen break down in real life, and Claude Code would help me turn them into working software — complete with database schemas, API routes, real-time tracking, mobile apps, and polished dashboards.</p>
+
+<div class="fade highlight">
+What would have taken a team of <strong>5–10 engineers several months</strong>, I built as a solo founder with AI. Not a prototype. Not an MVP with "coming soon" placeholders. A full platform.
+</div>
+
+<div class="fade modules-grid-sm">
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--teal)"></span> Properties & amenities</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--orange)"></span> Multi-channel bookings</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--mint)"></span> Jobs & dispatch</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--purple)"></span> Worker management</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--teal)"></span> Inventory tracking</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--coral)"></span> Issues & maintenance</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--mint)"></span> Revenue reports</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--orange)"></span> Live GPS tracking</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--purple)"></span> Operations guide & QR</div>
+  <div class="mod-pill"><span class="mod-dot" style="background:var(--teal)"></span> Worker mobile app</div>
+</div>
+
+<p class="fade">Every module was born from a real problem I watched happen at my property. Every workflow was designed to prevent the exact failures I experienced as an owner.</p>
+
+<h2 class="fade serif">Why open source?</h2>
+
+<p class="fade">I could have kept this proprietary and charged a premium. But I believe the future of software is open. In an age where AI can help anyone generate code, the moat isn't the code itself — it's the <strong>community, the ecosystem, the accumulated operational knowledge</strong>, and the trust that comes from transparency.</p>
+
+<p class="fade">LivAround is released under the <strong>AGPL license</strong>. Anyone can self-host it for free, inspect the code, contribute features, and build plugins. If you want managed hosting, automatic backups, channel integrations, and priority support — that's what our paid tiers are for. But the core platform belongs to the community.</p>
+
+<p class="fade">I want LivAround to become the standard operating system for Airbnb hosts worldwide — not because it's the most expensive option, but because it's the best one, and it's built in the open by people who actually manage properties.</p>
+
+<h2 class="fade serif">What's next</h2>
+
+<p class="fade">I'm building LivAround from Goa, India — one of the fastest-growing short-term rental markets in the world. The plan is to expand to Bali, Lisbon, Tulum, and every market where hosts are scaling past 10 properties and discovering that spreadsheets don't scale with them.</p>
+
+<p class="fade">LivAround isn't my only bet on the future of living. I also built <a href="https://livinbnb.com" target="_blank" rel="noopener"><strong>Livinbnb</strong></a> — a home exchange platform that matches travellers in circular 2, 3, and 4-way swaps, eliminating the back-and-forth of traditional home exchange.</p>
+
+<p class="fade"><strong>If you manage properties</strong> and you're tired of the operational chaos — LivAround was built for you.</p>
+
+<p class="fade"><strong>If you're a developer</strong> who wants to contribute to open-source hospitality tech — the <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank">repo is open</a> and PRs are welcome.</p>
+
+<p class="fade"><strong>If you're an investor</strong> who sees the opportunity in building the "GitLab of property operations" — <a href="/cdn-cgi/l/email-protection#432b262f2f2c032f2a3522312c362d276d202c2e">let's talk</a>.</p>
+
+</article>
+
+<!-- CTA -->
+<div class="fade about-cta">
+  <h3 class="serif">Ready to try LivAround?</h3>
+  <p>Start free, self-host, or use our managed cloud. No credit card required.</p>
+  <div class="btns">
+    <a href="https://app.livaround.com" class="btn btn-primary">Start free trial</a>
+    <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" class="btn btn-outline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      View on GitHub
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wide">
+    <p>&copy; 2026 LivAround. Open source under AGPL-3.0 license. &middot; <a href="/" style="color:var(--muted)">Home</a></p>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
