@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LivAround — Animated Product Demos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0B1120;
+  --bg-dark: #050814;
+  --card: #111827;
+  --card2: #1E293B;
+  --border: rgba(148,163,184,0.15);
+  --white: #F8FAFC;
+  --light: #CBD5E1;
+  --muted: #64748B;
+  --teal: #0EA5E9;
+  --mint: #10B981;
+  --orange: #F59E0B;
+  --coral: #F43F5E;
+  --purple: #8B5CF6;
+  --gold: #FBBF24;
+}
+body {
+  background: var(--bg);
+  color: var(--light);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.serif { font-family: 'Playfair Display', Georgia, serif; }
+
+/* Header */
+header {
+  padding: 40px 24px 24px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+header h1 {
+  font-size: 36px;
+  color: var(--white);
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+header p { color: var(--muted); font-size: 14px; }
+header .tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(14,165,233,0.12);
+  color: var(--teal);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* Nav tabs */
+nav {
+  position: sticky;
+  top: 0;
+  background: rgba(11,17,32,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  padding: 12px 0;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--light);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.tab:hover { border-color: var(--teal); color: var(--white); }
+.tab.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+/* Demo container */
+.demo-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+.demo {
+  display: none;
+}
+.demo.active { display: block; animation: fadeIn 0.4s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.demo-header .num {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  color: var(--teal);
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.demo-header h2 {
+  font-size: 32px;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.demo-header p { color: var(--muted); font-size: 15px; max-width: 640px; margin: 0 auto; }
+
+/* Split stage */
+.stage {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .stage { grid-template-columns: 1fr; padding: 16px; }
+}
+
+/* Host app mockup */
+.host-app {
+  background: var(--card2);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  font-size: 13px;
+}
+.browser-chrome {
+  background: var(--bg-dark);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.dot { width: 11px; height: 11px; border-radius: 50%; }
+.dot-r { background: var(--coral); }
+.dot-y { background: var(--orange); }
+.dot-g { background: var(--mint); }
+.url {
+  flex: 1;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  font-family: monospace;
+}
+.host-content { padding: 20px; min-height: 480px; }
+
+.host-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.host-title {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 15px;
+}
+.host-subtitle {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Phone frame */
+.phone {
+  background: var(--bg-dark);
+  border-radius: 32px;
+  padding: 12px;
+  border: 2px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  width: 320px;
+  margin: 0 auto;
+}
+.phone-screen {
+  background: var(--card);
+  border-radius: 24px;
+  overflow: hidden;
+  height: 560px;
+  position: relative;
+}
+.phone-status {
+  background: var(--bg-dark);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--light);
+  font-size: 10px;
+  font-weight: 600;
+}
+.phone-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.phone-title { color: var(--white); font-weight: 700; font-size: 14px; }
+.phone-content { padding: 16px; font-size: 12px; }
+
+/* Caption bar */
+.caption-bar {
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border);
+  padding: 18px 24px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--white);
+  border-radius: 0 0 16px 16px;
+  margin: 32px -32px -32px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
+}
+@media (max-width: 900px) {
+  .caption-bar { margin: 16px -16px -16px; padding: 14px 16px; font-size: 13px; }
+}
+.caption-bar em { color: var(--teal); font-style: normal; font-weight: 600; }
+
+/* Playback controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 10px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--light);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.btn:hover { border-color: var(--teal); color: var(--white); }
+.btn-primary { background: var(--teal); color: var(--white); border-color: var(--teal); }
+.btn-primary:hover { background: #0284C7; }
+
+.progress {
+  width: 100%;
+  max-width: 400px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 16px auto 0;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--mint));
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* Message bubbles */
+.msg {
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 85%;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s;
+}
+.msg.visible { opacity: 1; transform: translateY(0); }
+.msg-guest {
+  background: var(--card2);
+  color: var(--light);
+  border: 1px solid var(--border);
+}
+.msg-host {
+  background: var(--teal);
+  color: white;
+  margin-left: auto;
+}
+.msg-ai {
+  background: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(16,185,129,0.2));
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  font-weight: 600;
+  text-align: center;
+}
+.msg-meta {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+/* Job cards */
+.job-card {
+  background: var(--card2);
+  border-left: 3px solid var(--teal);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s;
+}
+.job-card.visible { opacity: 1; transform: translateX(0); }
+.job-card.coral { border-left-color: var(--coral); }
+.job-card.mint { border-left-color: var(--mint); }
+.job-card.orange { border-left-color: var(--orange); }
+.job-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.job-status.new { background: var(--coral); color: white; }
+.job-status.assigned { background: var(--orange); color: white; }
+.job-status.done { background: var(--mint); color: white; }
+.job-title { color: var(--white); font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+.job-meta { color: var(--muted); font-size: 11px; }
+
+/* AI findings */
+.finding {
+  background: var(--card2);
+  border-left: 3px solid var(--orange);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s;
+}
+.finding.visible { opacity: 1; transform: translateY(0); }
+.finding-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--orange);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+.finding-badge.coral { background: var(--coral); }
+.finding-badge.gold { background: var(--gold); color: #333; }
+.finding-badge.mint { background: var(--mint); }
+.finding-title { color: var(--white); font-size: 12px; font-weight: 600; margin-top: 4px; }
+.finding-desc { color: var(--light); font-size: 11px; margin-top: 2px; }
+
+/* Notification toast */
+.toast {
+  position: absolute;
+  top: 50px;
+  left: 16px;
+  right: 16px;
+  background: var(--teal);
+  color: white;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(14,165,233,0.4);
+  transform: translateY(-80px);
+  opacity: 0;
+  transition: all 0.4s;
+  z-index: 10;
+}
+.toast.visible { transform: translateY(0); opacity: 1; }
+.toast-icon {
+  display: inline-block;
+  margin-right: 8px;
+}
+.toast-sub { display: block; font-weight: 400; font-size: 11px; margin-top: 2px; opacity: 0.9; }
+
+/* KPI cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.kpi {
+  background: var(--card);
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.kpi-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  font-family: 'Playfair Display', serif;
+}
+.kpi-val.teal { color: var(--teal); }
+.kpi-val.mint { color: var(--mint); }
+.kpi-val.orange { color: var(--orange); }
+.kpi-val.coral { color: var(--coral); }
+.kpi-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* Sections */
+.sect-label {
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  margin-top: 12px;
+  font-weight: 700;
+}
+
+/* Video frame */
+.video-frame {
+  background: var(--bg-dark);
+  border-radius: 10px;
+  aspect-ratio: 16/9;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.video-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, rgba(14,165,233,0.03) 0, rgba(14,165,233,0.03) 10px, transparent 10px, transparent 20px);
+}
+.video-play {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px; height: 56px;
+  background: var(--teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+  box-shadow: 0 8px 24px rgba(14,165,233,0.5);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 8px 24px rgba(14,165,233,0.5); }
+  50% { box-shadow: 0 8px 32px rgba(14,165,233,0.8); }
+}
+.video-scan {
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  opacity: 0;
+  animation: scan 3s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.video-frame.scanning .video-scan { opacity: 1; animation-play-state: running; }
+@keyframes scan {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+.video-label {
+  position: absolute;
+  bottom: 8px; left: 12px;
+  color: var(--light);
+  font-size: 11px;
+  font-weight: 600;
+}
+.video-time {
+  position: absolute;
+  top: 8px; right: 12px;
+  background: rgba(0,0,0,0.6);
+  color: var(--white);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-family: monospace;
+}
+
+/* Map */
+.map {
+  background: #1A2332;
+  border-radius: 10px;
+  aspect-ratio: 16/10;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background-image:
+    linear-gradient(rgba(42,51,66,0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,51,66,0.8) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.pin {
+  position: absolute;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: all 1.5s ease;
+}
+.pin::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  animation: ping 1.5s infinite;
+}
+@keyframes ping {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+.pin.teal { background: var(--teal); color: var(--teal); }
+.pin.coral { background: var(--coral); color: var(--coral); }
+.pin.mint { background: var(--mint); color: var(--mint); }
+
+.pin-label {
+  position: absolute;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 600;
+}
+
+/* QR code */
+.qr {
+  width: 80px; height: 80px;
+  background: white;
+  padding: 6px;
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1px;
+  margin: 0 auto 8px;
+}
+.qr-cell { background: #0B1120; aspect-ratio: 1; }
+.qr-cell.off { background: transparent; }
+
+/* Revenue table */
+.rev-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-top: 8px;
+}
+.rev-table th {
+  color: var(--muted);
+  text-align: left;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.rev-table td {
+  padding: 6px 4px;
+  color: var(--light);
+  border-bottom: 1px solid var(--border);
+}
+.rev-table tr {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.rev-table tr.visible { opacity: 1; }
+
+.rev-summary {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.rev-box {
+  background: var(--card2);
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+.rev-box-label { color: var(--muted); font-size: 10px; margin-bottom: 4px; }
+.rev-box-val { font-size: 16px; font-weight: 700; color: var(--white); font-family: 'Playfair Display', serif; }
+.rev-box-val.mint { color: var(--mint); }
+
+/* Tradesperson cards */
+.trade-card {
+  background: var(--card2);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  opacity: 0.4;
+  transition: all 0.5s;
+}
+.trade-card.highlight {
+  opacity: 1;
+  border: 2px solid var(--teal);
+  box-shadow: 0 0 20px rgba(14,165,233,0.3);
+  transform: scale(1.02);
+}
+.trade-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+.trade-info { flex: 1; }
+.trade-role { color: var(--white); font-weight: 600; font-size: 12px; }
+.trade-name { color: var(--muted); font-size: 10px; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+footer a { color: var(--teal); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.device-label {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--card);
+  color: var(--muted);
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 12px;
+  color: var(--light);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s;
+}
+.checklist-item.visible { opacity: 1; transform: translateX(0); }
+.check-box {
+  width: 16px; height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--muted);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+.check-box.checked { background: var(--mint); border-color: var(--mint); color: white; }
+
+/* Chart */
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 80px;
+  padding: 8px;
+  background: var(--card2);
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.bar {
+  flex: 1;
+  background: var(--teal);
+  border-radius: 2px 2px 0 0;
+  transition: height 1s ease;
+  height: 0%;
+}
+
+/* Hint arrows */
+.hint {
+  position: absolute;
+  font-size: 12px;
+  color: var(--teal);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.hint.visible { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="tag">CONFIDENTIAL — PREPARED FOR CHEN HINDI</span>
+  <h1 class="serif">LivAround in action</h1>
+  <p>7 animated demos showing the Host App and Worker App working together.</p>
+</header>
+
+<nav>
+  <div class="tabs">
+    <button class="tab active" data-demo="1">1. AI Guest Messaging</button>
+    <button class="tab" data-demo="2">2. Issue Reporting</button>
+    <button class="tab" data-demo="3">3. Multilingual Messaging</button>
+    <button class="tab" data-demo="4">4. AI Walkthrough</button>
+    <button class="tab" data-demo="5">5. Live GPS + Dispatch</button>
+    <button class="tab" data-demo="6">6. Ops Guide + QR</button>
+    <button class="tab" data-demo="7">7. Revenue Reports</button>
+  </div>
+</nav>
+
+<div class="demo-wrap">
+
+<!-- DEMO 1: AI GUEST MESSAGING -->
+<div class="demo active" data-demo="1">
+  <div class="demo-header">
+    <div class="num">DEMO 01</div>
+    <h2 class="serif">Guest complains. AI dispatches two workers.</h2>
+    <p>A guest sends one message. The AI reads it, understands both requests, and auto-creates the right jobs for the right workers. You do nothing.</p>
+  </div>
+
+  <div class="stage">
+    <div class="host-app">
+      <div class="browser-chrome">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url">app.livaround.com/inbox</div>
+      </div>
+      <div class="host-content">
+        <div class="host-header">
+          <div>
+            <div class="host-title">Messages — Villa Mo</div>
+            <div class="host-subtitle">Guest: Sarah Chen · Apr 15–22</div>
+          </div>
+          <div class="host-subtitle">Inbox (1)</div>
+        </div>
+
+        <div id="d1-messages"></div>
+
+        <div class="sect-label" id="d1-jobs-label" style="display:none;">Auto-created jobs</div>
+        <div id="d1-jobs"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="device-label">Worker: Priya</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>9:41</span><span>📶 🔋</span></div>
+          <div class="phone-header">
+            <div class="phone-title">My Jobs</div>
+            <div class="host-subtitle">Priya · Cleaner</div>
+          </div>
+          <div class="toast" id="d1-toast">
+            <span class="toast-icon">🔔</span>New job assigned
+            <span class="toast-sub">Deliver extra towels — Villa Mo</span>
+          </div>
+          <div class="phone-content">
+            <div class="sect-label">Today</div>
+            <div id="d1-worker-jobs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar" id="d1-caption" style="grid-column: 1 / -1;">Press play to start the demo.</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="playDemo(1)">▶ Play</button>
+    <button class="btn" onclick="resetDemo(1)">↻ Restart</button>
+  </div>
+  <div class="progress"><div class="progress-bar" id="d1-progress"></div></div>
+</div>
+
+<!-- DEMO 2: ISSUE REPORTING -->
+<div class="demo" data-demo="2">
+  <div class="demo-header">
+    <div class="num">DEMO 02</div>
+    <h2 class="serif">Worker records an issue. AI finds the right tradesperson.</h2>
+    <p>Priya records a 15-second video of a damaged curtain. The AI analyses it, classifies severity, and matches it to the property's own linked carpenter.</p>
+  </div>
+
+  <div class="stage">
+    <div class="host-app">
+      <div class="browser-chrome">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url">app.livaround.com/issues</div>
+      </div>
+      <div class="host-content">
+        <div class="host-header">
+          <div>
+            <div class="host-title">Issues — Villa Mo</div>
+            <div class="host-subtitle">Incoming reports</div>
+          </div>
+        </div>
+
+        <div id="d2-video-wrap" style="display:none;">
+          <div class="video-frame scanning" id="d2-video">
+            <div class="video-scan"></div>
+            <div class="video-play">▶</div>
+            <div class="video-time">00:15</div>
+            <div class="video-label">Issue report · Villa Mo · Master bedroom</div>
+          </div>
+        </div>
+
+        <div id="d2-analysis" style="display:none; margin-top:10px;">
+          <div class="sect-label">AI analysis <span id="d2-analyzing" style="color:var(--teal); font-weight:normal; text-transform:none; letter-spacing:0;">· analysing...</span></div>
+          <div id="d2-findings"></div>
+        </div>
+
+        <div id="d2-match" style="display:none; margin-top:12px;">
+          <div class="sect-label">Suggested tradesperson</div>
+          <div id="d2-trades"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="device-label">Worker: Priya</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>11:22</span><span>📶 🔋</span></div>
+          <div class="phone-header">
+            <div class="phone-title">Report Issue</div>
+          </div>
+          <div class="phone-content" id="d2-worker-content">
+            <div class="sect-label">Step 1 of 3</div>
+            <div style="color: var(--light); font-size: 12px; margin-bottom: 12px;">Record a short video of the issue.</div>
+            <div class="video-frame" id="d2-phone-video" style="margin-bottom:10px;">
+              <div class="video-play">🎥</div>
+              <div class="video-label">Tap to record</div>
+            </div>
+            <div id="d2-phone-actions"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar" id="d2-caption" style="grid-column: 1 / -1;">Press play to start the demo.</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="playDemo(2)">▶ Play</button>
+    <button class="btn" onclick="resetDemo(2)">↻ Restart</button>
+  </div>
+  <div class="progress"><div class="progress-bar" id="d2-progress"></div></div>
+</div>
+
+<!-- DEMO 3: MULTILINGUAL MESSAGING -->
+<div class="demo" data-demo="3">
+  <div class="demo-header">
+    <div class="num">DEMO 03</div>
+    <h2 class="serif">Your workers speak their language. You read yours.</h2>
+    <p>Priya sends a voice note in Hindi. You read it in English. You reply in English. She reads it in Hindi. Every message logged, every language bridged.</p>
+  </div>
+
+  <div class="stage">
+    <div class="host-app">
+      <div class="browser-chrome">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url">app.livaround.com/team-chat</div>
+      </div>
+      <div class="host-content">
+        <div class="host-header">
+          <div>
+            <div class="host-title">Team Chat — Priya Kumari</div>
+            <div class="host-subtitle">Hindi speaker · Auto-translate: ON</div>
+          </div>
+        </div>
+        <div id="d3-host-messages"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="device-label">Worker: Priya (Hindi)</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>2:15 PM</span><span>📶 🔋</span></div>
+          <div class="phone-header">
+            <div class="phone-title">होस्ट से बातचीत</div>
+          </div>
+          <div class="phone-content" id="d3-worker-messages"></div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar" id="d3-caption" style="grid-column: 1 / -1;">Press play to start the demo.</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="playDemo(3)">▶ Play</button>
+    <button class="btn" onclick="resetDemo(3)">↻ Restart</button>
+  </div>
+  <div class="progress"><div class="progress-bar" id="d3-progress"></div></div>
+</div>
+
+<!-- DEMO 4: AI WALKTHROUGH -->
+<div class="demo" data-demo="4">
+  <div class="demo-header">
+    <div class="num">DEMO 04</div>
+    <h2 class="serif">A 30-second video becomes 5 action items.</h2>
+    <p>After every clean, the worker records a quick walkthrough. AI detects stock levels, damage, and subtle problems — and turns each finding into an assigned task.</p>
+  </div>
+
+  <div class="stage">
+    <div class="host-app">
+      <div class="browser-chrome">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url">app.livaround.com/walkthroughs</div>
+      </div>
+      <div class="host-content">
+        <div class="host-header">
+          <div>
+            <div class="host-title">Post-checkout walkthrough</div>
+            <div class="host-subtitle">Villa Mo · Submitted by Priya · 11:42 AM</div>
+          </div>
+        </div>
+
+        <div class="video-frame" id="d4-video" style="margin-bottom: 14px;">
+          <div class="video-scan"></div>
+          <div class="video-play">▶</div>
+          <div class="video-time">00:30</div>
+          <div class="video-label">Walkthrough video — Villa Mo</div>
+        </div>
+
+        <div class="sect-label" id="d4-label" style="display:none;">AI findings <span id="d4-count" style="color:var(--teal); font-weight:normal; letter-spacing:0;"></span></div>
+        <div id="d4-findings"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="device-label">Worker: Priya</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>11:41</span><span>📶 🔋</span></div>
+          <div class="phone-header">
+            <div class="phone-title">Turnover clean</div>
+          </div>
+          <div class="phone-content" id="d4-worker-content">
+            <div class="sect-label">Checklist</div>
+            <div class="checklist-item visible"><div class="check-box checked">✓</div> Change bed linens</div>
+            <div class="checklist-item visible"><div class="check-box checked">✓</div> Clean bathrooms</div>
+            <div class="checklist-item visible"><div class="check-box checked">✓</div> Kitchen deep clean</div>
+            <div class="checklist-item visible"><div class="check-box checked">✓</div> Restock supplies</div>
+            <div class="sect-label" style="margin-top:16px;">Final step</div>
+            <div id="d4-walkthrough-btn">
+              <div style="background:var(--teal); color:white; padding:12px; border-radius:8px; text-align:center; font-weight:600; font-size:13px; cursor:pointer; margin-top:8px;">
+                🎥 Record walkthrough
+              </div>
+              <div style="color:var(--muted); font-size:10px; text-align:center; margin-top:6px;">Pan around the property for 30 seconds</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar" id="d4-caption" style="grid-column: 1 / -1;">Press play to start the demo.</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="playDemo(4)">▶ Play</button>
+    <button class="btn" onclick="resetDemo(4)">↻ Restart</button>
+  </div>
+  <div class="progress"><div class="progress-bar" id="d4-progress"></div></div>
+</div>
+
+<!-- DEMO 5: LIVE GPS + DISPATCH -->
+<div class="demo" data-demo="5">
+  <div class="demo-header">
+    <div class="num">DEMO 05</div>
+    <h2 class="serif">Three workers. Three properties. One map.</h2>
+    <p>Live GPS updates every 15 seconds. Arrival confirmed by geofence. New bookings auto-matched to the nearest available worker.</p>
+  </div>
+
+  <div class="stage">
+    <div class="host-app">
+      <div class="browser-chrome">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url">app.livaround.com/workers/live</div>
+      </div>
+      <div class="host-content">
+        <div class="host-header">
+          <div>
+            <div class="host-title">Live worker map</div>
+            <div class="host-subtitle">Updates every 15 seconds</div>
+          </div>
+          <div style="color:var(--mint); font-size:11px; font-weight:600;">● 3 active</div>
+        </div>
+
+        <div class="map" style="margin-bottom: 14px;">
+          <div class="pin teal" id="d5-pin1" style="top: 20%; left: 15%;">
+            <div class="pin-label">Priya · En route</div>
+          </div>
+          <div class="pin coral" id="d5-pin2" style="top: 55%; left: 45%;">
+            <div class="pin-label">Ramesh · At property</div>
+          </div>
+          <div class="pin mint" id="d5-pin3" style="top: 35%; left: 75%;">
+            <div class="pin-label">Kumar · Completed</div>
+          </div>
+        </div>
+
+        <div class="sect-label">Recent activity</div>
+        <div id="d5-activity"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="device-label">Worker: Priya</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>10:08</span><span>📶 🔋</span></div>
+          <div class="phone-header">
+            <div class="phone-title">Current job</div>
+          </div>
+          <div class="phone-content">
+            <div style="background:var(--card2); padding:14px; border-radius:10px; border-left:3px solid var(--teal);">
+              <div style="color:var(--teal); font-size:11px; font-weight:700; letter-spacing:1px;">EN ROUTE</div>
+              <div style="color:var(--white); font-weight:600; margin:4px 0; font-size:14px;">Turnover clean</div>
+              <div style="color:var(--muted); font-size:11px;">Villa Mo · 10:00 AM</div>
+            </div>
+
+            <div class="sect-label">GPS tracking</div>
+            <div style="background:var(--card2); padding:12px; border-radius:8px; font-size:11px; color:var(--light);">
+              <div>📍 <strong style="color:var(--white);">Live location sharing</strong></div>
+              <div style="color:var(--muted); margin-top:4px;">Active during job · Stops at completion</div>
+              <div style="color:var(--teal); margin-top:8px; font-weight:600;" id="d5-eta">ETA: 8 min</div>
+            </div>
+
+            <div id="d5-arrival" style="display:none; margin-top:12px; background:var(--mint); color:white; padding:12px; border-radius:8px; font-size:12px; font-weight:600; text-align:center;">
+              ✓ Arrived at Villa Mo<br>
+              <span style="font-weight:400; font-size:11px; opacity:0.9;">Geofence confirmed · Starting job</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar" id="d5-caption" style="grid-column: 1 / -1;">Press play to start the demo.</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="playDemo(5)">▶ Play</button>
+    <button class="btn" onclick="resetDemo(5)">↻ Restart</button>
+  </div>
+  <div class="progress"><div class="progress-bar" id="d5-progress"></div></div>
+</div>
+
+<!-- DEMO 6: OPS GUIDE + QR -->
+<div class="demo" data-demo="6">
+  <div class="demo-header">
+    <div class="num">DEMO 06</div>
+    <h2 class="serif">Every appliance has its own QR code.</h2>
+    <p>Workers scan any appliance to see instructions in their language. Hosts update the guide once — every worker sees the latest version instantly.</p>
+  </div>
+
+  <div class="stage">
+    <div class="host-app">
+      <div class="browser-chrome">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url">app.livaround.com/ops-guide/villa-mo</div>
+      </div>
+      <div class="host-content">
+        <div class="host-header">
+          <div>
+            <div class="host-title">Operations guide — Villa Mo</div>
+            <div class="host-subtitle">6 rooms · 24 appliances · 3 languages</div>
+          </div>
+        </div>
+
+        <div class="sect-label">Kitchen appliances</div>
+        <div id="d6-appliances"></div>
+
+        <div id="d6-update" style="display:none; margin-top:14px; background:rgba(16,185,129,0.1); border:1px solid var(--mint); border-radius:8px; padding:12px;">
+          <div style="color:var(--mint); font-weight:700; font-size:12px;">✓ Guide updated</div>
+          <div style="color:var(--light); font-size:11px; margin-top:4px;">"Descale weekly with white vinegar" added to coffee machine. All workers notified.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="device-label">Worker scans QR</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>3:42 PM</span><span>📶 🔋</span></div>
+          <div class="phone-header">
+            <div class="phone-title" id="d6-phone-title">Scan appliance</div>
+          </div>
+          <div class="phone-content" id="d6-phone-content">
+            <div style="text-align:center; margin: 20px 0;">
+              <div class="qr" id="d6-qr"></div>
+              <div style="color:var(--muted); font-size:11px;">Scanning...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar" id="d6-caption" style="grid-column: 1 / -1;">Press play to start the demo.</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="playDemo(6)">▶ Play</button>
+    <button class="btn" onclick="resetDemo(6)">↻ Restart</button>
+  </div>
+  <div class="progress"><div class="progress-bar" id="d6-progress"></div></div>
+</div>
+
+<!-- DEMO 7: REVENUE REPORTS -->
+<div class="demo" data-demo="7">
+  <div class="demo-header">
+    <div class="num">DEMO 07</div>
+    <h2 class="serif">From 50 bookings to a polished owner statement in one click.</h2>
+    <p>Every booking from Airbnb, Booking.com, Vrbo, and direct channels is tracked. At month end, statements generate automatically with full line-item transparency.</p>
+  </div>
+
+  <div class="stage" style="grid-template-columns: 1fr;">
+    <div class="host-app">
+      <div class="browser-chrome">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="url">app.livaround.com/revenue/villa-mo</div>
+      </div>
+      <div class="host-content">
+        <div class="host-header">
+          <div>
+            <div class="host-title">Villa Mo — March 2026 statement</div>
+            <div class="host-subtitle">Owner: Mr. Ravi Menon</div>
+          </div>
+          <div id="d7-generate" style="background:var(--teal); color:white; padding:8px 14px; border-radius:6px; font-size:12px; font-weight:600;">Generate</div>
+        </div>
+
+        <div id="d7-content" style="display:none;">
+          <div class="rev-summary">
+            <div class="rev-box"><div class="rev-box-label">Gross</div><div class="rev-box-val" id="d7-gross">£0</div></div>
+            <div class="rev-box"><div class="rev-box-label">Platform fees</div><div class="rev-box-val" id="d7-fees" style="color:var(--muted);">£0</div></div>
+            <div class="rev-box"><div class="rev-box-label">Commission</div><div class="rev-box-val" id="d7-comm" style="color:var(--muted);">£0</div></div>
+            <div class="rev-box"><div class="rev-box-label">Expenses</div><div class="rev-box-val" id="d7-exp" style="color:var(--muted);">£0</div></div>
+            <div class="rev-box"><div class="rev-box-label">Net payout</div><div class="rev-box-val mint" id="d7-net">£0</div></div>
+          </div>
+
+          <div class="sect-label">Booking breakdown</div>
+          <table class="rev-table">
+            <thead>
+              <tr><th>Date</th><th>Source</th><th>Guest</th><th>Nights</th><th>Gross</th><th>Commission</th><th>Net</th></tr>
+            </thead>
+            <tbody id="d7-rows"></tbody>
+          </table>
+
+          <div id="d7-sent" style="display:none; margin-top:14px; background:var(--mint); color:white; padding:12px; border-radius:8px; font-weight:600; text-align:center; font-size:12px;">
+            ✓ Statement sent to Mr. Ravi Menon
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar" id="d7-caption">Press play to start the demo.</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="playDemo(7)">▶ Play</button>
+    <button class="btn" onclick="resetDemo(7)">↻ Restart</button>
+  </div>
+  <div class="progress"><div class="progress-bar" id="d7-progress"></div></div>
+</div>
+
+</div>
+
+<footer>
+  <p>LivAround — Open source property operations platform · <a href="https://www.livaround.com">www.livaround.com</a></p>
+  <p style="margin-top:6px;">Prepared for Chen Hindi, Omega Rentals · Contact: <a href="mailto:mohit@livaround.com">mohit@livaround.com</a></p>
+</footer>
+
+<script>
+// ═══ TAB NAVIGATION ═══
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const n = tab.dataset.demo;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.demo').forEach(d => d.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.demo[data-demo="${n}"]`).classList.add('active');
+    resetDemo(parseInt(n));
+  });
+});
+
+// ═══ TIMING HELPERS ═══
+let activeTimers = {};
+function clearTimers(n) {
+  if (activeTimers[n]) {
+    activeTimers[n].forEach(t => clearTimeout(t));
+    activeTimers[n] = [];
+  }
+}
+function schedule(n, delay, fn) {
+  if (!activeTimers[n]) activeTimers[n] = [];
+  const t = setTimeout(fn, delay);
+  activeTimers[n].push(t);
+}
+function caption(n, text) {
+  document.getElementById(`d${n}-caption`).innerHTML = text;
+}
+function progress(n, totalMs) {
+  const bar = document.getElementById(`d${n}-progress`);
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  setTimeout(() => {
+    bar.style.transition = `width ${totalMs}ms linear`;
+    bar.style.width = '100%';
+  }, 50);
+}
+
+// ═══ DEMO 1: AI GUEST MESSAGING ═══
+function resetDemo1() {
+  clearTimers(1);
+  document.getElementById('d1-messages').innerHTML = '';
+  document.getElementById('d1-jobs').innerHTML = '';
+  document.getElementById('d1-jobs-label').style.display = 'none';
+  document.getElementById('d1-worker-jobs').innerHTML = '<div style="color:var(--muted); font-size:12px; text-align:center; padding:20px;">No new jobs yet</div>';
+  document.getElementById('d1-toast').classList.remove('visible');
+  document.getElementById('d1-progress').style.width = '0%';
+  caption(1, 'Press play to see what happens when a guest sends a complaint.');
+}
+function playDemo1() {
+  resetDemo1();
+  progress(1, 14000);
+
+  const msgs = document.getElementById('d1-messages');
+  const jobs = document.getElementById('d1-jobs');
+  const workerJobs = document.getElementById('d1-worker-jobs');
+
+  // 0s: Guest message arrives
+  schedule(1, 500, () => {
+    caption(1, 'A <em>guest message</em> just arrived.');
+    msgs.innerHTML = `
+      <div class="msg-meta">Sarah Chen · 10:42 AM</div>
+      <div class="msg msg-guest" id="d1-m1">Hi! The AC isn't cooling properly. Also could we get some extra bath towels please?</div>
+    `;
+    setTimeout(() => document.getElementById('d1-m1').classList.add('visible'), 50);
+  });
+
+  // 3s: AI processes
+  schedule(1, 3500, () => {
+    caption(1, 'The <em>AI reads every message</em> as it arrives.');
+    msgs.innerHTML += `<div class="msg msg-ai" id="d1-m2">🤖 AI detected 2 action items</div>`;
+    setTimeout(() => document.getElementById('d1-m2').classList.add('visible'), 50);
+  });
+
+  // 6s: Jobs appear on host side
+  schedule(1, 6500, () => {
+    caption(1, 'Two jobs created automatically. <em>Right worker. Right property.</em>');
+    document.getElementById('d1-jobs-label').style.display = 'block';
+    jobs.innerHTML = `
+      <div class="job-card coral" id="d1-j1">
+        <span class="job-status new">New</span>
+        <div class="job-title">🔧 AC repair — Villa Mo</div>
+        <div class="job-meta">Assigned to Ramesh (HVAC)</div>
+      </div>
+      <div class="job-card mint" id="d1-j2">
+        <span class="job-status new">New</span>
+        <div class="job-title">🧺 Deliver extra bath towels — Villa Mo</div>
+        <div class="job-meta">Assigned to Priya</div>
+      </div>
+    `;
+    setTimeout(() => document.getElementById('d1-j1').classList.add('visible'), 50);
+    setTimeout(() => document.getElementById('d1-j2').classList.add('visible'), 400);
+  });
+
+  // 9s: Worker phone buzzes
+  schedule(1, 9000, () => {
+    caption(1, 'Priya&rsquo;s phone <em>buzzes</em>. Job on her screen instantly.');
+    document.getElementById('d1-toast').classList.add('visible');
+  });
+
+  // 11s: Worker sees the job
+  schedule(1, 11500, () => {
+    document.getElementById('d1-toast').classList.remove('visible');
+    workerJobs.innerHTML = `
+      <div class="job-card mint visible">
+        <span class="job-status assigned">Assigned</span>
+        <div class="job-title">🧺 Deliver bath towels</div>
+        <div class="job-meta">Villa Mo · ASAP</div>
+      </div>
+    `;
+  });
+
+  // 13s: Close
+  schedule(1, 13000, () => {
+    caption(1, '<em>Guest texts. AI dispatches. You do nothing.</em>');
+  });
+}
+
+// ═══ DEMO 2: ISSUE REPORTING ═══
+function resetDemo2() {
+  clearTimers(2);
+  document.getElementById('d2-video-wrap').style.display = 'none';
+  document.getElementById('d2-analysis').style.display = 'none';
+  document.getElementById('d2-match').style.display = 'none';
+  document.getElementById('d2-findings').innerHTML = '';
+  document.getElementById('d2-trades').innerHTML = '';
+  document.getElementById('d2-phone-actions').innerHTML = '';
+  const pv = document.getElementById('d2-phone-video');
+  pv.classList.remove('scanning');
+  pv.querySelector('.video-play').textContent = '🎥';
+  pv.querySelector('.video-label').textContent = 'Tap to record';
+  document.getElementById('d2-progress').style.width = '0%';
+  caption(2, 'Press play — a worker discovers a damaged curtain after a guest checks out.');
+}
+function playDemo2() {
+  resetDemo2();
+  progress(2, 16000);
+
+  const pv = document.getElementById('d2-phone-video');
+
+  // 1s: Worker taps record
+  schedule(2, 1000, () => {
+    caption(2, 'Priya records a <em>15-second video</em> of the issue.');
+    pv.classList.add('scanning');
+    pv.querySelector('.video-play').textContent = '⏺';
+    pv.querySelector('.video-play').style.background = 'var(--coral)';
+    pv.querySelector('.video-label').textContent = 'Recording...';
+  });
+
+  // 4s: Worker submits
+  schedule(2, 4000, () => {
+    caption(2, 'She taps submit. <em>That&rsquo;s all she does.</em>');
+    pv.classList.remove('scanning');
+    pv.querySelector('.video-play').textContent = '✓';
+    pv.querySelector('.video-play').style.background = 'var(--mint)';
+    pv.querySelector('.video-label').textContent = 'Submitted · 00:15';
+    document.getElementById('d2-phone-actions').innerHTML = `
+      <div style="background:var(--mint); color:white; padding:10px; border-radius:8px; text-align:center; font-weight:600; font-size:12px; margin-top:6px;">
+        ✓ Report sent to host
+      </div>
+    `;
+  });
+
+  // 6s: Video appears on host side
+  schedule(2, 6000, () => {
+    caption(2, 'Appears in the host dashboard. <em>AI starts analysing.</em>');
+    document.getElementById('d2-video-wrap').style.display = 'block';
+    document.getElementById('d2-analysis').style.display = 'block';
+  });
+
+  // 9s: Findings arrive
+  schedule(2, 9000, () => {
+    caption(2, 'AI identifies the damage, <em>classifies severity</em>, and recommends what to do.');
+    document.getElementById('d2-analyzing').textContent = '';
+    document.getElementById('d2-findings').innerHTML = `
+      <div class="finding" id="d2-f1" style="border-left-color: var(--coral);">
+        <span class="finding-badge coral">HIGH</span>
+        <span style="color:var(--muted); font-size:11px;">Damage</span>
+        <div class="finding-title">Window frame damaged, curtain torn</div>
+        <div class="finding-desc">Possible water ingress · Rodent entry detected · Recommended: seal window gap, replace curtain</div>
+      </div>
+    `;
+    setTimeout(() => document.getElementById('d2-f1').classList.add('visible'), 50);
+  });
+
+  // 12s: Tradesperson match
+  schedule(2, 12000, () => {
+    caption(2, 'AI pulls up the <em>specific carpenter</em> linked to this property.');
+    document.getElementById('d2-match').style.display = 'block';
+    document.getElementById('d2-trades').innerHTML = `
+      <div class="trade-card highlight">
+        <div class="trade-avatar" style="background: var(--teal);">C</div>
+        <div class="trade-info">
+          <div class="trade-role">Carpenter · Villa Mo</div>
+          <div class="trade-name">Rajesh Mestry · +91 98XX XXXXXX · 4.8★</div>
+        </div>
+        <div style="background:var(--teal); color:white; padding:6px 10px; border-radius:6px; font-size:11px; font-weight:600;">Dispatch</div>
+      </div>
+    `;
+  });
+
+  // 15s
+  schedule(2, 15000, () => {
+    caption(2, 'From <em>video to dispatched carpenter in under 30 seconds</em>.');
+  });
+}
+
+// ═══ DEMO 3: MULTILINGUAL MESSAGING ═══
+function resetDemo3() {
+  clearTimers(3);
+  document.getElementById('d3-host-messages').innerHTML = '';
+  document.getElementById('d3-worker-messages').innerHTML = '';
+  document.getElementById('d3-progress').style.width = '0%';
+  caption(3, 'Press play — Priya needs to report a plumbing issue but doesn&rsquo;t speak English.');
+}
+function playDemo3() {
+  resetDemo3();
+  progress(3, 14000);
+
+  const host = document.getElementById('d3-host-messages');
+  const worker = document.getElementById('d3-worker-messages');
+
+  // 1s: Priya sends voice note (Hindi)
+  schedule(3, 1000, () => {
+    caption(3, 'Priya sends a <em>voice note in Hindi</em>.');
+    worker.innerHTML = `
+      <div class="msg-meta">आप · अभी</div>
+      <div class="msg msg-host visible" style="background: var(--coral);">🎤 वॉइस नोट · 0:12</div>
+    `;
+  });
+
+  // 3s: Host sees voice note appear
+  schedule(3, 3500, () => {
+    caption(3, 'You see the voice note appear — <em>still transcribing</em>.');
+    host.innerHTML = `
+      <div class="msg-meta">Priya Kumari · 2:15 PM · Hindi</div>
+      <div class="msg msg-guest visible">🎤 Voice note · 0:12 <span style="color:var(--teal); font-size:10px; margin-left:6px;">Transcribing...</span></div>
+    `;
+  });
+
+  // 6s: Transcription appears
+  schedule(3, 6000, () => {
+    caption(3, '<em>Instantly transcribed and translated</em> to English.');
+    host.innerHTML = `
+      <div class="msg-meta">Priya Kumari · 2:15 PM · Translated from Hindi</div>
+      <div class="msg msg-guest visible">🎤 "Madam, there's a water problem at Villa 3. The kitchen tap is leaking badly and water is pooling under the sink."</div>
+    `;
+  });
+
+  // 9s: Host replies in English
+  schedule(3, 9000, () => {
+    caption(3, 'You reply in <em>English</em>.');
+    host.innerHTML += `
+      <div class="msg msg-host visible">OK, sending the plumber now. Please turn off the water valve under the sink.</div>
+    `;
+  });
+
+  // 11s: Worker sees it in Hindi
+  schedule(3, 11000, () => {
+    caption(3, 'Priya reads it in <em>Hindi</em> on her phone. <em>Nobody switched languages.</em>');
+    worker.innerHTML += `
+      <div class="msg-meta" style="margin-top:8px;">होस्ट · अभी · अंग्रेज़ी से अनुवादित</div>
+      <div class="msg msg-guest visible">ठीक है, प्लम्बर को भेज रही हूँ। कृपया सिंक के नीचे पानी का वाल्व बंद कर दें।</div>
+    `;
+  });
+
+  // 13s
+  schedule(3, 13000, () => {
+    caption(3, '<em>Your workers speak their language. You read yours. Everything logged.</em>');
+  });
+}
+
+// ═══ DEMO 4: AI WALKTHROUGH ═══
+function resetDemo4() {
+  clearTimers(4);
+  const vf = document.getElementById('d4-video');
+  vf.classList.remove('scanning');
+  vf.querySelector('.video-play').textContent = '▶';
+  vf.querySelector('.video-play').style.background = 'var(--teal)';
+  vf.querySelector('.video-time').textContent = '00:30';
+  document.getElementById('d4-label').style.display = 'none';
+  document.getElementById('d4-count').textContent = '';
+  document.getElementById('d4-findings').innerHTML = '';
+  document.getElementById('d4-progress').style.width = '0%';
+  caption(4, 'Press play — after every clean, Priya records a 30-second walkthrough.');
+}
+function playDemo4() {
+  resetDemo4();
+  progress(4, 18000);
+
+  const vf = document.getElementById('d4-video');
+
+  // 1s: Worker records walkthrough
+  schedule(4, 1000, () => {
+    caption(4, 'Priya records a quick <em>30-second walkthrough</em> of the property.');
+    vf.classList.add('scanning');
+    vf.querySelector('.video-play').textContent = '⏺';
+    vf.querySelector('.video-play').style.background = 'var(--coral)';
+  });
+
+  // 4s: Video uploaded
+  schedule(4, 4500, () => {
+    caption(4, 'Video uploaded. <em>AI starts watching it.</em>');
+    vf.querySelector('.video-play').textContent = '▶';
+    vf.querySelector('.video-play').style.background = 'var(--teal)';
+    document.getElementById('d4-label').style.display = 'block';
+    document.getElementById('d4-count').textContent = '· scanning video...';
+  });
+
+  // Progressive findings
+  const findings = [
+    { badge: 'INVENTORY', cls: 'gold', sev: 'Medium', title: 'Wine glasses: 3 of 6', desc: 'Stock below threshold for a 6-guest property', caption: 'The AI spots <em>missing wine glasses</em>.' },
+    { badge: 'INVENTORY', cls: 'gold', sev: 'Low', title: 'Shampoo bottle ~15% full', desc: 'Nearly empty — replace before next check-in', caption: 'Notices the <em>almost-empty shampoo bottle</em>.' },
+    { badge: 'DAMAGE', cls: 'coral', sev: 'High', title: 'Ceiling water stain', desc: 'Possible leak above master bathroom — inspect soon', caption: 'Detects a <em>subtle ceiling stain</em> that indicates a leak.' },
+    { badge: 'CLEAN', cls: 'mint', sev: 'Low', title: 'Coffee station incomplete', desc: 'Filters and sugar sachets missing', caption: 'Flags an <em>incomplete coffee station</em>.' },
+    { badge: 'MAINTENANCE', cls: '', sev: 'Medium', title: 'AC filter looks dusty', desc: 'Needs replacement — affects cooling efficiency', caption: 'Recommends an <em>AC filter replacement</em>.' }
+  ];
+
+  findings.forEach((f, i) => {
+    schedule(4, 7000 + i * 1800, () => {
+      caption(4, f.caption);
+      document.getElementById('d4-count').textContent = `· ${i + 1} of 5 findings`;
+      const div = document.createElement('div');
+      div.className = 'finding';
+      div.innerHTML = `
+        <span class="finding-badge ${f.cls}">${f.badge}</span>
+        <span style="color:var(--muted); font-size:11px;">${f.sev} severity</span>
+        <div class="finding-title">${f.title}</div>
+        <div class="finding-desc">${f.desc}</div>
+      `;
+      document.getElementById('d4-findings').appendChild(div);
+      setTimeout(() => div.classList.add('visible'), 50);
+    });
+  });
+
+  // Final
+  schedule(4, 16500, () => {
+    caption(4, '<em>One click</em> converts all 5 findings into assigned tasks.');
+  });
+}
+
+// ═══ DEMO 5: LIVE GPS + DISPATCH ═══
+function resetDemo5() {
+  clearTimers(5);
+  const p1 = document.getElementById('d5-pin1');
+  p1.style.top = '20%';
+  p1.style.left = '15%';
+  p1.querySelector('.pin-label').textContent = 'Priya · En route';
+  document.getElementById('d5-activity').innerHTML = '';
+  document.getElementById('d5-arrival').style.display = 'none';
+  document.getElementById('d5-eta').textContent = 'ETA: 8 min';
+  document.getElementById('d5-progress').style.width = '0%';
+  caption(5, 'Press play — three workers moving across the city in real time.');
+}
+function playDemo5() {
+  resetDemo5();
+  progress(5, 15000);
+
+  const p1 = document.getElementById('d5-pin1');
+  const activity = document.getElementById('d5-activity');
+
+  schedule(5, 500, () => {
+    caption(5, 'Three workers. <em>Three properties</em>. Updates every 15 seconds.');
+  });
+
+  // Priya moves toward Villa Mo
+  schedule(5, 3000, () => {
+    caption(5, 'Priya is <em>en route</em> to Villa Mo. ETA counting down.');
+    p1.style.top = '35%';
+    p1.style.left = '38%';
+    document.getElementById('d5-eta').textContent = 'ETA: 4 min';
+  });
+
+  schedule(5, 6000, () => {
+    p1.style.top = '48%';
+    p1.style.left = '55%';
+    document.getElementById('d5-eta').textContent = 'ETA: 1 min';
+  });
+
+  // Arrival
+  schedule(5, 8500, () => {
+    caption(5, '<em>Geofence detects arrival.</em> No need to ask "are you there yet".');
+    p1.style.top = '52%';
+    p1.style.left = '60%';
+    p1.querySelector('.pin-label').textContent = 'Priya · Arrived ✓';
+    document.getElementById('d5-arrival').style.display = 'block';
+    document.getElementById('d5-eta').textContent = 'At property';
+    activity.innerHTML = `
+      <div style="padding: 8px 10px; background: var(--card2); border-radius: 6px; font-size: 11px; color: var(--light); margin-bottom: 6px;">
+        ✓ <strong style="color:var(--white);">Priya arrived at Villa Mo</strong> · 10:12 AM
+      </div>
+    `;
+  });
+
+  // New booking comes in, auto-dispatched
+  schedule(5, 11500, () => {
+    caption(5, 'A new booking arrives. System <em>auto-assigns the nearest worker</em>.');
+    activity.innerHTML = `
+      <div style="padding: 8px 10px; background: rgba(14,165,233,0.1); border: 1px solid var(--teal); border-radius: 6px; font-size: 11px; color: var(--teal); margin-bottom: 6px; font-weight: 600;">
+        🔔 New turnover assigned to Kumar · Seaside Retreat · 2:00 PM
+      </div>
+      <div style="padding: 8px 10px; background: var(--card2); border-radius: 6px; font-size: 11px; color: var(--light); margin-bottom: 6px;">
+        ✓ <strong style="color:var(--white);">Priya arrived at Villa Mo</strong> · 10:12 AM
+      </div>
+    `;
+  });
+
+  schedule(5, 14000, () => {
+    caption(5, '<em>Every worker. Every property. On one live map.</em>');
+  });
+}
+
+// ═══ DEMO 6: OPS GUIDE + QR ═══
+function buildQR() {
+  // Realistic looking QR pattern
+  const pattern = [
+    [1,1,1,1,1,1,1,1],
+    [1,0,0,1,0,1,0,1],
+    [1,0,1,1,0,0,1,1],
+    [1,0,0,0,1,1,0,1],
+    [1,1,1,0,1,0,1,0],
+    [1,0,1,1,0,1,1,1],
+    [1,0,0,1,1,0,1,0],
+    [1,1,1,1,1,1,1,1]
+  ];
+  let html = '';
+  pattern.forEach(row => {
+    row.forEach(cell => {
+      html += `<div class="qr-cell${cell ? '' : ' off'}"></div>`;
+    });
+  });
+  return html;
+}
+
+function resetDemo6() {
+  clearTimers(6);
+  document.getElementById('d6-appliances').innerHTML = `
+    <div style="background:var(--card2); padding:10px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="color:var(--white); font-weight:600; font-size:13px;">☕ Coffee machine (Nespresso)</div>
+        <div style="color:var(--muted); font-size:11px; margin-top:2px;">Descale monthly · Use capsules only</div>
+      </div>
+      <div style="color:var(--teal); font-size:11px; font-weight:600;">QR ✓</div>
+    </div>
+    <div style="background:var(--card2); padding:10px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="color:var(--white); font-weight:600; font-size:13px;">🔥 Microwave (IFB, in-built)</div>
+        <div style="color:var(--muted); font-size:11px; margin-top:2px;">Service contact: Asheesh · +91 98XX · Not generic</div>
+      </div>
+      <div style="color:var(--teal); font-size:11px; font-weight:600;">QR ✓</div>
+    </div>
+    <div style="background:var(--card2); padding:10px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="color:var(--white); font-weight:600; font-size:13px;">🍽 Dishwasher (Bosch)</div>
+        <div style="color:var(--muted); font-size:11px; margin-top:2px;">Tablets in upper cabinet · Rinse aid: quarterly</div>
+      </div>
+      <div style="color:var(--teal); font-size:11px; font-weight:600;">QR ✓</div>
+    </div>
+  `;
+  document.getElementById('d6-update').style.display = 'none';
+
+  document.getElementById('d6-phone-title').textContent = 'Scan appliance';
+  document.getElementById('d6-phone-content').innerHTML = `
+    <div style="text-align:center; margin: 20px 0;">
+      <div class="qr" id="d6-qr">${buildQR()}</div>
+      <div style="color:var(--muted); font-size:11px;">Point camera at appliance QR code</div>
+    </div>
+  `;
+  document.getElementById('d6-progress').style.width = '0%';
+  caption(6, 'Press play — Priya scans the QR code on the microwave.');
+}
+
+function playDemo6() {
+  resetDemo6();
+  progress(6, 14000);
+
+  // Worker scans
+  schedule(6, 1500, () => {
+    caption(6, 'Priya scans the <em>QR code on the microwave</em>.');
+    document.getElementById('d6-phone-content').innerHTML = `
+      <div style="text-align:center; padding: 30px 0;">
+        <div class="qr" style="opacity: 0.5;">${buildQR()}</div>
+        <div style="color:var(--teal); font-size:12px; margin-top:10px; font-weight:600;">Scanning...</div>
+      </div>
+    `;
+  });
+
+  // Guide opens
+  schedule(6, 4000, () => {
+    caption(6, 'The <em>property-specific guide</em> opens instantly.');
+    document.getElementById('d6-phone-title').textContent = '🔥 Microwave (IFB)';
+    document.getElementById('d6-phone-content').innerHTML = `
+      <div style="background:var(--card2); padding:12px; border-radius:8px; margin-bottom:10px;">
+        <div style="color:var(--coral); font-weight:700; font-size:11px;">⚠ IMPORTANT</div>
+        <div style="color:var(--white); font-size:12px; margin-top:4px;">This is an in-built IFB unit. Do <strong>not</strong> call a generic microwave repair service.</div>
+      </div>
+
+      <div style="background:var(--card2); padding:12px; border-radius:8px; margin-bottom:10px;">
+        <div style="color:var(--muted); font-weight:600; font-size:10px; text-transform:uppercase;">Authorised service</div>
+        <div style="color:var(--white); font-size:13px; font-weight:600; margin-top:4px;">Asheesh (IFB certified)</div>
+        <div style="color:var(--teal); font-size:12px; margin-top:2px;">📞 +91 98XX XXXXXX</div>
+      </div>
+
+      <div style="background:var(--card2); padding:12px; border-radius:8px;">
+        <div style="color:var(--muted); font-weight:600; font-size:10px; text-transform:uppercase;">Usage</div>
+        <div style="color:var(--light); font-size:11px; margin-top:4px;">• No metal containers<br>• Clean weekly with vinegar<br>• Warranty expires Dec 2027</div>
+      </div>
+    `;
+  });
+
+  // Host updates guide on their side
+  schedule(6, 8500, () => {
+    caption(6, 'Meanwhile, the host <em>updates the coffee machine instructions</em>.');
+    document.getElementById('d6-appliances').innerHTML = `
+      <div style="background:var(--card2); padding:10px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; border: 2px solid var(--mint);">
+        <div>
+          <div style="color:var(--white); font-weight:600; font-size:13px;">☕ Coffee machine (Nespresso)</div>
+          <div style="color:var(--mint); font-size:11px; margin-top:2px;">Descale <strong>weekly with white vinegar</strong> · Use capsules only · Updated</div>
+        </div>
+        <div style="color:var(--mint); font-size:11px; font-weight:600;">✓ UPDATED</div>
+      </div>
+      <div style="background:var(--card2); padding:10px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="color:var(--white); font-weight:600; font-size:13px;">🔥 Microwave (IFB, in-built)</div>
+          <div style="color:var(--muted); font-size:11px; margin-top:2px;">Service contact: Asheesh · +91 98XX · Not generic</div>
+        </div>
+        <div style="color:var(--teal); font-size:11px; font-weight:600;">QR ✓</div>
+      </div>
+      <div style="background:var(--card2); padding:10px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="color:var(--white); font-weight:600; font-size:13px;">🍽 Dishwasher (Bosch)</div>
+          <div style="color:var(--muted); font-size:11px; margin-top:2px;">Tablets in upper cabinet · Rinse aid: quarterly</div>
+        </div>
+        <div style="color:var(--teal); font-size:11px; font-weight:600;">QR ✓</div>
+      </div>
+    `;
+    document.getElementById('d6-update').style.display = 'block';
+  });
+
+  schedule(6, 12000, () => {
+    caption(6, 'Update the guide <em>once</em>. Every worker sees the latest version instantly.');
+  });
+}
+
+// ═══ DEMO 7: REVENUE REPORTS ═══
+function resetDemo7() {
+  clearTimers(7);
+  document.getElementById('d7-content').style.display = 'none';
+  document.getElementById('d7-gross').textContent = '£0';
+  document.getElementById('d7-fees').textContent = '£0';
+  document.getElementById('d7-comm').textContent = '£0';
+  document.getElementById('d7-exp').textContent = '£0';
+  document.getElementById('d7-net').textContent = '£0';
+  document.getElementById('d7-rows').innerHTML = '';
+  document.getElementById('d7-sent').style.display = 'none';
+  document.getElementById('d7-generate').style.background = 'var(--teal)';
+  document.getElementById('d7-generate').textContent = 'Generate';
+  document.getElementById('d7-progress').style.width = '0%';
+  caption(7, 'Press play — March has ended. Time to send owner statements.');
+}
+
+function animateNum(id, target, duration = 1000, prefix = '£') {
+  const el = document.getElementById(id);
+  const start = 0;
+  const startTime = performance.now();
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const val = Math.floor(start + (target - start) * progress);
+    el.textContent = prefix + val.toLocaleString();
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function playDemo7() {
+  resetDemo7();
+  progress(7, 13000);
+
+  // 1s: Click generate
+  schedule(7, 1000, () => {
+    caption(7, 'One click to <em>generate the March statement</em>.');
+    document.getElementById('d7-generate').style.background = 'var(--mint)';
+    document.getElementById('d7-generate').textContent = '⟳ Generating...';
+  });
+
+  // 2.5s: Statement appears
+  schedule(7, 2500, () => {
+    caption(7, 'Every booking from every channel, <em>tracked and reconciled</em>.');
+    document.getElementById('d7-content').style.display = 'block';
+    document.getElementById('d7-generate').style.background = 'var(--mint)';
+    document.getElementById('d7-generate').textContent = '✓ Ready';
+
+    const rows = [
+      ['Mar 2–5', 'Airbnb', 'J. Chen', '3', '£1,050', '£210', '£840'],
+      ['Mar 8–14', 'Booking', 'M. Patel', '6', '£2,100', '£420', '£1,680'],
+      ['Mar 14–17', 'Direct', 'S. Singh', '3', '£1,260', '£252', '£1,008'],
+      ['Mar 17–22', 'Vrbo', 'T. Smith', '5', '£1,750', '£350', '£1,400'],
+      ['Mar 22–30', 'Airbnb', 'K. Gomes', '8', '£2,260', '£452', '£1,808']
+    ];
+    const tbody = document.getElementById('d7-rows');
+    rows.forEach((r, i) => {
+      setTimeout(() => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = r.map(c => `<td>${c}</td>`).join('');
+        tbody.appendChild(tr);
+        setTimeout(() => tr.classList.add('visible'), 50);
+      }, i * 400);
+    });
+  });
+
+  // 5.5s: Summary animates
+  schedule(7, 5500, () => {
+    caption(7, 'Gross revenue, platform fees, commission, expenses — <em>all itemised</em>.');
+    animateNum('d7-gross', 8420, 1200);
+    animateNum('d7-fees', 842, 1200);
+    animateNum('d7-comm', 1684, 1200);
+    animateNum('d7-exp', 340, 1200);
+  });
+
+  // 8s: Net payout lands last
+  schedule(7, 8000, () => {
+    caption(7, 'Net payout calculated: <em>£5,554</em>.');
+    animateNum('d7-net', 5554, 1000);
+  });
+
+  // 10.5s: Send
+  schedule(7, 10500, () => {
+    caption(7, 'One click to <em>send it to the owner</em>. Transparent. Professional. Automatic.');
+    document.getElementById('d7-generate').textContent = '📧 Send to owner';
+    document.getElementById('d7-sent').style.display = 'block';
+  });
+}
+
+// ═══ MASTER PLAY/RESET ═══
+function playDemo(n) { window[`playDemo${n}`](); }
+function resetDemo(n) { window[`resetDemo${n}`](); }
+
+// Initialise
+for (let i = 1; i <= 7; i++) resetDemo(i);
+</script>
+
+</body>
+</html>
