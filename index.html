@@ -10,372 +10,216 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://livaround.com">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%230EA5E9'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='white'>⌂</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'><rect width='32' height='32' rx='7' fill='%230B2A3B'/><path d='M10 16L16 11L22 16V22H10Z' fill='%23fff'/><rect x='14.5' y='18' width='3' height='4' fill='%230B2A3B'/><circle cx='16' cy='5.5' r='2.2' fill='%23FFB547'/><circle cx='26' cy='22' r='1.8' fill='%23FF7A59'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0B1120;--card:#111827;--card2:#1E293B;--teal:#0EA5E9;--mint:#10B981;--orange:#F59E0B;--coral:#F43F5E;--purple:#8B5CF6;--white:#F8FAFC;--light:#CBD5E1;--muted:#64748B;--border:rgba(148,163,184,0.15)}
-body{background:var(--bg);color:var(--white);font-family:'DM Sans','Segoe UI',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+:root{--brand-50:#EEF4FF;--brand-100:#DBE7FE;--brand-300:#93B2FB;--brand-400:#6389F7;--brand-600:#2563EB;--brand-700:#1E4FBF;--sun-50:#FFF7E6;--sun-100:#FFEBBF;--sun-300:#FFC866;--sun-500:#FFB547;--sun-600:#E89A2B;--sun-700:#B5781E;--coral-50:#FFF1ED;--coral-100:#FFDCD1;--coral-500:#FF7A59;--coral-600:#E65F3F;--coral-700:#B8472C;--ink:#0B2A3B;--slate-700:#32547A;--slate-500:#6C88A5;--slate-400:#91A6BE;--slate-300:#B6C4D3;--slate-200:#E2EAF1;--slate-100:#EEF2F7;--slate-50:#F5F8FB;--sand:#FAFBFD;--paper:#FFFFFF;--success:#10B981;--success-bg:#DCFCE7;--success-fg:#047857;--warning-bg:#FEF3C7;--warning-fg:#92400E;--danger:#EF4444;--ai-bg:var(--sun-50);--ai-border:var(--sun-300);--ai-fg:var(--sun-700);--shadow-sm:0 1px 2px rgba(11,42,59,0.05),0 2px 6px rgba(11,42,59,0.06);--shadow-md:0 4px 12px rgba(11,42,59,0.08),0 2px 4px rgba(11,42,59,0.05);--shadow-lg:0 16px 40px rgba(11,42,59,0.12),0 4px 12px rgba(11,42,59,0.06);--ease:cubic-bezier(0.22,1,0.36,1)}
+body{background:var(--sand);color:var(--ink);font-family:'DM Sans',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:14px;line-height:1.55}
 a{color:inherit;text-decoration:none}
-.serif{font-family:'Playfair Display',serif}
+.mono{font-family:'JetBrains Mono',monospace}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
 .section{padding:80px 0}
-.badge{display:inline-block;padding:4px 14px;font-size:12px;font-weight:600;border-radius:100px;letter-spacing:0.5px}
-.fade{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;font-size:11px;font-weight:600;border-radius:9999px;letter-spacing:0.04em;font-family:'JetBrains Mono',monospace}
+.fade{opacity:0;transform:translateY(20px);transition:opacity 0.5s var(--ease),transform 0.5s var(--ease)}
 .fade.visible{opacity:1;transform:translateY(0)}
-nav{position:sticky;top:0;z-index:50;background:rgba(11,17,32,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav{position:sticky;top:0;z-index:50;background:rgba(250,251,253,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--slate-200)}
 nav .inner{height:64px;display:flex;align-items:center;justify-content:space-between}
-nav .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;letter-spacing:-0.5px}
-nav .logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--teal),var(--mint));display:flex;align-items:center;justify-content:center}
-nav .links{display:flex;gap:24px;align-items:center;font-size:14px;color:var(--light)}
-nav .links a:hover{color:var(--teal)}
-.btn{padding:10px 24px;border-radius:8px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
-.btn-primary{background:var(--teal);color:#fff}
-.btn-primary:hover{background:#0284C7;transform:translateY(-1px)}
-.btn-outline{border:1px solid var(--border);color:var(--light)}
-.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
-.hero{position:relative;text-align:center;padding:120px 0 80px}
-.hero h1{font-size:clamp(40px,6vw,68px);font-weight:800;line-height:1.08;letter-spacing:-2px;margin-bottom:20px}
-.hero .gradient-text{background:linear-gradient(135deg,var(--teal),var(--mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:18px;color:var(--light);line-height:1.6;max-width:580px;margin:0 auto 32px}
+nav .logo{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;letter-spacing:-0.02em}
+nav .links{display:flex;gap:22px;align-items:center;font-size:13px;font-weight:500;color:var(--slate-700)}
+nav .links a:hover{color:var(--brand-600)}
+.btn{padding:10px 22px;border-radius:9999px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:8px;transition:all 180ms var(--ease);border:0;cursor:pointer;font-family:inherit}
+.btn-primary{background:var(--brand-600);color:#fff;box-shadow:var(--shadow-sm)}
+.btn-primary:hover{background:var(--brand-700);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-sun{background:var(--sun-500);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn-sun:hover{background:var(--sun-600);color:#fff}
+.btn-outline{border:1.5px solid var(--slate-300);color:var(--ink);background:transparent}
+.btn-outline:hover{border-color:var(--brand-600);color:var(--brand-600)}
+.hero{position:relative;text-align:center;padding:100px 0 72px}
+.hero h1{font-size:clamp(38px,5.5vw,62px);font-weight:700;line-height:1.08;letter-spacing:-0.03em;margin-bottom:18px}
+.hero .accent{color:var(--brand-600)}
+.hero p{font-size:17px;color:var(--slate-700);line-height:1.6;max-width:560px;margin:0 auto 30px}
 .hero .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.hero .ctas .btn{padding:14px 32px;border-radius:10px;font-size:15px}
-.stats{display:flex;gap:40px;justify-content:center;margin-top:48px;flex-wrap:wrap}
-.stats .stat-val{font-size:28px;font-weight:700;color:var(--teal)}
-.stats .stat-label{font-size:12px;color:var(--muted);margin-top:2px}
-.orb{position:absolute;border-radius:50%;pointer-events:none}
-.orb-1{top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(14,165,233,0.08),transparent 70%)}
-.orb-2{bottom:-100px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,0.06),transparent 70%)}
-.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
-.mod-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:24px 20px;transition:border-color 0.3s,transform 0.2s}
-.mod-card:hover{transform:translateY(-2px)}
-.mod-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.mod-card h3{font-size:15px;font-weight:600;margin-bottom:6px}
-.mod-card p{font-size:13px;color:var(--muted);line-height:1.5}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.terminal{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:32px}
-.terminal .dots{display:flex;gap:6px;margin-bottom:20px}
-.terminal .dot{width:12px;height:12px;border-radius:50%}
-.terminal pre{margin:0;font-size:13px;line-height:1.8;color:var(--light);overflow:auto;font-family:'DM Mono',monospace}
-.check-list{display:flex;flex-direction:column;gap:14px}
-.check-item{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--light)}
-.check-icon{color:var(--mint);flex-shrink:0;margin-top:2px}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{padding:12px 16px;font-weight:600;font-size:13px;border-bottom:2px solid var(--border)}
-td{padding:12px 16px;border-bottom:1px solid var(--border)}
-.tbl-highlight td{background:var(--card2)}
-.pricing-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:20px}
-.price-card{background:var(--card);border-radius:16px;padding:32px 24px;border:1px solid var(--border);position:relative;display:flex;flex-direction:column}
-.price-card.featured{border:2px solid var(--teal)}
-.price-pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--teal);color:#fff;font-size:11px;font-weight:600;padding:4px 14px;border-radius:100px}
-.price-card .tier-name{font-size:13px;font-weight:600;margin-bottom:4px}
-.price-card .price{font-size:36px;font-weight:700}
-.price-card .period{font-size:14px;color:var(--muted)}
-.price-card .desc{font-size:13px;color:var(--muted);margin-bottom:24px}
+.hero .ctas .btn{padding:13px 30px;font-size:14px}
+.stats{display:flex;gap:40px;justify-content:center;margin-top:44px;flex-wrap:wrap}
+.stats .stat-val{font-size:26px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:-0.02em}
+.stats .stat-label{font-size:11px;color:var(--slate-500);margin-top:2px;font-weight:500}
+.orbit-deco{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0.12}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.mod-card{background:var(--paper);border:1px solid var(--slate-200);border-radius:20px;padding:22px 20px;transition:all 280ms var(--ease);box-shadow:0 1px 2px rgba(11,42,59,0.04)}
+.mod-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--brand-300)}
+.mod-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px}
+.mod-card h3{font-size:15px;font-weight:700;margin-bottom:5px;letter-spacing:-0.01em}
+.mod-card p{font-size:13px;color:var(--slate-500);line-height:1.5}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.terminal{background:var(--ink);border-radius:20px;padding:28px;box-shadow:var(--shadow-lg)}
+.terminal .dots{display:flex;gap:6px;margin-bottom:18px}
+.terminal .dot{width:10px;height:10px;border-radius:50%}
+.terminal pre{margin:0;font-size:12px;line-height:1.9;color:var(--slate-300);overflow:auto;font-family:'JetBrains Mono',monospace}
+.terminal .cmt{color:var(--sun-500)}
+.terminal .ok{color:var(--success)}
+.check-list{display:flex;flex-direction:column;gap:12px}
+.check-item{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--slate-700)}
+.check-icon{color:var(--success);flex-shrink:0;margin-top:2px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:12px 16px;font-weight:600;font-size:11px;border-bottom:2px solid var(--slate-200);font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;color:var(--slate-500)}
+td{padding:12px 16px;border-bottom:1px solid var(--slate-200);color:var(--slate-700)}
+.tbl-highlight td{background:var(--brand-50);font-weight:600}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.price-card{background:var(--paper);border-radius:20px;padding:30px 24px;border:1px solid var(--slate-200);position:relative;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(11,42,59,0.04)}
+.price-card.featured{border:2px solid var(--brand-600);box-shadow:var(--shadow-md)}
+.price-pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--brand-600);color:#fff;font-size:10px;font-weight:700;padding:4px 14px;border-radius:9999px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;text-transform:uppercase}
+.price-card .tier-name{font-size:12px;font-weight:700;margin-bottom:4px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase}
+.price-card .price{font-size:34px;font-weight:700;letter-spacing:-0.02em}
+.price-card .period{font-size:13px;color:var(--slate-500)}
+.price-card .desc{font-size:13px;color:var(--slate-500);margin-bottom:22px}
 .price-card .features{display:flex;flex-direction:column;gap:10px;flex:1}
-.price-card .features span{font-size:13px;color:var(--light);display:flex;gap:8px;align-items:center}
-.price-card .card-btn{display:block;margin-top:24px;padding:12px 0;border-radius:10px;text-align:center;font-weight:600;font-size:14px;transition:all 0.2s}
-.partner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-.partner-card{background:var(--card2);border-radius:14px;padding:28px 24px}
-.partner-card .comm{font-size:32px;font-weight:700;margin:8px 0}
-.cta-box{text-align:center;padding:60px 40px;border-radius:20px;background:linear-gradient(135deg,rgba(14,165,233,0.07),rgba(139,92,246,0.07));border:1px solid var(--border)}
-footer{border-top:1px solid var(--border);padding:40px 0}
+.price-card .features span{font-size:13px;color:var(--slate-700);display:flex;gap:8px;align-items:center}
+.price-card .card-btn{display:block;margin-top:22px;padding:12px 0;border-radius:9999px;text-align:center;font-weight:600;font-size:13px;transition:all 180ms var(--ease)}
+.partner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.partner-card{background:var(--paper);border-radius:20px;padding:26px 22px;border:1px solid var(--slate-200);box-shadow:0 1px 2px rgba(11,42,59,0.04)}
+.partner-card .comm{font-size:30px;font-weight:700;margin:6px 0;letter-spacing:-0.02em}
+.cta-box{text-align:center;padding:56px 40px;border-radius:20px;background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.cta-box h2{font-size:34px;font-weight:700;letter-spacing:-0.02em;margin-bottom:10px}
+.cta-box p{color:var(--slate-300);font-size:15px;max-width:480px;margin:0 auto 26px}
+.sync-flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1000px;margin:0 auto}
+.sync-step{background:var(--paper);border-radius:20px;padding:26px 22px;border:1px solid var(--slate-200);position:relative;box-shadow:0 1px 2px rgba(11,42,59,0.04)}
+.sync-step .step-num{position:absolute;top:-11px;left:18px;background:var(--coral-500);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.sync-step h3{font-size:15px;font-weight:700;margin-bottom:6px;letter-spacing:-0.01em}
+.sync-step p{color:var(--slate-500);font-size:12px;line-height:1.5}
+.sync-mockup{background:var(--slate-50);border:1px solid var(--slate-200);border-radius:10px;padding:10px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--slate-500);word-break:break-all}
+.sync-stat-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--slate-200);font-size:12px}
+.sync-stat-row:last-child{border-bottom:none}
+.sync-stat-label{color:var(--slate-500)}
+.sync-stat-val{color:var(--ink);font-weight:700;font-family:'JetBrains Mono',monospace}
+.sync-booking{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--slate-200);font-size:11px}
+.sync-booking:last-child{border-bottom:none}
+.airbnb-icon{display:inline-flex;width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#f43f5e,#db2777);align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+.pulse-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 0 0 rgba(16,185,129,0.7);animation:pulseGlow 2s infinite;margin-right:4px}
+@keyframes pulseGlow{0%{box-shadow:0 0 0 0 rgba(16,185,129,0.7)}70%{box-shadow:0 0 0 6px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+.phones-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.phone-frame{width:260px;border-radius:32px;overflow:hidden;border:2px solid var(--slate-200);background:var(--paper);box-shadow:var(--shadow-md)}
+.phone-status{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:700;color:var(--ink);background:var(--paper);border-bottom:1px solid var(--slate-200)}
+.phone-body{min-height:380px;padding:14px}
+.phone-label{text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--slate-500);letter-spacing:0.12em;text-transform:uppercase;margin-top:10px;font-weight:600}
+footer{border-top:1px solid var(--slate-200);padding:40px 0}
 footer .inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
-footer .cols{display:flex;gap:48px;font-size:13px;color:var(--muted)}
+footer .cols{display:flex;gap:48px;font-size:13px;color:var(--slate-500)}
 footer .col{display:flex;flex-direction:column;gap:8px}
-footer .col-title{font-weight:600;color:var(--light);margin-bottom:4px}
-footer .bottom{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);text-align:center}
-@media(max-width:768px){
-  .two-col{grid-template-columns:1fr;gap:32px}
-  nav .links span{display:none}
-  .stats{gap:24px}
-  footer .cols{gap:32px}
-  .hero h1{font-size:36px}
-  .pricing-grid{grid-template-columns:1fr}
-}
+footer .col-title{font-weight:700;color:var(--ink);margin-bottom:4px}
+footer a:hover{color:var(--brand-600)}
+footer .bottom{margin-top:28px;padding-top:22px;border-top:1px solid var(--slate-200);font-size:11px;color:var(--slate-400);text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em}
+@media(max-width:900px){.sync-flow{grid-template-columns:1fr}}
+@media(max-width:768px){.two-col{grid-template-columns:1fr;gap:32px}nav .links span{display:none}.stats{gap:24px}footer .cols{gap:32px}.hero h1{font-size:34px}.pricing-grid{grid-template-columns:1fr}.phones-row{flex-direction:column;align-items:center}}
 </style>
 </head>
 <body>
+<nav><div class="container inner">
+<a href="#" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32" fill="none"><rect width="64" height="64" rx="16" fill="#0B2A3B"/><circle cx="32" cy="32" r="22" fill="none" stroke="#2563EB" stroke-width="1" opacity="0.5"/><path d="M22 30 L 32 22 L 42 30 L 42 40 L 22 40 Z" fill="#FFFFFF"/><rect x="29" y="34" width="6" height="6" fill="#0B2A3B"/><circle cx="32" cy="10" r="3.5" fill="#FFB547"/><circle cx="51" cy="40" r="3" fill="#FF7A59"/><circle cx="13" cy="40" r="3" fill="#6389F7"/></svg> livaround</a>
+<div class="links"><span><a href="#features">Features</a></span><span><a href="#pricing">Pricing</a></span><span><a href="#open-source">Open Source</a></span><span><a href="#partners">Partners</a></span><span><a href="/about.html">About</a></span><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" style="display:flex;align-items:center;gap:6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub</a><a href="https://livarounddashboard-production.up.railway.app/login" class="btn btn-primary" style="padding:8px 20px;font-size:12px">Get started</a></div>
+</div></nav>
 
-<!-- NAV -->
-<nav>
-<div class="container inner">
-  <a href="#" class="logo">
-    <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg></div>
-    LivAround
-  </a>
-  <div class="links">
-    <span><a href="#features">Features</a></span>
-    <span><a href="#pricing">Pricing</a></span>
-    <span><a href="#open-source">Open Source</a></span>
-    <span><a href="#partners">Partners</a></span>
-    <span><a href="/about.html">About</a></span>
-    <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" style="display:flex;align-items:center;gap:6px">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      GitHub
-    </a>
-    <a href="https://livarounddashboard-production.up.railway.app/login" class="btn btn-primary" style="padding:8px 20px;font-size:13px">Get Started</a>
-  </div>
-</div>
-</nav>
-
-<!-- HERO -->
 <div class="container" style="position:relative">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="hero">
-    <div class="fade"><span class="badge" style="background:rgba(14,165,233,0.12);color:var(--teal)">Open Source · AGPL Licensed</span></div>
-    <h1 class="fade serif" style="transition-delay:0.1s">The operating system for<br><span class="gradient-text">Airbnb hosts</span></h1>
-    <p class="fade" style="transition-delay:0.2s">Manage properties, dispatch workers, track inventory, resolve issues, and report revenue — all from one platform. Self-host for free or use our managed cloud.</p>
-    <div class="ctas fade" style="transition-delay:0.3s">
-      <a href="https://livarounddashboard-production.up.railway.app/login" class="btn btn-primary">Start free trial <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" class="btn btn-outline">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        View on GitHub
-      </a>
-    </div>
-    <div class="stats fade" style="transition-delay:0.4s">
-      <div><div class="stat-val">11</div><div class="stat-label">Modules</div></div>
-      <div><div class="stat-val">30+</div><div class="stat-label">Properties managed</div></div>
-      <div><div class="stat-val">$10</div><div class="stat-label">Per property/mo</div></div>
-      <div><div class="stat-val">100%</div><div class="stat-label">AI-built</div></div>
-    </div>
-  </div>
-</div>
+<svg class="orbit-deco" width="700" height="700" viewBox="0 0 700 700"><circle cx="350" cy="350" r="180" fill="none" stroke="#2563EB" stroke-width="1"/><circle cx="350" cy="350" r="280" fill="none" stroke="#B6C4D3" stroke-width="1"/><circle cx="350" cy="350" r="340" fill="none" stroke="#E2EAF1" stroke-width="1"/><circle cx="530" cy="350" r="5" fill="#FFB547"/><circle cx="200" cy="460" r="4" fill="#FF7A59"/><circle cx="350" cy="120" r="4" fill="#6389F7"/></svg>
+<div class="hero">
+<div class="fade"><span class="badge" style="background:var(--brand-50);color:var(--brand-700)">Open source · AGPL licensed</span></div>
+<h1 class="fade" style="transition-delay:0.1s">The operating system for<br><span class="accent">Airbnb hosts</span></h1>
+<p class="fade" style="transition-delay:0.2s">Manage properties, dispatch workers, track inventory, resolve issues, and report revenue — all from one platform. Self-host for free or use our managed cloud.</p>
+<div class="ctas fade" style="transition-delay:0.3s"><a href="https://livarounddashboard-production.up.railway.app/login" class="btn btn-primary">Start free trial →</a><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" class="btn btn-outline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> View on GitHub</a></div>
+<div class="stats fade" style="transition-delay:0.4s"><div><div class="stat-val">11</div><div class="stat-label">Modules</div></div><div><div class="stat-val">30+</div><div class="stat-label">Properties managed</div></div><div><div class="stat-val">$10</div><div class="stat-label">Per property/mo</div></div><div><div class="stat-val">100%</div><div class="stat-label">AI-built</div></div></div>
+</div></div>
 
-<!-- FEATURES -->
-<div id="features" style="background:var(--card)">
-<div class="container section">
-  <div class="fade"><span class="badge" style="background:rgba(16,185,129,0.12);color:var(--mint)">Platform</span></div>
-  <h2 class="fade serif" style="font-size:36px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">11 modules. One dashboard.</h2>
-  <p class="fade" style="color:var(--light);font-size:16px;max-width:500px;margin-bottom:40px;transition-delay:0.15s">Everything a property manager needs to run day-to-day operations, built into a single cohesive platform.</p>
-  <div class="modules-grid" id="mod-grid"></div>
-</div>
-</div>
+<div id="features" style="background:var(--paper);border-top:1px solid var(--slate-200)"><div class="container section">
+<div class="fade"><span class="badge" style="background:var(--success-bg);color:var(--success-fg)">Platform</span></div>
+<h2 class="fade" style="font-size:34px;font-weight:700;margin:14px 0 10px;letter-spacing:-0.02em;transition-delay:0.1s">11 modules. One dashboard.</h2>
+<p class="fade" style="color:var(--slate-500);font-size:15px;max-width:500px;margin-bottom:36px;transition-delay:0.15s">Everything a property manager needs to run day-to-day operations, built into a single cohesive platform.</p>
+<div class="modules-grid" id="mod-grid"></div>
+</div></div>
 
-<!-- OPEN SOURCE -->
-<div id="open-source" class="container section">
-<div class="two-col">
-  <div>
-    <div class="fade"><span class="badge" style="background:rgba(139,92,246,0.12);color:var(--purple)">Open Source</span></div>
-    <h2 class="fade serif" style="font-size:34px;margin:16px 0 16px;letter-spacing:-1px;transition-delay:0.1s">Your data. Your server.<br>Your rules.</h2>
-    <p class="fade" style="color:var(--light);font-size:15px;line-height:1.7;margin-bottom:24px;transition-delay:0.15s">LivAround is released under the AGPL license. Self-host on your own infrastructure with full control, or use our managed cloud. No vendor lock-in, ever.</p>
-    <div class="check-list fade" style="transition-delay:0.2s">
-      <div class="check-item"><span class="check-icon">✓</span> Full source code on GitHub — fork, modify, contribute</div>
-      <div class="check-item"><span class="check-icon">✓</span> Community-driven roadmap with public feature voting</div>
-      <div class="check-item"><span class="check-icon">✓</span> Plugin marketplace for integrations and add-ons</div>
-      <div class="check-item"><span class="check-icon">✓</span> Self-hosting docs with Docker Compose setup</div>
-    </div>
-  </div>
-  <div class="fade terminal" style="transition-delay:0.25s">
-    <div class="dots"><div class="dot" style="background:#EF4444"></div><div class="dot" style="background:#F59E0B"></div><div class="dot" style="background:#10B981"></div></div>
-    <pre>$ git clone github.com/mohiteu811-cloud/Livaround
+<div id="ai-messaging" style="border-top:1px solid var(--slate-200)"><div class="container section">
+<div class="fade" style="text-align:center;margin-bottom:48px">
+<span class="badge" style="background:var(--ai-bg);color:var(--ai-fg);border:1px solid var(--ai-border)">✨ The headline feature</span>
+<h2 style="font-size:34px;font-weight:700;margin:16px 0 10px;letter-spacing:-0.02em">AI guest messaging. Three screens. Zero manual work.</h2>
+<p style="color:var(--slate-500);font-size:15px;max-width:620px;margin:0 auto;line-height:1.6">A guest sends a message. AI reads it, suggests a reply, dispatches a worker, or creates an issue — all before you pick up your phone.</p>
+</div>
+<div class="phones-row fade" style="transition-delay:0.1s">
+<div><div class="phone-frame"><div class="phone-status"><span>9:41</span><span style="font-size:9px;color:var(--slate-400)">●●●●</span></div><div class="phone-body"><div style="text-align:center;margin-bottom:14px"><div style="font-size:24px;margin-bottom:6px">🏡</div><div style="font-size:14px;font-weight:700">Villa Mo, Goa</div><div style="font-size:11px;color:var(--slate-500);font-family:'JetBrains Mono',monospace">5 Mar – 9 Mar</div></div><div style="background:var(--slate-50);border-radius:14px;padding:12px;margin-bottom:10px"><div style="font-size:12px;font-weight:600;margin-bottom:4px">Quick actions</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;font-weight:600"><div style="background:var(--paper);border:1px solid var(--slate-200);border-radius:10px;padding:10px;text-align:center">🔑 Check-in</div><div style="background:var(--paper);border:1px solid var(--slate-200);border-radius:10px;padding:10px;text-align:center">📍 Directions</div><div style="background:var(--paper);border:1px solid var(--slate-200);border-radius:10px;padding:10px;text-align:center">📞 Host</div><div style="background:var(--paper);border:1px solid var(--slate-200);border-radius:10px;padding:10px;text-align:center">⚠️ Issue</div></div></div><div style="background:var(--paper);border:1px solid var(--slate-200);border-radius:14px;padding:10px"><div style="font-size:11px;color:var(--slate-400);margin-bottom:6px">Message your host</div><div style="background:var(--slate-50);border-radius:10px;padding:8px 10px;font-size:12px">The AC in bedroom 2 isn't cooling properly 😕</div><div style="text-align:right;margin-top:6px"><span style="display:inline-block;background:var(--brand-600);color:#fff;padding:5px 14px;border-radius:9999px;font-size:11px;font-weight:600">Send →</span></div></div></div></div><div class="phone-label">Guest link</div></div>
+<div><div class="phone-frame"><div class="phone-status"><span>9:41</span><span style="font-size:9px;color:var(--slate-400)">●●●●</span></div><div class="phone-body"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--slate-200)"><div style="width:32px;height:32px;border-radius:16px;background:linear-gradient(135deg,var(--coral-500),var(--coral-600));color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">TF</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Tom Fischer</div><div style="font-size:10px;color:var(--slate-500);font-family:'JetBrains Mono',monospace">Villa Mo · via Airbnb</div></div></div><div style="margin-bottom:8px"><div style="background:var(--paper);border:1px solid var(--slate-200);border-radius:14px 14px 14px 4px;padding:10px;font-size:12px;max-width:90%">The AC in bedroom 2 isn't cooling properly 😕<div style="font-size:9px;color:var(--slate-400);margin-top:3px;font-family:'JetBrains Mono',monospace">10:14</div></div></div><div style="background:var(--ai-bg);border:1px solid var(--ai-border);border-radius:14px 14px 14px 4px;padding:10px;margin-bottom:8px;max-width:90%"><div style="display:flex;align-items:center;gap:5px;margin-bottom:5px"><span style="font-size:12px">✨</span><span style="font-size:9px;font-weight:700;color:var(--ai-fg);text-transform:uppercase;letter-spacing:0.1em;font-family:'JetBrains Mono',monospace">AI suggestion</span></div><div style="font-size:12px;margin-bottom:8px;line-height:1.4">Dispatch <b>Ravi S.</b> (on-call, 6 min away)?</div><div style="display:flex;gap:6px"><span style="flex:1;text-align:center;background:var(--brand-600);color:#fff;padding:7px;border-radius:10px;font-size:11px;font-weight:700">Dispatch</span><span style="flex:1;text-align:center;color:var(--slate-500);padding:7px;border-radius:10px;font-size:11px;font-weight:600">Dismiss</span></div></div><div style="margin-left:auto;max-width:80%"><div style="background:var(--brand-600);color:#fff;border-radius:14px 14px 4px 14px;padding:10px;font-size:12px">Sorry Tom — Ravi is on his way, ETA 30 min.<div style="font-size:9px;opacity:0.7;margin-top:3px;font-family:'JetBrains Mono',monospace">10:18 · Read</div></div></div></div></div><div class="phone-label">Host app · AI suggestion</div></div>
+<div><div class="phone-frame"><div class="phone-status"><span>9:41</span><span style="font-size:9px;color:var(--slate-400)">●●●●</span></div><div class="phone-body"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--slate-200)"><div style="font-size:22px;color:var(--brand-600)">‹</div><div style="flex:1;font-size:14px;font-weight:700">New job</div><span style="font-size:9px;font-weight:700;color:var(--brand-700);background:var(--brand-50);padding:3px 8px;border-radius:9999px;font-family:'JetBrains Mono',monospace">DISPATCHED</span></div><div style="background:var(--brand-50);border-radius:14px;padding:14px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:44px;height:44px;border-radius:12px;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:22px">🔧</div><div><div style="font-size:15px;font-weight:700">AC Repair</div><div style="font-size:11px;color:var(--slate-500)">Villa Mo · Bedroom 2</div></div></div><div style="display:flex;gap:6px"><span style="flex:1;text-align:center;background:var(--paper);color:var(--ink);padding:9px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--slate-200)">Decline</span><span style="flex:2;text-align:center;background:var(--brand-600);color:#fff;padding:9px;border-radius:10px;font-size:12px;font-weight:700;box-shadow:0 4px 12px rgba(37,99,235,0.3)">Accept job</span></div></div><div style="background:var(--paper);border:1px solid var(--slate-200);border-radius:14px;padding:4px 12px"><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;font-size:12px"><span>📍</span><div><div style="font-weight:600">Villa Mo, Assagao</div><div style="color:var(--slate-500);font-size:11px">6 km · 12 min drive</div></div></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--slate-200);font-size:12px"><span>🕐</span><div><div style="font-weight:600">ASAP</div><div style="color:var(--slate-500);font-size:11px">Guest is waiting</div></div></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--slate-200);font-size:12px"><span>💰</span><div><div style="font-weight:600;color:var(--success-fg)">₹450</div><div style="color:var(--slate-500);font-size:11px">Paid on completion</div></div></div></div></div></div><div class="phone-label">Worker app · auto-created job</div></div>
+</div>
+</div></div>
+
+<div id="airbnb-sync" style="background:var(--paper);border-top:1px solid var(--slate-200)"><div class="container section">
+<div class="fade" style="text-align:center;margin-bottom:44px"><span class="badge" style="background:var(--coral-50);color:var(--coral-700)">🔗 Now live</span><h2 style="font-size:34px;font-weight:700;margin:16px 0 10px;letter-spacing:-0.02em">Airbnb calendar sync. Zero API approval.</h2><p style="color:var(--slate-500);font-size:15px;max-width:600px;margin:0 auto;line-height:1.6">Paste your iCal URL. LivAround imports every booking, identifies guest stays vs host blocks, and starts dispatching workers automatically.</p></div>
+<div class="sync-flow fade" style="transition-delay:0.1s">
+<div class="sync-step"><span class="step-num">1</span><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="airbnb-icon">A</span><h3>Paste your iCal URL</h3></div><p>Go to your Airbnb listing → Pricing and availability → Export calendar. Paste the URL into LivAround.</p><div class="sync-mockup">https://www.airbnb.com/calendar/ical/4839201.ics?s=a3b8c9...</div><p style="margin-top:8px;color:var(--slate-400);font-size:10px;font-style:italic">No API approval, no partner application, no waiting.</p></div>
+<div class="sync-step"><span class="step-num">2</span><h3>Preview before enabling</h3><p>LivAround fetches the feed and shows you exactly what it will import.</p><div style="background:var(--slate-50);border:1px solid var(--slate-200);border-radius:10px;padding:10px;margin-top:10px"><div class="sync-stat-row"><span class="sync-stat-label">Events found</span><span class="sync-stat-val">7</span></div><div class="sync-stat-row"><span class="sync-stat-label">Guest reservations</span><span class="sync-stat-val" style="color:var(--brand-600)">5</span></div><div class="sync-stat-row"><span class="sync-stat-label">Host blocks</span><span class="sync-stat-val" style="color:var(--slate-400)">2</span></div><div style="border-top:1px solid var(--slate-200);margin-top:6px;padding-top:6px;font-size:10px;color:var(--slate-400)">Sample:</div><div class="sync-booking"><span>15 Jun – 20 Jun</span><span style="color:var(--brand-600);font-weight:700;font-size:9px;font-family:'JetBrains Mono',monospace">RESERVATION</span></div><div class="sync-booking"><span>28 Jun – 2 Jul</span><span style="color:var(--brand-600);font-weight:700;font-size:9px;font-family:'JetBrains Mono',monospace">RESERVATION</span></div><div class="sync-booking"><span>5 Jul – 9 Jul</span><span style="color:var(--slate-400);font-weight:700;font-size:9px;font-family:'JetBrains Mono',monospace">HOST BLOCK</span></div></div></div>
+<div class="sync-step"><span class="step-num">3</span><h3>Auto-sync every 2 hours</h3><p>New bookings create jobs. Cancellations get flagged. Conflicts detected.</p><div style="background:var(--slate-50);border:1px solid var(--slate-200);border-radius:10px;padding:10px;margin-top:10px"><div style="display:flex;align-items:center;gap:5px;margin-bottom:8px"><span class="pulse-dot"></span><span style="color:var(--success);font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace">SYNC ACTIVE</span></div><div class="sync-stat-row"><span class="sync-stat-label">Last synced</span><span class="sync-stat-val">2 min ago</span></div><div class="sync-stat-row"><span class="sync-stat-label">Next sync</span><span class="sync-stat-val">1h 58m</span></div><div class="sync-stat-row"><span class="sync-stat-label">Bookings imported</span><span class="sync-stat-val" style="color:var(--brand-600)">23</span></div><div class="sync-stat-row"><span class="sync-stat-label">Conflicts</span><span class="sync-stat-val" style="color:var(--success)">0</span></div></div></div>
+</div>
+<div class="fade" style="text-align:center;margin-top:40px;transition-delay:0.2s"><p style="color:var(--brand-600);font-size:13px;font-weight:600;font-style:italic;margin-bottom:6px">From Airbnb iCal URL to auto-dispatched cleaning crew in under 2 minutes.</p><p style="color:var(--slate-400);font-size:11px">Also works with Booking.com, VRBO, and any iCal-compatible platform.</p></div>
+</div></div>
+
+<div id="open-source" style="border-top:1px solid var(--slate-200)"><div class="container section"><div class="two-col"><div>
+<div class="fade"><span class="badge" style="background:var(--brand-50);color:var(--brand-700)">Open source</span></div>
+<h2 class="fade" style="font-size:32px;font-weight:700;margin:14px 0 14px;letter-spacing:-0.02em;transition-delay:0.1s">Your data. Your server.<br>Your rules.</h2>
+<p class="fade" style="color:var(--slate-500);font-size:14px;line-height:1.7;margin-bottom:22px;transition-delay:0.15s">LivAround is released under the AGPL license. Self-host on your own infrastructure with full control, or use our managed cloud. No vendor lock-in, ever.</p>
+<div class="check-list fade" style="transition-delay:0.2s"><div class="check-item"><span class="check-icon">✓</span> Full source code on GitHub — fork, modify, contribute</div><div class="check-item"><span class="check-icon">✓</span> Community-driven roadmap with public feature voting</div><div class="check-item"><span class="check-icon">✓</span> Plugin marketplace for integrations and add-ons</div><div class="check-item"><span class="check-icon">✓</span> Self-hosting docs with Docker Compose setup</div></div>
+</div><div class="fade terminal" style="transition-delay:0.25s"><div class="dots"><div class="dot" style="background:#EF4444"></div><div class="dot" style="background:#F59E0B"></div><div class="dot" style="background:#10B981"></div></div><pre>$ git clone github.com/mohiteu811-cloud/Livaround
 $ cd Livaround
 $ cp .env.example .env
 $ docker compose up -d
 
-✓ PostgreSQL ready
-✓ Redis ready
-✓ LivAround running at localhost:3000
+<span class="ok">✓</span> PostgreSQL ready
+<span class="ok">✓</span> Redis ready
+<span class="ok">✓</span> LivAround running at localhost:3000
 
-# You're live. Zero vendor lock-in.</pre>
-  </div>
-</div>
-</div>
+<span class="cmt"># You're live. Zero vendor lock-in.</span></pre></div></div></div></div>
 
-<!-- COMPARISON -->
-<div style="background:var(--card)">
-<div class="container section">
-  <div class="fade"><span class="badge" style="background:rgba(244,63,94,0.12);color:var(--coral)">Comparison</span></div>
-  <h2 class="fade serif" style="font-size:34px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">What others miss, we cover.</h2>
-  <p class="fade" style="color:var(--muted);font-size:15px;margin-bottom:32px;transition-delay:0.15s">Guesty, Hostaway, and Lodgify handle bookings. LivAround handles everything else.</p>
-  <div class="fade" style="overflow-x:auto;transition-delay:0.2s">
-    <table>
-      <thead><tr>
-        <th style="text-align:left">Feature</th>
-        <th style="text-align:center;color:var(--teal)">LivAround</th>
-        <th style="text-align:center;color:var(--muted)">Guesty</th>
-        <th style="text-align:center;color:var(--muted)">Hostaway</th>
-        <th style="text-align:center;color:var(--muted)">Lodgify</th>
-      </tr></thead>
-      <tbody id="comp-table"></tbody>
-    </table>
-  </div>
-</div>
-</div>
+<div style="background:var(--paper);border-top:1px solid var(--slate-200)"><div class="container section">
+<div class="fade"><span class="badge" style="background:var(--coral-50);color:var(--coral-700)">Comparison</span></div>
+<h2 class="fade" style="font-size:32px;font-weight:700;margin:14px 0 10px;letter-spacing:-0.02em;transition-delay:0.1s">What others miss, we cover.</h2>
+<p class="fade" style="color:var(--slate-500);font-size:14px;margin-bottom:28px;transition-delay:0.15s">Guesty, Hostaway, and Lodgify handle bookings. LivAround handles everything else.</p>
+<div class="fade" style="overflow-x:auto;transition-delay:0.2s"><table><thead><tr><th style="text-align:left">Feature</th><th style="text-align:center;color:var(--brand-600)">LivAround</th><th style="text-align:center;color:var(--slate-400)">Guesty</th><th style="text-align:center;color:var(--slate-400)">Hostaway</th><th style="text-align:center;color:var(--slate-400)">Lodgify</th></tr></thead><tbody id="comp-table"></tbody></table></div>
+</div></div>
 
-<!-- PRICING -->
-<div id="pricing" class="container section">
-  <div style="text-align:center;margin-bottom:48px">
-    <div class="fade"><span class="badge" style="background:rgba(14,165,233,0.12);color:var(--teal)">Pricing</span></div>
-    <h2 class="fade serif" style="font-size:36px;margin:16px 0 8px;letter-spacing:-1px;transition-delay:0.1s">Simple, transparent pricing</h2>
-    <p class="fade" style="color:var(--muted);font-size:15px;transition-delay:0.15s">Self-host for free, pay per property on cloud, or go unlimited.</p>
-  </div>
-  <div class="pricing-grid" id="pricing-cards"></div>
-</div>
+<div id="pricing" style="border-top:1px solid var(--slate-200)"><div class="container section">
+<div style="text-align:center;margin-bottom:44px"><div class="fade"><span class="badge" style="background:var(--brand-50);color:var(--brand-700)">Pricing</span></div><h2 class="fade" style="font-size:34px;font-weight:700;margin:14px 0 8px;letter-spacing:-0.02em;transition-delay:0.1s">Simple, transparent pricing</h2><p class="fade" style="color:var(--slate-500);font-size:14px;transition-delay:0.15s">Self-host for free, pay per property on cloud, or go unlimited.</p></div>
+<div class="pricing-grid" id="pricing-cards"></div>
+</div></div>
 
-<!-- PARTNERS -->
-<div id="partners" style="background:var(--card)">
-<div class="container section">
-  <div class="fade"><span class="badge" style="background:rgba(245,158,11,0.12);color:var(--orange)">Earn with us</span></div>
-  <h2 class="fade serif" style="font-size:34px;margin:16px 0 12px;letter-spacing:-1px;transition-delay:0.1s">Earn with LivAround — open to everyone</h2>
-  <p class="fade" style="color:var(--light);font-size:15px;max-width:600px;margin-bottom:40px;line-height:1.7;transition-delay:0.15s">You don't need to be a host to earn with LivAround. Whether you're a property consultant, a tech blogger, a real estate agent, or just someone who knows hosts — sign up, share your link, and earn recurring commissions.</p>
-  <div class="partner-grid" id="partner-cards"></div>
-  <div class="fade" style="text-align:center;margin-top:32px;transition-delay:0.3s">
-    <a href="https://livarounddashboard-production.up.railway.app/partners/join" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:10px;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;font-size:15px">Become a partner — start earning <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-    <p style="color:var(--muted);font-size:13px;margin-top:12px">Free to join. No LivAround subscription required.</p>
-  </div>
-</div>
-</div>
+<div id="partners" style="background:var(--paper);border-top:1px solid var(--slate-200)"><div class="container section">
+<div class="fade"><span class="badge" style="background:var(--sun-50);color:var(--sun-700);border:1px solid var(--sun-300)">Earn with us</span></div>
+<h2 class="fade" style="font-size:32px;font-weight:700;margin:14px 0 10px;letter-spacing:-0.02em;transition-delay:0.1s">Earn with LivAround — open to everyone</h2>
+<p class="fade" style="color:var(--slate-500);font-size:14px;max-width:600px;margin-bottom:36px;line-height:1.7;transition-delay:0.15s">You don't need to be a host to earn with LivAround. Whether you're a property consultant, a tech blogger, a real estate agent, or just someone who knows hosts — sign up, share your link, and earn recurring commissions.</p>
+<div class="partner-grid" id="partner-cards"></div>
+<div class="fade" style="text-align:center;margin-top:28px;transition-delay:0.3s"><a href="https://livarounddashboard-production.up.railway.app/partners/join" target="_blank" rel="noopener" class="btn btn-sun" style="padding:13px 30px;font-size:14px">Become a partner — start earning →</a><p style="color:var(--slate-400);font-size:12px;margin-top:10px">Free to join. No LivAround subscription required.</p></div>
+</div></div>
 
-<!-- CTA -->
-<div class="container section">
-  <div class="fade cta-box">
-    <h2 class="serif" style="font-size:36px;margin-bottom:12px;letter-spacing:-1px">Built with real host pain.</h2>
-    <p style="color:var(--light);font-size:16px;max-width:480px;margin:0 auto 28px">Every module exists because a real operational problem needed solving. Start free, upgrade when you're ready.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="https://livarounddashboard-production.up.railway.app/login" class="btn btn-primary" style="padding:14px 32px;font-size:15px;border-radius:10px">Start free trial</a>
-      <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" class="btn btn-outline" style="padding:14px 32px;font-size:15px;border-radius:10px">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        Star on GitHub
-      </a>
-    </div>
-  </div>
-</div>
+<div class="container section"><div class="fade cta-box">
+<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.08" viewBox="0 0 600 200"><circle cx="500" cy="100" r="120" fill="none" stroke="#2563EB" stroke-width="1"/><circle cx="500" cy="100" r="180" fill="none" stroke="#6389F7" stroke-width="1"/><circle cx="560" cy="40" r="5" fill="#FFB547"/><circle cx="360" cy="140" r="4" fill="#FF7A59"/></svg>
+<h2 style="position:relative">Built with real host pain.</h2>
+<p style="position:relative">Every module exists because a real operational problem needed solving. Start free, upgrade when you're ready.</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative"><a href="https://livarounddashboard-production.up.railway.app/login" class="btn" style="background:#fff;color:var(--ink);padding:13px 30px;font-size:14px;border-radius:9999px;font-weight:700">Start free trial →</a><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" class="btn" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.3);padding:13px 30px;font-size:14px;border-radius:9999px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> Star on GitHub</a></div>
+</div></div>
 
-<!-- FOOTER -->
-<footer>
-<div class="container">
-  <div class="inner">
-    <div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <div class="logo-icon" style="width:24px;height:24px;border-radius:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg></div>
-        <span style="font-weight:700">LivAround</span>
-      </div>
-      <p style="font-size:13px;color:var(--muted);max-width:260px">The open-source operating system for Airbnb hosts. Built with AI, powered by community.</p>
-    </div>
-    <div class="cols">
-      <div class="col"><span class="col-title">Product</span><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#open-source">Self-hosting</a><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener">API Docs</a></div>
-      <div class="col"><span class="col-title">Community</span><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/mohiteu811-cloud/Livaround/releases" target="_blank" rel="noopener">Changelog</a><a href="https://github.com/mohiteu811-cloud/Livaround/discussions" target="_blank" rel="noopener">Discussions</a></div>
-      <div class="col"><span class="col-title">Company</span><a href="/about.html">About</a><a href="#partners">Partners</a><a href="/privacy.html">Privacy Policy</a></div>
-    </div>
-  </div>
-  <div class="bottom">© 2026 LivAround. Open source under AGPL-3.0 license.</div>
-</div>
-</footer>
+<footer><div class="container">
+<div class="inner"><div><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" fill="none"><rect width="64" height="64" rx="16" fill="#0B2A3B"/><path d="M22 30 L 32 22 L 42 30 L 42 40 L 22 40 Z" fill="#fff"/><rect x="29" y="34" width="6" height="6" fill="#0B2A3B"/><circle cx="32" cy="10" r="3.5" fill="#FFB547"/><circle cx="51" cy="40" r="3" fill="#FF7A59"/><circle cx="13" cy="40" r="3" fill="#6389F7"/></svg><span style="font-weight:700;letter-spacing:-0.02em">livaround</span></div><p style="font-size:12px;color:var(--slate-500);max-width:260px;line-height:1.5">The open-source operating system for Airbnb hosts. Built with AI, powered by community.</p></div>
+<div class="cols"><div class="col"><span class="col-title">Product</span><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#open-source">Self-hosting</a><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener">API Docs</a></div><div class="col"><span class="col-title">Company</span><a href="/about.html">About</a><a href="/privacy.html">Privacy</a><a href="mailto:mohit@livaround.com">Contact</a></div><div class="col"><span class="col-title">Community</span><a href="https://github.com/mohiteu811-cloud/Livaround/releases" target="_blank" rel="noopener">Changelog</a><a href="https://github.com/mohiteu811-cloud/Livaround/discussions" target="_blank" rel="noopener">Discussions</a><a href="#partners">Partners</a></div></div></div>
+<div class="bottom">LIVAROUND LTD · England & Wales · Company 15610194 · © 2025</div>
+</div></footer>
 
 <script>
-// Intersection observer for fade-in
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-}, { threshold: 0.12 });
-document.querySelectorAll('.fade').forEach(el => obs.observe(el));
-
-// Modules grid
-const mods = [
-  { icon: "🏠", title: "Properties", desc: "Profiles with amenities, WiFi codes, owner linkage, and staff assignments", color: "var(--teal)" },
-  { icon: "📅", title: "Bookings", desc: "Multi-channel log from Airbnb, Booking.com, VRBO, and direct with guest stay links", color: "var(--orange)" },
-  { icon: "⚡", title: "Jobs & Dispatch", desc: "Create jobs, attach checklists, dispatch to the best available worker instantly", color: "var(--mint)" },
-  { icon: "👥", title: "Workers", desc: "Roster with skills, availability, property assignments, ratings, and mobile app", color: "var(--purple)" },
-  { icon: "📦", title: "Inventory", desc: "Per-property stock tracking with thresholds, low-stock alerts, and one-click restock", color: "var(--teal)" },
-  { icon: "🔧", title: "Issues & Maintenance", desc: "Workers report with photos and severity. You review, approve, and assign tradespeople", color: "var(--coral)" },
-  { icon: "📊", title: "Revenue Reports", desc: "Owner statements with gross/net breakdowns, CSV import, and commission tracking", color: "var(--mint)" },
-  { icon: "📍", title: "Worker App & Live GPS", desc: "Mobile app for workers with push notifications, checklists, issue reporting, and real-time GPS tracking with 15-second updates", color: "var(--orange)" },
-  { icon: "🛡️", title: "Operations Guide", desc: "Per-property knowledge base with room-by-room docs and QR code labels", color: "var(--purple)" },
-  { icon: "🤖", title: "AI Guest Messaging", desc: "Two-way host-guest messaging with AI that reads conversations and auto-creates jobs or issues — no manual intervention needed. Pro feature.", color: "var(--coral)" },
-  { icon: "🏡", title: "Host App", desc: "Mobile app for hosts to manage properties, view bookings, monitor workers, and track revenue. Pro feature.", color: "var(--orange)" },
-];
-const modGrid = document.getElementById('mod-grid');
-mods.forEach((m, i) => {
-  const card = document.createElement('div');
-  card.className = 'mod-card fade';
-  card.style.transitionDelay = (0.05 * i) + 's';
-  card.innerHTML = `<div class="mod-icon" style="background:${m.color}18;font-size:20px">${m.icon}</div><h3>${m.title}</h3><p>${m.desc}</p>`;
-  card.onmouseenter = () => card.style.borderColor = m.color + '60';
-  card.onmouseleave = () => card.style.borderColor = 'var(--border)';
-  modGrid.appendChild(card);
-  obs.observe(card);
-});
-
-// Comparison table
-const compRows = [
-  ["Worker dispatch & GPS", true, false, false, false],
-  ["Inventory tracking", true, false, false, false],
-  ["AI guest messaging", true, false, false, false],
-  ["Issue reporting", true, false, false, false],
-  ["Maintenance workflow", true, false, false, false],
-  ["Ops guide / QR codes", true, false, false, false],
-  ["Owner revenue reports", true, "partial", "partial", false],
-  ["Open source", true, false, false, false],
-  ["Channel management", "add-on", true, true, true],
-];
-const tbody = document.getElementById('comp-table');
-compRows.forEach(([feat, ...vals]) => {
-  const tr = document.createElement('tr');
-  tr.innerHTML = `<td style="font-weight:500">${feat}</td>` + vals.map((v, ci) =>
-    `<td style="text-align:center">${v === true ? `<span style="color:${ci === 0 ? 'var(--mint)' : 'var(--muted)'}">✓</span>` : v === false ? `<span style="color:rgba(100,116,139,0.35)">✗</span>` : `<span style="color:var(--orange);font-size:12px">${v}</span>`}</td>`
-  ).join('');
-  tbody.appendChild(tr);
-});
-const pricingRow = document.createElement('tr');
-pricingRow.className = 'tbl-highlight';
-pricingRow.innerHTML = `<td style="font-weight:600">Pricing (30 properties)</td><td style="text-align:center;color:var(--teal);font-weight:700">$100/mo</td><td style="text-align:center;color:var(--muted)">$480–810</td><td style="text-align:center;color:var(--muted)">$600–1,200</td><td style="text-align:center;color:var(--muted)">$500+</td>`;
-tbody.appendChild(pricingRow);
-
-// Pricing cards
-const tiers = [
-  { name: "Community", price: "Free", period: "forever", desc: "Self-hosted", features: ["10 core modules", "Worker mobile app", "REST API access", "Community support", "Unlimited properties"], color: "var(--muted)", featured: false },
-  { name: "Pro", price: "$10", period: "/property/mo", desc: "Managed cloud · Pay as you grow", features: ["Everything in Community", "AI Guest Messaging", "Host App", "Managed hosting & backups", "Email support"], color: "var(--teal)", featured: true },
-  { name: "Agency", price: "$100", period: "/month", desc: "Coming soon", features: ["Everything in Pro", "Unlimited properties", "White-label branding", "Channel sync (Airbnb etc.)", "Multi-organization", "Priority support"], color: "var(--orange)", featured: false },
-];
-const pGrid = document.getElementById('pricing-cards');
-tiers.forEach((t, i) => {
-  const card = document.createElement('div');
-  card.className = `price-card fade${t.featured ? ' featured' : ''}`;
-  card.style.transitionDelay = (0.1 * i) + 's';
-  card.innerHTML = `
-    ${t.featured ? '<div class="price-pop">Most popular</div>' : ''}
-    <div class="tier-name" style="color:${t.color}">${t.name}</div>
-    <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:4px"><span class="price">${t.price}</span><span class="period">${t.period}</span></div>
-    <div class="desc">${t.desc}</div>
-    <div class="features">${t.features.map(f => `<span><span style="color:var(--mint)">✓</span> ${f}</span>`).join('')}</div>
-    <a href="${t.desc === 'Coming soon' ? '#' : 'https://livarounddashboard-production.up.railway.app/login'}" class="card-btn" style="background:${t.featured ? 'var(--teal)' : 'transparent'};color:${t.featured ? '#fff' : 'var(--light)'};border:${t.featured ? 'none' : '1px solid var(--border)'}">${t.desc === 'Coming soon' ? 'Join waitlist' : 'Get started'}</a>
-  `;
-  pGrid.appendChild(card);
-  obs.observe(card);
-});
-
-// Partner cards
-const partners = [
-  { tier: "Referral Partner", commission: "15–20%", desc: "Anyone can sign up. Share your unique link, earn recurring commission for every host who subscribes through you.", who: "Anyone — bloggers, consultants, agents, hosts", color: "var(--teal)" },
-  { tier: "Channel Partner", commission: "25–30%", desc: "For professionals who actively onboard hosts. Direct commission plus 5–10% override on your referrals' referrals.", who: "PM consultants, hospitality agencies, real estate agents", color: "var(--orange)" },
-  { tier: "Strategic Partner", commission: "5% network", desc: "Regional distributors with exclusive territory rights and dedicated account management.", who: "Large PM companies, hospitality networks", color: "var(--purple)" },
-];
-const partGrid = document.getElementById('partner-cards');
-partners.forEach((p, i) => {
-  const card = document.createElement('div');
-  card.className = 'partner-card fade';
-  card.style.transitionDelay = (0.1 * i) + 's';
-  card.style.borderLeft = `3px solid ${p.color}`;
-  card.innerHTML = `
-    <div style="font-size:13px;color:${p.color};font-weight:600">${p.tier}</div>
-    <div class="comm">${p.commission}</div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:12px">recurring commission</div>
-    <p style="font-size:13px;color:var(--light);line-height:1.6;margin-bottom:12px">${p.desc}</p>
-    <div style="font-size:12px;color:var(--muted)">For: ${p.who}</div>
-  `;
-  partGrid.appendChild(card);
-  obs.observe(card);
-});
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const el = document.querySelector(a.getAttribute('href'));
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
+const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.12});document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+const mods=[{icon:"🏠",title:"Properties",desc:"Profiles with amenities, WiFi codes, owner linkage, and staff assignments",color:"var(--brand-600)"},{icon:"📅",title:"Bookings",desc:"Airbnb iCal sync live — import bookings automatically. Also supports Booking.com, VRBO, and direct channels",color:"var(--sun-500)"},{icon:"⚡",title:"Jobs & Dispatch",desc:"Create jobs, attach checklists, dispatch to the best available worker instantly",color:"var(--success)"},{icon:"👥",title:"Workers",desc:"Roster with skills, availability, property assignments, ratings, and mobile app",color:"var(--brand-400)"},{icon:"📦",title:"Inventory",desc:"Per-property stock tracking with thresholds, low-stock alerts, and one-click restock",color:"var(--brand-600)"},{icon:"🔧",title:"Issues & Maintenance",desc:"Workers report with photos and severity. You review, approve, and assign tradespeople",color:"var(--coral-500)"},{icon:"📊",title:"Revenue Reports",desc:"Owner statements with gross/net breakdowns, CSV import, and commission tracking",color:"var(--success)"},{icon:"📍",title:"Worker App & Live GPS",desc:"Mobile app for workers with push notifications, checklists, issue reporting, and real-time GPS tracking",color:"var(--sun-500)"},{icon:"🛡️",title:"Operations Guide",desc:"Per-property knowledge base with room-by-room docs and QR code labels",color:"var(--brand-400)"},{icon:"✨",title:"AI Guest Messaging",desc:"AI reads conversations and auto-creates jobs or issues — no manual intervention needed. Pro feature.",color:"var(--sun-700)"},{icon:"🏡",title:"Host App",desc:"Mobile app for hosts to manage properties, view bookings, monitor workers, and track revenue. Pro feature.",color:"var(--coral-500)"}];
+const mg=document.getElementById('mod-grid');mods.forEach((m,i)=>{const c=document.createElement('div');c.className='mod-card fade';c.style.transitionDelay=(0.04*i)+'s';c.innerHTML=`<div class="mod-icon" style="background:${m.color}14;font-size:20px">${m.icon}</div><h3>${m.title}</h3><p>${m.desc}</p>`;mg.appendChild(c);obs.observe(c)});
+const cr=[["Worker dispatch & GPS",!0,!1,!1,!1],["Inventory tracking",!0,!1,!1,!1],["AI guest messaging",!0,!1,!1,!1],["Issue reporting",!0,!1,!1,!1],["Maintenance workflow",!0,!1,!1,!1],["Ops guide / QR codes",!0,!1,!1,!1],["Owner revenue reports",!0,"partial","partial",!1],["Open source",!0,!1,!1,!1],["Airbnb iCal sync",!0,!0,!0,!0]];
+const tb=document.getElementById('comp-table');cr.forEach(([f,...v])=>{const r=document.createElement('tr');r.innerHTML=`<td style="font-weight:600">${f}</td>`+v.map((x,i)=>`<td style="text-align:center">${x===!0?`<span style="color:${i===0?'var(--success)':'var(--slate-400)'}">✓</span>`:x===!1?`<span style="color:var(--slate-300)">✗</span>`:`<span style="color:var(--sun-600);font-size:11px">${x}</span>`}</td>`).join('');tb.appendChild(r)});
+const pr=document.createElement('tr');pr.className='tbl-highlight';pr.innerHTML=`<td style="font-weight:700">Pricing (30 properties)</td><td style="text-align:center;color:var(--brand-600);font-weight:700">$100/mo</td><td style="text-align:center;color:var(--slate-500)">$480–810</td><td style="text-align:center;color:var(--slate-500)">$600–1,200</td><td style="text-align:center;color:var(--slate-500)">$500+</td>`;tb.appendChild(pr);
+const ts=[{name:"Community",price:"Free",period:"forever",desc:"Self-hosted",features:["10 core modules","Worker mobile app","REST API access","Community support","Unlimited properties"],color:"var(--slate-500)",featured:!1},{name:"Pro",price:"$10",period:"/property/mo",desc:"Managed cloud · Pay as you grow",features:["Everything in Community","AI Guest Messaging","Host App","Managed hosting & backups","Email support"],color:"var(--brand-600)",featured:!0},{name:"Agency",price:"$100",period:"/month",desc:"Coming soon",features:["Everything in Pro","Unlimited properties","White-label branding","Channel sync (Airbnb etc.)","Multi-organization","Priority support"],color:"var(--sun-600)",featured:!1}];
+const pg=document.getElementById('pricing-cards');ts.forEach((t,i)=>{const c=document.createElement('div');c.className=`price-card fade${t.featured?' featured':''}`;c.style.transitionDelay=(0.1*i)+'s';c.innerHTML=`${t.featured?'<div class="price-pop">Most popular</div>':''}<div class="tier-name" style="color:${t.color}">${t.name}</div><div style="display:flex;align-items:baseline;gap:4px;margin-bottom:4px"><span class="price">${t.price}</span><span class="period">${t.period}</span></div><div class="desc">${t.desc}</div><div class="features">${t.features.map(f=>`<span><span style="color:var(--success)">✓</span> ${f}</span>`).join('')}</div><a href="${t.desc==='Coming soon'?'#':'https://livarounddashboard-production.up.railway.app/login'}" class="card-btn" style="background:${t.featured?'var(--brand-600)':'transparent'};color:${t.featured?'#fff':'var(--ink)'};border:${t.featured?'none':'1.5px solid var(--slate-200)'};border-radius:9999px">${t.desc==='Coming soon'?'Join waitlist':'Get started'}</a>`;pg.appendChild(c);obs.observe(c)});
+const ps=[{tier:"Referral Partner",commission:"15–20%",desc:"Anyone can sign up. Share your unique link, earn recurring commission for every host who subscribes.",who:"Anyone — bloggers, consultants, agents, hosts",color:"var(--brand-600)"},{tier:"Channel Partner",commission:"25–30%",desc:"For professionals who actively onboard hosts. Direct commission plus 5–10% override on your referrals' referrals.",who:"PM consultants, hospitality agencies, real estate agents",color:"var(--sun-600)"},{tier:"Strategic Partner",commission:"5% network",desc:"Regional distributors with exclusive territory rights and dedicated account management.",who:"Large PM companies, hospitality networks",color:"var(--coral-500)"}];
+const ppg=document.getElementById('partner-cards');ps.forEach((p,i)=>{const c=document.createElement('div');c.className='partner-card fade';c.style.transitionDelay=(0.1*i)+'s';c.style.borderLeft=`3px solid ${p.color}`;c.innerHTML=`<div style="font-size:11px;color:${p.color};font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase">${p.tier}</div><div class="comm">${p.commission}</div><div style="font-size:10px;color:var(--slate-400);margin-bottom:10px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em">Recurring commission</div><p style="font-size:13px;color:var(--slate-500);line-height:1.6;margin-bottom:10px">${p.desc}</p><div style="font-size:11px;color:var(--slate-400)">For: ${p.who}</div>`;ppg.appendChild(c);obs.observe(c)});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const el=document.querySelector(a.getAttribute('href'));if(el)el.scrollIntoView({behavior:'smooth',block:'start'})})});
 </script>
 </body>
 </html>
