@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goa TIME Compliance — LivAround for Airbnb Hosts</title>
+<meta name="description" content="TIME compliance, on autopilot. LivAround files every monthly Form XI submission to the Goa Department of Tourism — across the 3-month staging window and beyond.">
+<meta property="og:title" content="TIME compliance, on autopilot — LivAround for Goa Hosts">
+<meta property="og:description" content="Auto-file Form XI tourist data with the Goa Department of Tourism. LivAround handles every monthly submission across the 3-month staging window — and the production cutover.">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230B2A3B'/><path d='M9 14l7-5 7 5v8a1 1 0 01-1 1h-4v-5h-4v5h-4a1 1 0 01-1-1z' fill='%23fff'/><circle cx='6' cy='8' r='1.4' fill='%232563EB'/><circle cx='26' cy='8' r='1.4' fill='%23FFB547'/><circle cx='16' cy='28' r='1.4' fill='%23FF7A59'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand-50:#EEF4FF; --brand-100:#DBE7FE; --brand-300:#93B2FB; --brand-500:#3E68F0;
+  --brand-600:#2563EB; --brand-700:#1E4FBF; --brand-800:#1E408F;
+  --sun-50:#FFF7E6; --sun-100:#FFEBBF; --sun-300:#FFC866;
+  --sun-500:#FFB547; --sun-700:#B5781E;
+  --coral-50:#FFF1ED; --coral-300:#FF9B7E; --coral-500:#FF7A59;
+  --coral-600:#E65F3F; --coral-700:#B8472C;
+  --ink:#0B2A3B; --slate-900:#12314A; --slate-800:#1F4260;
+  --slate-700:#32547A; --slate-600:#4D6C8E; --slate-500:#6C88A5;
+  --slate-400:#91A6BE; --slate-300:#B6C4D3; --slate-200:#E2EAF1;
+  --slate-100:#EEF2F7; --slate-50:#F5F8FB;
+  --sand:#FAFBFD; --paper:#FFFFFF;
+  --success:#10B981; --success-bg:#DCFCE7; --success-fg:#047857;
+  --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px; --r-2xl:28px; --r-pill:9999px;
+  --shadow-xs:0 1px 1px rgba(11,42,59,0.04), 0 1px 2px rgba(11,42,59,0.05);
+  --shadow-sm:0 1px 2px rgba(11,42,59,0.05), 0 2px 6px rgba(11,42,59,0.06);
+  --shadow-md:0 4px 12px rgba(11,42,59,0.08), 0 2px 4px rgba(11,42,59,0.05);
+  --shadow-lg:0 16px 40px rgba(11,42,59,0.12), 0 4px 12px rgba(11,42,59,0.06);
+  --font-sans:'DM Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans); color: var(--ink); background: var(--sand);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5; overflow-x: hidden;
+}
+a { color: var(--brand-600); text-decoration: none; }
+a:hover { color: var(--brand-700); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+img { max-width: 100%; display: block; }
+
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--slate-600); font-weight: 500;
+}
+.eyebrow.brand { color: var(--brand-700); }
+.eyebrow.coral { color: var(--coral-700); }
+
+.chip-soon {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--sun-50); color: var(--sun-700);
+  padding: 2px 8px; border-radius: var(--r-pill);
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.08em; font-weight: 600;
+  border: 1px solid var(--sun-300);
+}
+.chip-now {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--success-bg); color: var(--success-fg);
+  padding: 2px 8px; border-radius: var(--r-pill);
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.08em; font-weight: 600;
+}
+
+/* NAV */
+nav.top {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250, 251, 253, 0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--slate-200);
+}
+nav.top .inner {
+  height: 64px; display: flex; align-items: center; justify-content: space-between;
+  max-width: 1140px; margin: 0 auto; padding: 0 24px;
+}
+nav.top .brand {
+  display: flex; align-items: center; gap: 11px;
+  color: var(--ink); font-weight: 700; font-size: 21px; letter-spacing: -0.025em;
+}
+nav.top .links {
+  display: flex; align-items: center; gap: 28px;
+  font-size: 14px; color: var(--slate-700);
+}
+nav.top .links a { color: inherit; transition: color 0.15s; }
+nav.top .links a:hover { color: var(--ink); }
+nav.top .links a.cta {
+  padding: 9px 18px; background: var(--ink); color: #fff;
+  border-radius: var(--r-pill); font-size: 12px; font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+nav.top .links a.cta:hover {
+  background: var(--brand-700); color: #fff;
+  transform: translateY(-1px); box-shadow: var(--shadow-md);
+}
+@media (max-width: 720px) { nav.top .links span { display: none; } }
+
+/* HERO */
+.hero { position: relative; padding: 80px 0 100px; overflow: hidden; }
+.hero-grid {
+  display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center;
+}
+@media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 6px;
+  background: var(--coral-50); border: 1px solid var(--coral-300);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--coral-700); font-weight: 500;
+  margin-bottom: 24px;
+}
+.hero-badge .pill {
+  background: var(--coral-600); color: #fff;
+  padding: 2px 8px; border-radius: var(--r-pill);
+  font-size: 10px; letter-spacing: 0.05em; font-weight: 600;
+}
+h1.hero-title {
+  font-size: clamp(38px, 4.8vw, 58px);
+  font-weight: 700; line-height: 1.05;
+  letter-spacing: -0.025em; color: var(--ink); margin-bottom: 24px;
+}
+h1.hero-title em {
+  font-style: normal; color: var(--brand-600);
+  position: relative; display: inline-block;
+}
+h1.hero-title em::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -3px;
+  height: 4px; background: var(--sun-300); border-radius: 2px; z-index: -1;
+}
+.hero-sub {
+  font-size: 18px; color: var(--slate-700); line-height: 1.6;
+  max-width: 540px; margin-bottom: 32px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 24px; border-radius: var(--r-pill);
+  font-size: 14px; font-weight: 600;
+  transition: all 0.15s ease; white-space: nowrap;
+}
+.btn.primary {
+  background: var(--ink); color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.btn.primary:hover {
+  background: var(--brand-700); color: #fff; transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.btn.ghost {
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--slate-300);
+}
+.btn.ghost:hover { border-color: var(--ink); color: var(--ink); transform: translateY(-1px); }
+
+.hero-meta {
+  margin-top: 28px; display: flex; align-items: center; gap: 20px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--slate-600);
+  flex-wrap: wrap;
+}
+.hero-meta .item { display: inline-flex; align-items: center; gap: 8px; }
+.hero-meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+.hero-meta .dot.amber { background: var(--sun-500); }
+
+/* HERO VISUAL — 3-month journey */
+.hero-visual {
+  background: var(--paper);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden; position: relative;
+}
+.hv-header {
+  background: var(--ink); color: #fff;
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.hv-header .label {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em;
+}
+.hv-header .label svg { width: 14px; height: 14px; }
+.hv-header .badge {
+  background: rgba(255,181,71,0.15); color: var(--sun-300);
+  padding: 3px 10px; border-radius: var(--r-pill);
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.08em; font-weight: 600;
+}
+.hv-body { padding: 18px 20px 22px; }
+.j-section { margin-bottom: 14px; }
+.j-section:last-child { margin-bottom: 0; }
+.j-section .title {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.12em; color: var(--slate-500);
+  text-transform: uppercase; margin-bottom: 8px; font-weight: 500;
+}
+.j-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px; border-radius: var(--r-md);
+  margin-bottom: 6px; font-size: 13px;
+}
+.j-row:last-child { margin-bottom: 0; }
+.j-row.done { background: var(--success-bg); }
+.j-row.done .dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--success); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+  flex-shrink: 0;
+}
+.j-row.active {
+  background: var(--brand-50); border: 1px solid var(--brand-100);
+}
+.j-row.active .dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--brand-600); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; position: relative;
+}
+.j-row.active .dot::before {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 2px solid var(--brand-300);
+  animation: pulse 1.6s ease-out infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.j-row.locked {
+  background: var(--slate-50); color: var(--slate-600);
+  border: 1px dashed var(--slate-300);
+}
+.j-row.locked .dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: transparent; border: 1.5px solid var(--slate-400);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--slate-500); flex-shrink: 0; font-size: 11px;
+}
+.j-row .body { flex: 1; min-width: 0; }
+.j-row .label-text { font-weight: 600; line-height: 1.3; }
+.j-row .sub {
+  font-family: var(--font-mono); font-size: 10.5px;
+  color: var(--slate-600); margin-top: 2px;
+}
+.j-row.done .sub { color: var(--success-fg); }
+.j-row.active .sub { color: var(--brand-700); }
+.j-row .meta {
+  font-family: var(--font-mono); font-size: 10.5px;
+  color: var(--slate-500); flex-shrink: 0;
+}
+
+.hv-footer {
+  border-top: 1px solid var(--slate-200);
+  padding: 12px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--slate-50);
+  font-family: var(--font-mono); font-size: 10.5px;
+  color: var(--slate-600); letter-spacing: 0.05em;
+}
+.hv-footer .live {
+  display: inline-flex; align-items: center; gap: 6px; color: var(--sun-700);
+}
+.hv-footer .live::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--sun-500); box-shadow: 0 0 0 4px rgba(255,181,71,0.18);
+}
+
+/* NEWS BAR */
+.news {
+  background: var(--ink); color: #fff;
+  padding: 36px 0;
+  border-top: 1px solid var(--slate-200);
+  position: relative; overflow: hidden;
+}
+.news::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at top right, rgba(37,99,235,0.18), transparent 60%);
+  pointer-events: none;
+}
+.news .inner {
+  display: grid; grid-template-columns: 1fr auto; gap: 48px;
+  align-items: center; position: relative;
+}
+@media (max-width: 800px) { .news .inner { grid-template-columns: 1fr; } }
+.news .quote {
+  font-family: var(--font-sans); font-size: 18px;
+  line-height: 1.55; color: #fff; font-weight: 500; letter-spacing: -0.01em;
+}
+.news .quote .hl {
+  background: linear-gradient(180deg, transparent 60%, var(--coral-500) 60%, var(--coral-500) 90%, transparent 90%);
+  padding: 0 2px;
+}
+.news .source {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--slate-400); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-top: 12px;
+}
+.news .stat {
+  text-align: right;
+  border-left: 1px solid rgba(255,255,255,0.12); padding-left: 48px;
+}
+@media (max-width: 800px) {
+  .news .stat { text-align: left; border-left: none; padding-left: 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12); }
+}
+.news .stat .num {
+  font-size: 56px; font-weight: 700; line-height: 1;
+  color: var(--sun-500); letter-spacing: -0.03em;
+}
+.news .stat .lab {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--slate-400); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* TIMELINE */
+section.timeline { padding: 100px 0; }
+.section-head {
+  text-align: center; max-width: 720px; margin: 0 auto 56px;
+}
+.section-head h2 {
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.1; margin: 12px 0 16px;
+}
+.section-head p {
+  font-size: 17px; color: var(--slate-700); line-height: 1.6;
+}
+
+.tl-track {
+  position: relative;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+  max-width: 1000px; margin: 0 auto;
+}
+@media (max-width: 920px) {
+  .tl-track { grid-template-columns: 1fr; gap: 12px; }
+}
+.tl-track::before {
+  content: ''; position: absolute; left: 6%; right: 6%;
+  top: 32px; height: 2px;
+  background: linear-gradient(to right, var(--success) 0%, var(--success) 40%, var(--brand-500) 40%, var(--brand-500) 60%, var(--slate-300) 60%);
+  z-index: 0;
+}
+@media (max-width: 920px) { .tl-track::before { display: none; } }
+
+.tl-step {
+  position: relative; z-index: 1;
+  background: var(--paper);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-lg);
+  padding: 18px 16px 18px;
+  text-align: center;
+}
+.tl-step .marker {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: -36px auto 14px;
+  background: var(--paper);
+  border: 2px solid;
+  font-family: var(--font-mono); font-weight: 700; font-size: 12px;
+}
+@media (max-width: 920px) { .tl-step .marker { margin: 0 auto 12px; } }
+.tl-step.done .marker { border-color: var(--success); color: var(--success-fg); background: var(--success-bg); }
+.tl-step.active .marker { border-color: var(--brand-600); color: var(--brand-700); background: var(--brand-50); }
+.tl-step.future .marker { border-color: var(--slate-300); color: var(--slate-500); background: var(--paper); }
+
+.tl-step h4 {
+  font-size: 14px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px;
+}
+.tl-step p {
+  font-size: 12px; color: var(--slate-600); line-height: 1.5;
+}
+.tl-step .when {
+  display: block;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--slate-500); margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--slate-200);
+}
+
+/* HOW IT WORKS */
+section.how {
+  padding: 100px 0; background: var(--paper);
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+}
+.steps {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+@media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+
+.step {
+  background: var(--sand);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  padding: 26px 22px;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.step:hover {
+  border-color: var(--brand-300);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.step .num {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--slate-500); letter-spacing: 0.18em;
+  font-weight: 600; margin-bottom: 14px;
+}
+.step .icon {
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.step:nth-child(1) .icon { background: var(--brand-50); color: var(--brand-600); }
+.step:nth-child(2) .icon { background: var(--sun-50); color: var(--sun-700); }
+.step:nth-child(3) .icon { background: var(--coral-50); color: var(--coral-700); }
+.step:nth-child(4) .icon { background: var(--success-bg); color: var(--success-fg); }
+.step .icon svg { width: 20px; height: 20px; }
+.step h3 {
+  font-size: 17px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px;
+}
+.step p {
+  font-size: 13px; color: var(--slate-700); line-height: 1.55;
+  margin-bottom: 12px; flex-grow: 1;
+}
+.step code {
+  background: var(--slate-100); padding: 1px 5px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 11.5px;
+}
+.step .meta {
+  font-family: var(--font-mono); font-size: 10.5px;
+  color: var(--slate-500); padding-top: 12px;
+  border-top: 1px dashed var(--slate-300);
+  letter-spacing: 0.05em;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; flex-wrap: wrap;
+}
+.step .who { display: inline-flex; align-items: center; gap: 4px; }
+.step .who.host { color: var(--coral-700); }
+.step .who.us { color: var(--brand-700); }
+
+/* FORM XI FIELDS */
+section.fields { padding: 100px 0; }
+.fields-grid {
+  display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px;
+  align-items: start;
+}
+@media (max-width: 920px) { .fields-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.fields-copy h2 {
+  font-size: clamp(30px, 3.6vw, 40px);
+  font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.1; margin: 12px 0 20px;
+}
+.fields-copy p {
+  font-size: 16px; color: var(--slate-700); line-height: 1.6;
+  margin-bottom: 16px;
+}
+.field-card {
+  background: var(--paper);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  font-family: var(--font-mono);
+  box-shadow: var(--shadow-sm);
+}
+.field-card .hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; color: var(--slate-500); letter-spacing: 0.08em;
+  margin-bottom: 16px; text-transform: uppercase;
+}
+.field-card .hdr .badge {
+  background: var(--success-bg); color: var(--success-fg);
+  padding: 2px 8px; border-radius: var(--r-pill); font-weight: 600;
+}
+.field-row {
+  display: flex; align-items: center; padding: 9px 0;
+  border-bottom: 1px solid var(--slate-200);
+  font-size: 12px;
+}
+.field-row:last-child { border-bottom: none; }
+.field-row .key {
+  color: var(--slate-700); flex: 1; font-weight: 500;
+}
+.field-row .val { color: var(--ink); font-weight: 600; }
+.field-row .src {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--brand-50); color: var(--brand-700);
+  padding: 2px 8px; border-radius: var(--r-pill);
+  font-size: 10px; letter-spacing: 0.05em;
+  margin-left: 10px; font-weight: 500;
+}
+.field-row.derived .src { background: var(--sun-50); color: var(--sun-700); }
+.field-row.captured .src { background: var(--coral-50); color: var(--coral-700); }
+
+/* SAFETY GRID */
+section.safety {
+  padding: 100px 0; background: var(--paper);
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+}
+.safety-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+}
+@media (max-width: 760px) { .safety-grid { grid-template-columns: 1fr; } }
+
+.safety-card {
+  background: var(--sand);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  padding: 26px;
+  display: flex; gap: 18px; align-items: start;
+  transition: all 0.2s ease;
+}
+.safety-card:hover {
+  border-color: var(--slate-300);
+  box-shadow: var(--shadow-sm);
+}
+.safety-card .ic {
+  width: 38px; height: 38px; border-radius: var(--r-md);
+  background: var(--brand-50); color: var(--brand-600);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.safety-card.soon .ic { background: var(--sun-50); color: var(--sun-700); }
+.safety-card .ic svg { width: 19px; height: 19px; }
+.safety-card .content { flex: 1; min-width: 0; }
+.safety-card .row-h {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.safety-card h4 {
+  font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+}
+.safety-card p {
+  font-size: 13px; color: var(--slate-700); line-height: 1.55;
+}
+.safety-card code {
+  background: var(--slate-100); padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--ink);
+}
+
+/* PRICING */
+section.pricing { padding: 100px 0; }
+.price-card {
+  max-width: 560px; margin: 0 auto;
+  background: var(--ink); color: #fff;
+  border-radius: var(--r-2xl);
+  padding: 40px 36px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 30px 60px rgba(11,42,59,0.2);
+}
+.price-card::before {
+  content: ''; position: absolute; top: -50%; right: -30%;
+  width: 80%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,181,71,0.18), transparent 70%);
+  pointer-events: none;
+}
+.price-card .tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,181,71,0.15); color: var(--sun-300);
+  padding: 5px 12px; border-radius: var(--r-pill);
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.1em; font-weight: 600;
+  margin-bottom: 20px;
+}
+.price-card h3 {
+  font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.price-card .desc {
+  font-size: 15px; color: var(--slate-300); line-height: 1.55;
+  margin-bottom: 28px;
+}
+.price-card .num {
+  display: flex; align-items: baseline; gap: 4px;
+  margin-bottom: 28px;
+}
+.price-card .num .v { font-size: 56px; font-weight: 700; letter-spacing: -0.02em; }
+.price-card .num .u {
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--slate-400); letter-spacing: 0.05em;
+}
+.price-card ul { list-style: none; padding: 0; margin: 0 0 32px; }
+.price-card li {
+  display: flex; align-items: start; gap: 10px;
+  padding: 8px 0; font-size: 14px; color: var(--slate-200);
+}
+.price-card li svg {
+  width: 16px; height: 16px; color: var(--sun-300);
+  flex-shrink: 0; margin-top: 3px;
+}
+.price-card .btn {
+  width: 100%; justify-content: center;
+  background: #fff; color: var(--ink);
+}
+.price-card .btn:hover { background: var(--sun-300); color: var(--ink); transform: translateY(-2px); }
+.price-card .fine {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--slate-400); text-align: center;
+  margin-top: 18px; letter-spacing: 0.04em;
+}
+
+/* FAQ */
+section.faq {
+  padding: 100px 0; background: var(--paper);
+  border-top: 1px solid var(--slate-200);
+}
+.faq-list { max-width: 780px; margin: 0 auto; }
+.faq-item {
+  background: var(--sand);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-lg);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.faq-item:hover { border-color: var(--slate-300); }
+.faq-item summary {
+  list-style: none;
+  padding: 20px 24px;
+  font-size: 16px; font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; color: var(--ink);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  font-family: var(--font-mono);
+  color: var(--brand-600); font-size: 22px; font-weight: 400;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item .answer {
+  padding: 0 24px 20px;
+  font-size: 14px; color: var(--slate-700); line-height: 1.65;
+}
+.faq-item .answer code {
+  background: var(--slate-100); padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 12px;
+}
+.faq-item .answer p + p { margin-top: 10px; }
+
+/* CTA */
+section.cta { padding: 80px 0 100px; }
+.cta-card {
+  background: var(--ink); color: #fff;
+  border-radius: var(--r-2xl);
+  padding: 64px 48px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-card::before {
+  content: ''; position: absolute; top: -40%; left: -10%;
+  width: 60%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,0.25), transparent 60%);
+  pointer-events: none;
+}
+.cta-card::after {
+  content: ''; position: absolute; bottom: -40%; right: -10%;
+  width: 50%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,181,71,0.18), transparent 60%);
+  pointer-events: none;
+}
+.cta-card .eyebrow { color: var(--sun-300); position: relative; }
+.cta-card h2 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.15; margin: 14px 0 18px; position: relative;
+}
+.cta-card p {
+  font-size: 17px; color: var(--slate-300); line-height: 1.55;
+  max-width: 540px; margin: 0 auto 32px; position: relative;
+}
+.cta-card .actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  position: relative;
+}
+.cta-card .btn.primary {
+  background: var(--sun-500); color: var(--ink);
+  box-shadow: 0 8px 28px rgba(255,181,71,0.3);
+}
+.cta-card .btn.primary:hover { background: #fff; color: var(--ink); }
+.cta-card .btn.ghost {
+  background: transparent; color: #fff; border-color: rgba(255,255,255,0.2);
+}
+.cta-card .btn.ghost:hover { border-color: #fff; color: #fff; }
+
+/* FOOTER */
+footer {
+  background: var(--sand);
+  border-top: 1px solid var(--slate-200);
+  padding: 40px 0 32px;
+}
+footer .inner {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+footer .l {
+  display: flex; align-items: center; gap: 24px;
+  font-size: 13px; color: var(--slate-600);
+}
+footer .l a { color: var(--slate-700); }
+footer .l a:hover { color: var(--ink); }
+footer .r {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--slate-500); letter-spacing: 0.05em;
+}
+
+/* ANIM */
+.fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <a class="brand" href="/">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="38" height="38" fill="none" aria-hidden="true">
+        <rect width="64" height="64" rx="16" fill="#0B2A3B"/>
+        <circle cx="32" cy="32" r="22" fill="none" stroke="#2563EB" stroke-width="1.2" opacity="0.55"/>
+        <path d="M22 30 L 32 22 L 42 30 L 42 40 L 22 40 Z" fill="#FFFFFF"/>
+        <rect x="29" y="34" width="6" height="6" fill="#0B2A3B"/>
+        <circle cx="32" cy="10" r="3.5" fill="#FFB547"/>
+        <circle cx="51" cy="40" r="3" fill="#FF7A59"/>
+        <circle cx="13" cy="40" r="3" fill="#6389F7"/>
+      </svg>
+      livaround
+    </a>
+    <div class="links">
+      <span><a href="/">Home</a></span>
+      <span><a href="/#features">Features</a></span>
+      <span><a href="/#pricing">Pricing</a></span>
+      <span><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener">GitHub</a></span>
+      <a class="cta" href="https://livarounddashboard-production.up.railway.app/login">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-badge">
+        <span class="pill">EARLY ACCESS</span>
+        For Goa hosts &amp; property managers
+      </div>
+      <h1 class="hero-title">
+        TIME compliance,<br>on <em>autopilot</em>.
+      </h1>
+      <p class="hero-sub">
+        The Goa Department of Tourism requires <strong>3 months of clean staging submissions</strong> before issuing production credentials for the TIME app. LivAround files every monthly Form XI for you, drafts the email that unlocks production, and runs every month after on autopilot. You set it up once.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="https://livarounddashboard-production.up.railway.app/login">
+          Start free trial
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn ghost" href="#how-it-works">How it works</a>
+      </div>
+      <div class="hero-meta">
+        <span class="item"><span class="dot"></span>Staging API integrated</span>
+        <span class="item"><span class="dot amber"></span>Production: per-property unlock</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hv-header">
+        <span class="label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+          Compliance path · Movilla, Goa
+        </span>
+        <span class="badge">STAGING</span>
+      </div>
+      <div class="hv-body">
+        <div class="j-section">
+          <div class="title">Setup</div>
+          <div class="j-row done">
+            <span class="dot">✓</span>
+            <div class="body">
+              <div class="label-text">Registered with DoT</div>
+              <div class="sub">HOTGA31247 · Module enabled</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="j-section">
+          <div class="title">Staging window · 3 months required</div>
+          <div class="j-row done">
+            <span class="dot">✓</span>
+            <div class="body">
+              <div class="label-text">FEB-2026 · Submitted</div>
+              <div class="sub">8 checkouts · 19 guests</div>
+            </div>
+            <span class="meta">1/3</span>
+          </div>
+          <div class="j-row done">
+            <span class="dot">✓</span>
+            <div class="body">
+              <div class="label-text">MAR-2026 · Submitted</div>
+              <div class="sub">12 checkouts · 28 guests</div>
+            </div>
+            <span class="meta">2/3</span>
+          </div>
+          <div class="j-row active">
+            <span class="dot">⏳</span>
+            <div class="body">
+              <div class="label-text">APR-2026 · In progress</div>
+              <div class="sub">9 checkouts · review opens May 1</div>
+            </div>
+            <span class="meta">3/3</span>
+          </div>
+        </div>
+
+        <div class="j-section">
+          <div class="title">Production access</div>
+          <div class="j-row locked">
+            <span class="dot">🔒</span>
+            <div class="body">
+              <div class="label-text">Email DoT &amp; receive AuthKey</div>
+              <div class="sub">Auto-drafted on May 1 · paste &amp; flip live</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hv-footer">
+        <span>HOTGA31247</span>
+        <span class="live">STAGING</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS BAR -->
+<section class="news">
+  <div class="wrap inner">
+    <div>
+      <div class="quote">
+        “The department has warned that <span class="hl">non-compliance will attract penalties and fines</span>… strict action will be taken against hotels and guest houses operating without valid registration licenses, including <span class="hl">possible closure</span>.”
+      </div>
+      <div class="source">O Herald · Tourism Dept warns hotels on mandatory data submission via TIME App</div>
+    </div>
+    <div class="stat">
+      <div class="num">3<span style="font-size: 0.5em; color: var(--slate-400); margin-left: 4px;">mo</span></div>
+      <div class="lab">DoT-mandated staging window</div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline">
+  <div class="wrap">
+    <div class="section-head fade-up">
+      <span class="eyebrow brand">The compliance path</span>
+      <h2>Why 3 months of staging?</h2>
+      <p>The Department of Tourism requires every hotel to clear a 3-month testing window on the TIME app's staging environment before issuing production credentials. LivAround manages the journey from day one to production cutover.</p>
+    </div>
+
+    <div class="tl-track fade-up">
+      <div class="tl-step done">
+        <div class="marker">✓</div>
+        <h4>Hotel registered</h4>
+        <p>Host registers at goaonline.gov.in &amp; receives <code style="background:var(--slate-100);padding:1px 4px;border-radius:3px;font-family:var(--font-mono);font-size:10px">HOTXXXXXXX</code></p>
+        <span class="when">Manual · ~1 week</span>
+      </div>
+      <div class="tl-step done">
+        <div class="marker">1</div>
+        <h4>Month 1 · Staging</h4>
+        <p>First Form XI submission to DoT staging endpoint. We pre-populate, you confirm.</p>
+        <span class="when">~30 min review</span>
+      </div>
+      <div class="tl-step done">
+        <div class="marker">2</div>
+        <h4>Month 2 · Staging</h4>
+        <p>Same flow. Submission history builds in your dashboard for the audit trail.</p>
+        <span class="when">~15 min review</span>
+      </div>
+      <div class="tl-step active">
+        <div class="marker">3</div>
+        <h4>Month 3 · Staging</h4>
+        <p>Final qualifying month. We auto-draft the production access email to DoT.</p>
+        <span class="when">3/3 unlocks email</span>
+      </div>
+      <div class="tl-step future">
+        <div class="marker">→</div>
+        <h4>Production live</h4>
+        <p>DoT issues your per-hotel AuthKey. Paste it once. Every future month flows to production.</p>
+        <span class="when">~1 week response</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how-it-works">
+  <div class="wrap">
+    <div class="section-head fade-up">
+      <span class="eyebrow brand">How it works</span>
+      <h2>Set up once. Clear the runway.</h2>
+      <p>Four steps from "I just got my hotel registered" to "every month files itself." Today, you review and confirm each month. Daily auto-upload and 1st-of-month auto-submit are next on the roadmap.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step fade-up">
+        <div class="num">STEP 01</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Register with DoT</h3>
+        <p>One-time signup at goaonline.gov.in — upload authority letter, complete OTP verification, wait for SMS approval. We'll guide you with a 2-min walkthrough.</p>
+        <div class="meta"><span class="who host">Host · One-time</span><span>~1 week</span></div>
+      </div>
+
+      <div class="step fade-up">
+        <div class="num">STEP 02</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Connect to LivAround</h3>
+        <p>Paste your <code>HotelID</code> into the TIME settings card. Module activates in staging mode. Encrypted at rest, scoped per property.</p>
+        <div class="meta"><span class="who us">LivAround</span><span>~3 min</span></div>
+      </div>
+
+      <div class="step fade-up">
+        <div class="num">STEP 03</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Submit each month</h3>
+        <p>End of month, we pre-populate Form XI from your bookings. Review, edit if needed, click submit. We POST to DoT's staging API and log the response.</p>
+        <div class="meta"><span class="who us">Together</span><span>×3 months</span></div>
+      </div>
+
+      <div class="step fade-up">
+        <div class="num">STEP 04</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>Unlock production</h3>
+        <p>After 3 clean staging months, we draft the spec-formatted email to <code>tourism@goaelectronics.co.in</code>. DoT replies with your AuthKey. Paste, flip the toggle, you're live.</p>
+        <div class="meta"><span class="who us">LivAround</span><span>~1 week</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM XI FIELDS -->
+<section class="fields">
+  <div class="wrap fields-grid">
+    <div class="fields-copy fade-up">
+      <span class="eyebrow brand">What we file</span>
+      <h2>Form XI, populated automatically.</h2>
+      <p>The DoT requires 14 fields per checkout — age buckets, gender split, country, state, room nights, nightly rate, purpose of visit. LivAround pulls the data we already have, derives what we can, and asks guests for the rest at pre-arrival.</p>
+      <p style="font-size:14px;color:var(--slate-600)">No spreadsheets. No copy-pasting between your PMS and goaonline.gov.in. Country and state enums match the DoT spec exactly — typos preserved — so your uploads never get rejected for a misspelled "United States."</p>
+    </div>
+
+    <div class="field-card fade-up">
+      <div class="hdr">
+        <span>Reservation #2026-04-12-MOV-0042</span>
+        <span class="badge">VALIDATED</span>
+      </div>
+      <div class="field-row">
+        <span class="key">guestUpto20</span>
+        <span class="val">0</span>
+        <span class="src derived">DERIVED</span>
+      </div>
+      <div class="field-row">
+        <span class="key">guest21To40</span>
+        <span class="val">2</span>
+        <span class="src derived">DERIVED</span>
+      </div>
+      <div class="field-row">
+        <span class="key">guest41To60</span>
+        <span class="val">0</span>
+        <span class="src derived">DERIVED</span>
+      </div>
+      <div class="field-row">
+        <span class="key">country</span>
+        <span class="val">United Kingdom</span>
+        <span class="src">PROFILE</span>
+      </div>
+      <div class="field-row">
+        <span class="key">maleGuests / femaleGuests</span>
+        <span class="val">1 / 1</span>
+        <span class="src">PROFILE</span>
+      </div>
+      <div class="field-row">
+        <span class="key">numRooms</span>
+        <span class="val">1.000</span>
+        <span class="src">BOOKING</span>
+      </div>
+      <div class="field-row">
+        <span class="key">arrivalDate</span>
+        <span class="val">10-Apr-2026</span>
+        <span class="src">BOOKING</span>
+      </div>
+      <div class="field-row">
+        <span class="key">departureDate</span>
+        <span class="val">12-Apr-2026</span>
+        <span class="src">BOOKING</span>
+      </div>
+      <div class="field-row">
+        <span class="key">accommodationChargesPerDay</span>
+        <span class="val">₹ 8,500</span>
+        <span class="src">BOOKING</span>
+      </div>
+      <div class="field-row captured">
+        <span class="key">purposeOfVisit</span>
+        <span class="val">Leisure</span>
+        <span class="src">PRE-ARRIVAL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY / WHAT WE GOT RIGHT -->
+<section class="safety">
+  <div class="wrap">
+    <div class="section-head fade-up">
+      <span class="eyebrow brand">Built for the spec</span>
+      <h2>The details that matter.</h2>
+      <p>The TIME API is unforgiving — wrong date format, unrecognized country, unknown month state, and the upload silently fails or freezes the wrong period. We built every guardrail.</p>
+    </div>
+
+    <div class="safety-grid">
+      <div class="safety-card fade-up">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+        </div>
+        <div class="content">
+          <div class="row-h">
+            <h4>Idempotent status checks</h4>
+            <span class="chip-now">SHIPPED</span>
+          </div>
+          <p>Before every upload we call <code>TimeCheckStatus</code> to see if the month is empty, individually filed, bulk-filed, or already locked. No accidental overwrites of a month that's been submitted.</p>
+        </div>
+      </div>
+
+      <div class="safety-card fade-up">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="content">
+          <div class="row-h">
+            <h4>DoT-spec validation</h4>
+            <span class="chip-now">SHIPPED</span>
+          </div>
+          <p>Every payload validated against the DoT schema before we POST — country in the official 248-entry enum, state required only for India, age buckets that sum to total guests. Catches errors before they become rejections.</p>
+        </div>
+      </div>
+
+      <div class="safety-card fade-up">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="content">
+          <div class="row-h">
+            <h4>Per-property encrypted auth</h4>
+            <span class="chip-now">SHIPPED</span>
+          </div>
+          <p><code>HotelID</code> and <code>HotelAuthKey</code> stored encrypted at rest, scoped per property. Production keys (post 3-month testing) replace staging without code changes — paste and toggle.</p>
+        </div>
+      </div>
+
+      <div class="safety-card fade-up">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="content">
+          <div class="row-h">
+            <h4>Date format · dd-Mon-yyyy</h4>
+            <span class="chip-now">SHIPPED</span>
+          </div>
+          <p>DoT requires dates as <code>12-Feb-2025</code>. We use a fixed UTC formatter — never the platform locale, which would silently break in production. Every date in every payload, every time.</p>
+        </div>
+      </div>
+
+      <div class="safety-card soon fade-up">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="content">
+          <div class="row-h">
+            <h4>Daily Individual-mode push</h4>
+            <span class="chip-soon">NEXT</span>
+          </div>
+          <p>Today, you submit each month from your dashboard. Next: a nightly job (mirroring our calendar sync) pushes each day's checkouts to DoT in Individual mode — the format DoT recommends for daily uploads.</p>
+        </div>
+      </div>
+
+      <div class="safety-card soon fade-up">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="content">
+          <div class="row-h">
+            <h4>1st-of-month auto-submit</h4>
+            <span class="chip-soon">NEXT</span>
+          </div>
+          <p>Coming with the scheduler: a 3-day review window opens the 1st of every month, then auto-calls <code>TimeSubmitData</code> on the 4th. A red flag in your dashboard within hours of any failure — never silent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="section-head fade-up">
+      <span class="eyebrow brand">Pricing</span>
+      <h2>Included in LivAround Pro.</h2>
+      <p>No add-ons. No per-submission fees. TIME compliance ships with every Goa property — including hands-on guidance through your 3-month staging window and the production unlock email.</p>
+    </div>
+
+    <div class="price-card fade-up">
+      <span class="tag">⚡ FOR GOA HOSTS</span>
+      <h3>LivAround Pro</h3>
+      <div class="desc">Everything LivAround does — calendar sync, AI guest messaging, worker dispatch, inventory, the host app — plus full TIME compliance for every Goa property.</div>
+      <div class="num">
+        <span class="v">$10</span>
+        <span class="u">/ property / month</span>
+      </div>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Pre-populated Form XI from your bookings</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3-month staging journey, managed</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Auto-drafted production access email</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Submission history &amp; audit trail</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>All 11 LivAround modules included</li>
+      </ul>
+      <a class="btn primary" href="https://livarounddashboard-production.up.railway.app/login">
+        Start free trial
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <div class="fine">3-month free trial · No card required · Cancel anytime</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="wrap">
+    <div class="section-head fade-up">
+      <span class="eyebrow brand">Questions</span>
+      <h2>What hosts ask before signing up.</h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item fade-up">
+        <summary>Why does the 3-month staging window exist?</summary>
+        <div class="answer">
+          <p>It's a Department of Tourism rule, not ours. The TIME API spec requires every hotel to operate against the staging environment for at least 3 months of clean submissions before they'll issue production credentials. The intent is to verify your integration works correctly before live data flows.</p>
+          <p>What that means in practice: for those 3 months, your data files against staging (it doesn't reach the production tourism dataset). After the 3rd successful month, we email <code>tourism@goaelectronics.co.in</code> with the spec-formatted subject line on your behalf. DoT then issues your per-hotel <code>HotelAuthKey</code> for production.</p>
+        </div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>What's automated today vs. what's coming?</summary>
+        <div class="answer">
+          <p><strong>Shipped today:</strong> the API integration (status check, upload, submit), DoT-spec validation (country/state enums, dd-Mon-yyyy date format, age bucket math), per-property encrypted auth keys, and a dashboard where you review and submit each month.</p>
+          <p><strong>Next on the roadmap:</strong> a nightly job that pushes each day's checkouts to DoT in Individual mode, and a 1st-of-month auto-submit with a 3-day review window. Both follow the same pattern as our existing iCal calendar sync — battle-tested architecture.</p>
+        </div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>Do I still need to register on goaonline.gov.in myself?</summary>
+        <div class="answer">
+          <p>Yes — registration is a one-time manual step. You'll need to upload an authority letter, complete OTP verification, and wait for DoT approval (an SMS will confirm). Once approved, paste your <code>HotelID</code> into LivAround and we handle every monthly filing from then on.</p>
+          <p>We're shipping a guided 2-minute walkthrough to make registration painless — including the authority letter template and a checklist of documents DoT asks for.</p>
+        </div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>What if I miss a month during the staging window?</summary>
+        <div class="answer">
+          <p>The TIME spec is ambiguous on what counts as a "successful" month if you skip one. Conservative interpretation: skipped or failed months may not count toward your 3-month total, and DoT may push back when we email for production access.</p>
+          <p>Our recommendation — and what the upcoming scheduler enforces — is consecutive months. If you forget, the auto-submit job (1st of next month) catches it. If a submission fails for a technical reason, you'll see a red flag in your dashboard within hours, not weeks.</p>
+        </div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>What if a guest doesn't tell me their purpose of visit?</summary>
+        <div class="answer">For Airbnb bookings (where this isn't part of the standard guest profile), LivAround defaults <code>purposeOfVisit</code> to <strong>Leisure</strong> — which is honest for the channel and accepted by DoT. For direct or non-Airbnb bookings, our pre-arrival messaging asks the guest directly. You can always override before the month is submitted.</div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>Can I edit data after it's been uploaded?</summary>
+        <div class="answer">Yes — between upload and the monthly submit, you can correct anything in your dashboard. The TIME API allows individual-mode uploads to be appended and corrected. Once we call <code>TimeSubmitData</code> for a month, that month freezes and cannot be modified — that's a DoT-side rule, not ours.</div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>What about cancellations and no-shows?</summary>
+        <div class="answer">Only confirmed completed checkouts are filed. Cancellations and no-shows are excluded automatically — they didn't generate a tourist arrival, so they don't go into Form XI. Same-day reschedules are handled via the booking record's actual checkout timestamp.</div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>I don't have a Goa property — does this affect me?</summary>
+        <div class="answer">No. TIME compliance only activates for properties registered in Goa, India. Properties elsewhere (Phuket, London, anywhere else) are completely unaffected. If a regulator in another state or country launches a similar mandate, we'll build for it on request.</div>
+      </details>
+
+      <details class="faq-item fade-up">
+        <summary>What's LivAround's liability if a filing fails?</summary>
+        <div class="answer">
+          <p>We commit to best-effort, retry-on-failure delivery and full audit logs of every API call. Final compliance responsibility remains with the host — that's standard for any compliance automation tool.</p>
+          <p>In practice: you'll see a flag in your dashboard within hours of any failure, we don't go silent, and every API call is logged with DoT's exact response so you have proof of timely submission. Full terms in our <a href="/terms">terms of service</a>.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <div class="cta-card fade-up">
+      <span class="eyebrow">For Goa hosts</span>
+      <h2>Start the 3-month clock today.</h2>
+      <p>The sooner your first staging submission lands, the sooner you're production-cleared. Three months passes faster than you'd think — especially when LivAround handles every filing for you.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://livarounddashboard-production.up.railway.app/login">
+          Start free trial
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn ghost" href="mailto:hello@livaround.com">Talk to us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap inner">
+    <div class="l">
+      <span style="font-weight: 700; color: var(--ink); letter-spacing: -0.02em;">livaround</span>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="r">LIVAROUND LTD · ENGLAND &amp; WALES · MMXXVI</div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+  document.querySelectorAll('.steps .step').forEach((el, i) => {
+    el.style.transitionDelay = (i * 80) + 'ms';
+  });
+  document.querySelectorAll('.tl-track .tl-step').forEach((el, i) => {
+    el.style.transitionDelay = (i * 80) + 'ms';
+  });
+  document.querySelectorAll('.safety-grid .safety-card').forEach((el, i) => {
+    el.style.transitionDelay = (i * 60) + 'ms';
+  });
+  document.querySelectorAll('.faq-list .faq-item').forEach((el, i) => {
+    el.style.transitionDelay = (i * 50) + 'ms';
+  });
+</script>
+
+</body>
+</html>

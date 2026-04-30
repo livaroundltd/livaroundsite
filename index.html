@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LivAround — Operations, in orbit</title>
-<meta name="description" content="The 3-way operating loop for short-term rental hosts. Guest, host, staff — one platform. Two-way calendar sync, WhatsApp + SMS guest messaging, AI issue resolution, no-app guest portal. Self-host free or $10/property/month.">
+<meta name="description" content="The 3-way operating loop for short-term rental hosts. Guest, host, staff — one platform. Two-way calendar sync, WhatsApp + SMS guest messaging, AI issue resolution, no-app guest portal. 3 months free on Pro · self-host AGPL forever.">
 <meta property="og:title" content="LivAround — Operations, in orbit">
 <meta property="og:description" content="One loop. Every stay. Every home. The operating system for Airbnb hosts.">
 <meta property="og:type" content="website">
@@ -96,6 +96,53 @@
   /* ============================================================
      Nav
      ============================================================ */
+  /* Announcement banner — sits above sticky nav, scrolls away on scroll */
+  .announce {
+    background: var(--ink);
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .announce::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 50%, rgba(255,181,71,0.18), transparent 55%);
+    pointer-events: none;
+  }
+  .announce-inner {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; padding: 10px 24px;
+    flex-wrap: wrap;
+    position: relative;
+    font-size: 13px; line-height: 1.4;
+    text-align: center;
+  }
+  .announce-tag {
+    display: inline-flex; align-items: center;
+    background: var(--sun-500); color: var(--ink);
+    padding: 3px 9px;
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+  .announce-text { color: var(--slate-200); }
+  .announce-text strong { color: #fff; font-weight: 600; }
+  .announce-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--sun-300); font-weight: 600; font-size: 13px;
+    white-space: nowrap;
+    transition: color 0.15s var(--ease), gap 0.15s var(--ease);
+  }
+  .announce-link:hover { color: var(--sun-500); gap: 9px; }
+  .announce-link svg { transition: transform 0.15s var(--ease); }
+  @media (max-width: 640px) {
+    .announce-inner { padding: 9px 16px; font-size: 12px; gap: 9px; }
+    .announce-tag { font-size: 9px; padding: 2px 7px; }
+  }
+
   nav.top {
     position: sticky; top: 0; z-index: 50;
     background: rgba(250, 251, 253, 0.85);
@@ -1077,6 +1124,26 @@
 <body>
 
 <!-- ============================================================
+     ANNOUNCEMENT — Goa TIME compliance module
+     Scrolls away naturally; nav remains sticky
+     ============================================================ -->
+<div class="announce">
+  <div class="announce-inner">
+    <span class="announce-tag">NEW</span>
+    <span class="announce-text">
+      <strong>For Goa hosts:</strong> auto-file your monthly TIME compliance with the Department of Tourism.
+    </span>
+    <a href="/time-compliance.html" class="announce-link" aria-label="Learn more about TIME compliance for Goa hosts">
+      Learn more
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<!-- ============================================================
      NAV
      ============================================================ -->
 <nav class="top">
@@ -1689,7 +1756,7 @@
       Simple, transparent <span style="color:var(--slate-500)">— priced for hosts, not enterprises.</span>
     </h2>
     <p class="lede fade" style="transition-delay:0.14s; margin-top:14px">
-      Self-host for free. Pay per property on cloud. Or go unlimited.
+      Self-host for free. Try Pro free for 3 months on managed cloud. Or go unlimited.
     </p>
     <div class="pricing-grid" id="pricing-cards"></div>
   </div>
@@ -1781,7 +1848,7 @@ $ docker compose up -d
       </svg>
       <div class="cta-eyebrow">▸ Ready when you are</div>
       <h2>Run every home like <em class="em">one home.</em></h2>
-      <p>Free to start. $10 per property when you're ready. Open source forever if you'd rather host it yourself.</p>
+      <p>3 months free on Pro. $10 per property when you're ready. Open source forever if you'd rather host it yourself.</p>
       <div class="ctas">
         <a href="https://livarounddashboard-production.up.railway.app/login" class="btn btn--sun btn--lg">Start free trial →</a>
         <a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" class="btn btn--lg" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.3)">
@@ -1905,15 +1972,18 @@ $ docker compose up -d
 
   // Pricing
   const ts = [
-    { name: "Community", price: "Free", period: "forever", desc: "Self-hosted",
+    { name: "Self-hosted", price: "Free", period: "forever", desc: "Run it on your own server",
       features: ["12 core modules", "Two-way channel sync", "Staff mobile app", "REST API access", "Community support", "Unlimited properties"],
-      featured: false, btn: "Get started", color:"var(--slate-500)" },
-    { name: "Pro", price: "$10", period: "/property/mo", desc: "Managed cloud · Pay as you grow",
-      features: ["Everything in Community", "AI guest messaging", "Host app", "Managed hosting & backups", "Email support"],
-      featured: true, btn: "Start free trial", color:"var(--ink)" },
+      featured: false, btn: "View on GitHub", color:"var(--slate-500)",
+      href: "https://github.com/mohiteu811-cloud/Livaround" },
+    { name: "Pro", price: "$10", period: "/property/mo", desc: "Managed cloud · 3 months free",
+      features: ["Everything in self-hosted", "AI guest messaging", "Host app", "Managed hosting & backups", "Email support", "Goa TIME compliance"],
+      featured: true, btn: "Start 3-month free trial", color:"var(--ink)",
+      href: "https://livarounddashboard-production.up.railway.app/login" },
     { name: "Agency", price: "$299", period: "/month", desc: "Coming soon",
       features: ["Everything in Pro", "Unlimited properties", "White-label branding", "Multi-organization", "Priority support", "Dedicated account manager"],
-      featured: false, btn: "Join waitlist", color:"var(--sun-700)" },
+      featured: false, btn: "Join waitlist", color:"var(--sun-700)",
+      href: "#" },
   ];
   const pg = document.getElementById('pricing-cards');
   ts.forEach((t, i) => {
@@ -1927,7 +1997,7 @@ $ docker compose up -d
       </div>
       <div class="desc">${t.desc}</div>
       <ul class="features">${t.features.map(f => `<li>${f}</li>`).join('')}</ul>
-      <a href="${t.desc === 'Coming soon' ? '#' : 'https://livarounddashboard-production.up.railway.app/login'}"
+      <a href="${t.href}"${t.href.startsWith('http') && !t.href.includes('livarounddashboard') ? ' target="_blank" rel="noopener"' : ''}
          class="card-btn"
          style="background:${t.featured ? 'var(--ink)' : 'transparent'};color:${t.featured ? '#fff' : 'var(--ink)'};border:${t.featured ? 'none' : '1.5px solid var(--slate-300)'}">
          ${t.btn} →
