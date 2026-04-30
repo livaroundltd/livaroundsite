@@ -1,0 +1,22 @@
+{
+  "name": "livaroundsite",
+  "version": "1.0.0",
+  "description": "LivAround marketing website with Vercel Web Analytics",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livaroundltd/livaroundsite.git"
+  },
+  "keywords": ["analytics", "vercel", "static-site"],
+  "author": "LivAround Ltd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/livaroundltd/livaroundsite/issues"
+  },
+  "homepage": "https://github.com/livaroundltd/livaroundsite#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
