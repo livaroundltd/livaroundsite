@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/finance", "destination": "/livaround-finance.html" },
+    { "source": "/access",  "destination": "/livaround-access.html" }
+  ]
+}
