@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LivAround Finance · Borrow against the yield, not just the bricks</title>
-<meta name="description" content="Yield-backed liquidity for short-term rental property owners in Dubai, Phuket and London. Up to 70% LTV. Rates from 4.9% p.a. with shared appreciation kicker.">
+<meta name="description" content="LivAround Finance — a proposed yield-backed lending product for short-term rental owners. Concept stage. We are in conversations with regulated lending partners to structure this offering. Not currently available.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,6 +96,47 @@
   .em-blue  { color: var(--brand-600); }
   .em-ink   { color: var(--ink); }
   .em-soft  { color: var(--slate-500); }
+
+  /* ============ PROPOSED PRODUCT BANNER ============ */
+  .proposed-banner {
+    background: var(--ink);
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .proposed-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 50%, rgba(255,181,71,0.16), transparent 55%);
+    pointer-events: none;
+  }
+  .proposed-banner-inner {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; padding: 11px 24px;
+    flex-wrap: wrap;
+    position: relative;
+    font-size: 13px; line-height: 1.4;
+    text-align: center;
+  }
+  .proposed-tag {
+    display: inline-flex; align-items: center;
+    background: var(--sun-500);
+    color: var(--ink);
+    padding: 3px 9px;
+    border-radius: var(--r-pill);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .proposed-text { color: rgba(255,255,255,0.88); }
+  .proposed-text strong { color: #fff; font-weight: 600; }
+  @media (max-width: 640px) {
+    .proposed-banner-inner { padding: 10px 16px; font-size: 12px; gap: 9px; }
+    .proposed-tag { font-size: 9px; padding: 2px 7px; }
+  }
 
   /* ============ NAV ============ */
   .nav {
@@ -1325,6 +1366,17 @@
 </head>
 <body>
 
+<!-- ================================ PROPOSED PRODUCT BANNER ================================ -->
+<div class="proposed-banner">
+  <div class="proposed-banner-inner">
+    <span class="proposed-tag">Proposed</span>
+    <span class="proposed-text">
+      <strong>This is a concept page for a proposed product.</strong>
+      LivAround Finance is not yet available. We are in conversations with regulated lending partners to structure this offering.
+    </span>
+  </div>
+</div>
+
 <!-- ================================ NAV ================================ -->
 <nav class="nav">
   <div class="container nav-inner">
@@ -1343,10 +1395,10 @@
       <a href="/access">Access</a>
     </div>
     <div class="nav-links">
-      <a href="#properties">Properties</a>
+      <a href="#properties">Markets</a>
       <a href="#how">How it works</a>
       <a href="#schemes">Schemes</a>
-      <a href="#apply" class="btn btn--gold" style="padding:9px 18px;font-size:14px">Apply</a>
+      <a href="#waitlist" class="btn btn--gold" style="padding:9px 18px;font-size:14px">Join waitlist</a>
     </div>
   </div>
 </nav>
@@ -1355,36 +1407,36 @@
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="hero-eyebrow-pill">Asset liquidity · Finance smarter</span>
+      <span class="hero-eyebrow-pill">Asset liquidity · Concept page</span>
       <h1 class="fade is-visible">
         Borrow against<br>
         the <span class="em-sun">yield.</span><br>
         Not the <span class="em-coral">bricks.</span>
       </h1>
       <p class="hero-lede fade is-visible" style="transition-delay:0.1s">
-        If your property generates revenue on Airbnb, Booking.com or Vrbo,
-        we can lend against the income it produces — not just its bricks-and-mortar value.
-        <strong>Up to 70% LTV. Rates from 4.9% p.a.</strong> with an optional shared
-        appreciation kicker. Designed for STR operators in Dubai, Phuket and London.
+        We're designing a financing product that lends against the verified income
+        a short-term rental produces — not just its bricks-and-mortar value.
+        <strong>This page describes a planned offering.</strong> The product is not
+        live, and any final terms will be set by our regulated lending partners.
       </p>
       <div class="hero-ctas fade is-visible" style="transition-delay:0.18s">
-        <a href="#apply" class="btn btn--primary">
-          Get an indicative offer
+        <a href="#waitlist" class="btn btn--primary">
+          Join the waitlist
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
-        <a href="#schemes" class="btn btn--ghost">See schemes</a>
+        <a href="#how" class="btn btn--ghost">How we're thinking about it</a>
         <span class="hero-meta">
           <span class="dot"></span>
-          5&nbsp;min · No credit check
+          Concept · Subject to regulatory structure
         </span>
       </div>
       <div class="hero-stats fade is-visible" style="transition-delay:0.26s">
-        <div class="hero-stat"><div class="num">70<span style="font-size:.55em;opacity:.6">%</span></div><div class="lbl">Max LTV</div></div>
-        <div class="hero-stat"><div class="num">4.9<span style="font-size:.55em;opacity:.6">%</span></div><div class="lbl">From rate p.a.</div></div>
-        <div class="hero-stat"><div class="num">3</div><div class="lbl">Jurisdictions</div></div>
-        <div class="hero-stat"><div class="num">14<span style="font-size:.55em;opacity:.6">d</span></div><div class="lbl">To funding</div></div>
+        <div class="hero-stat"><div class="num">3</div><div class="lbl">Markets we're scoping</div></div>
+        <div class="hero-stat"><div class="num">∞</div><div class="lbl">Channels supported</div></div>
+        <div class="hero-stat"><div class="num">1</div><div class="lbl">Loop · the second one</div></div>
+        <div class="hero-stat"><div class="num">·</div><div class="lbl">In partner conversations</div></div>
       </div>
     </div>
 
@@ -1410,8 +1462,8 @@
       <div class="satellite satellite--yield">
         <div class="sat-card">
           <div class="sat-role">Yield</div>
-          <div class="sat-value">+£35,200<span style="font-size:.55em;opacity:.6">/yr</span></div>
-          <div class="sat-detail">Gross STR revenue · multi-channel verified</div>
+          <div class="sat-value" style="font-size:18px;line-height:1.2">Verified STR revenue</div>
+          <div class="sat-detail">Multi-channel · the operating data</div>
         </div>
       </div>
 
@@ -1419,8 +1471,8 @@
       <div class="satellite satellite--liq">
         <div class="sat-card">
           <div class="sat-role">Liquidity</div>
-          <div class="sat-value">£420,000</div>
-          <div class="sat-detail">Indicative loan · 70% LTV at 4.9%</div>
+          <div class="sat-value" style="font-size:18px;line-height:1.2">Concept structure</div>
+          <div class="sat-detail">Yield-backed · regulated partner</div>
         </div>
       </div>
 
@@ -1428,8 +1480,8 @@
       <div class="satellite satellite--up">
         <div class="sat-card">
           <div class="sat-role">Upside</div>
-          <div class="sat-value">75%</div>
-          <div class="sat-detail">Of appreciation retained · with SAK</div>
+          <div class="sat-value" style="font-size:18px;line-height:1.2">Owner retains</div>
+          <div class="sat-detail">Most of appreciation · structure TBD</div>
         </div>
       </div>
     </div>
@@ -1440,9 +1492,9 @@
 <section class="properties" id="properties">
   <div class="container">
     <div class="properties-head fade">
-      <div class="eyebrow" style="margin-bottom:12px">▸ Markets · Where we lend</div>
-      <h2>Three cities. <span class="em-soft">One playbook for yield-backed lending.</span></h2>
-      <p>We've designed underwriting around the rhythms of short-term rental income — high-season Goa, year-round Dubai, peak-summer London. Below: live-style ranges drawn from our internal market data on actively-let properties.</p>
+      <div class="eyebrow" style="margin-bottom:12px">▸ Markets · Where we're scoping</div>
+      <h2>Three cities. <span class="em-soft">The rhythms we're designing around.</span></h2>
+      <p>The proposed product is being designed around the rhythms of short-term rental income — high-season Goa, year-round Dubai, peak-summer London. Below: archetypal property profiles in each market we're scoping. Not properties we currently lend against.</p>
     </div>
 
     <div class="property-grid">
@@ -1496,17 +1548,17 @@
           <div class="property-name">2-bed waterfront apartment</div>
           <div class="property-stats">
             <div>
-              <div class="property-stat-label">Valuation</div>
-              <div class="property-stat-value">£480k–£680k</div>
+              <div class="property-stat-label">Typical archetype</div>
+              <div class="property-stat-value" style="font-size:14px;line-height:1.3">Branded · STR-friendly</div>
             </div>
             <div>
-              <div class="property-stat-label">Gross yield</div>
-              <div class="property-stat-value">7.5–10.2%</div>
+              <div class="property-stat-label">Yield characteristic</div>
+              <div class="property-stat-value" style="font-size:14px;line-height:1.3">Higher gross · seasonal</div>
             </div>
           </div>
           <div class="property-loan-band">
-            <span class="lbl">Indicative loan</span>
-            <span class="val">£336k–£476k</span>
+            <span class="lbl">Status</span>
+            <span class="val" style="font-size:14px">In partner conversations</span>
           </div>
         </div>
       </div>
@@ -1561,17 +1613,17 @@
           <div class="property-name">3-bed pool villa</div>
           <div class="property-stats">
             <div>
-              <div class="property-stat-label">Valuation</div>
-              <div class="property-stat-value">£280k–£540k</div>
+              <div class="property-stat-label">Typical archetype</div>
+              <div class="property-stat-value" style="font-size:14px;line-height:1.3">Pool villa · resort-area</div>
             </div>
             <div>
-              <div class="property-stat-label">Gross yield</div>
-              <div class="property-stat-value">5.4–8.1%</div>
+              <div class="property-stat-label">Yield characteristic</div>
+              <div class="property-stat-value" style="font-size:14px;line-height:1.3">High season · long peak</div>
             </div>
           </div>
           <div class="property-loan-band">
-            <span class="lbl">Indicative loan</span>
-            <span class="val">£182k–£378k</span>
+            <span class="lbl">Status</span>
+            <span class="val" style="font-size:14px">In partner conversations</span>
           </div>
         </div>
       </div>
@@ -1643,17 +1695,17 @@
           <div class="property-name">Studio / 1-bed apartment</div>
           <div class="property-stats">
             <div>
-              <div class="property-stat-label">Valuation</div>
-              <div class="property-stat-value">£420k–£780k</div>
+              <div class="property-stat-label">Typical archetype</div>
+              <div class="property-stat-value" style="font-size:14px;line-height:1.3">Period · central</div>
             </div>
             <div>
-              <div class="property-stat-label">Gross yield</div>
-              <div class="property-stat-value">4.2–6.8%</div>
+              <div class="property-stat-label">Yield characteristic</div>
+              <div class="property-stat-value" style="font-size:14px;line-height:1.3">Steady · low seasonality</div>
             </div>
           </div>
           <div class="property-loan-band">
-            <span class="lbl">Indicative loan</span>
-            <span class="val">£252k–£468k</span>
+            <span class="lbl">Status</span>
+            <span class="val" style="font-size:14px">In partner conversations</span>
           </div>
         </div>
       </div>
@@ -1661,9 +1713,10 @@
     </div>
 
     <p style="margin-top:32px;font-size:13px;color:var(--slate-500);max-width:620px;line-height:1.6">
-      <span style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--slate-700)">⚠ Indicative only.</span>
-      Final loan amounts depend on full valuation, STR revenue verification, jurisdiction-specific
-      regulations, and your existing leverage. Run the questionnaire below for a personalized estimate.
+      <span style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--slate-700)">⚠ Concept-stage scoping only.</span>
+      The markets above are where we're focusing initial conversations with regulated lending partners.
+      Specific eligibility, terms, and product availability will be set by the lender of record in each
+      market when the product launches.
     </p>
   </div>
 </section>
@@ -1672,230 +1725,90 @@
 <section class="how" id="how">
   <div class="container">
     <div class="how-head fade">
-      <div class="eyebrow" style="margin-bottom:12px">▸ The process</div>
-      <h2>Three steps. <span class="em-soft">From questionnaire to funded.</span></h2>
-      <p>Built for operators, not enterprises. We pull your STR revenue data directly from connected channels — no spreadsheets, no income proof letters, no waiting for the bank.</p>
+      <div class="eyebrow" style="margin-bottom:12px">▸ The process · As envisioned</div>
+      <h2>Three steps. <span class="em-soft">If and when this becomes a live product.</span></h2>
+      <p>Designed for operators, not enterprises. The intent is to pull STR revenue data directly from connected channels — no spreadsheets, no income proof letters. Final flow will be set with the regulated lending partner.</p>
     </div>
 
     <div class="how-grid">
       <div class="how-step fade">
         <div class="how-num">01 · Tell us</div>
-        <h3>Six questions about your property</h3>
-        <p>Location, current value, STR revenue, existing mortgage, loan term, and whether you'd like a shared appreciation kicker. That's it.</p>
-        <div class="timing">5 minutes</div>
+        <h3>A few questions about your property</h3>
+        <p>Location, current value, STR revenue, existing mortgage, loan term. The kind of intake we'd want to power a yield-based product. Today, this becomes a waitlist signup.</p>
+        <div class="timing">Quick form</div>
       </div>
       <div class="how-step fade" style="transition-delay:0.08s">
         <div class="how-num">02 · We model</div>
-        <h3>Algorithmic underwriting on yield</h3>
-        <p>We pull occupancy, ADR, and seasonality directly from your channel manager (Airbnb, Booking.com, Vrbo) and run our yield-aware model. Rate and LTV come back in real-time.</p>
-        <div class="timing">Instant</div>
+        <h3>Yield-aware underwriting</h3>
+        <p>The intent is to pull occupancy, ADR, and seasonality directly from your channel manager (Airbnb, Booking.com, Vrbo) and run a yield-aware model. The actual underwriting would be performed by the regulated lending partner.</p>
+        <div class="timing">Concept</div>
       </div>
       <div class="how-step fade" style="transition-delay:0.16s">
         <div class="how-num">03 · You decide</div>
-        <h3>Funds in 14 days</h3>
-        <p>If you accept, we run a full valuation (RICS in UK, equivalent locally) and complete legals. Funds disbursed to your nominated account.</p>
-        <div class="timing">14 days</div>
+        <h3>Offer from the lender of record</h3>
+        <p>If a product launches, the regulated lending partner makes you a formal offer — not LivAround. Final valuation, legals, and disbursement happen on their timelines and to their standards.</p>
+        <div class="timing">Lender-led</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================================ QUESTIONNAIRE ================================ -->
-<section class="questionnaire" id="apply">
+<!-- ================================ WAITLIST ================================ -->
+<section class="questionnaire" id="waitlist">
   <div class="container">
     <div class="q-head fade">
-      <div class="eyebrow eyebrow--ink" style="margin-bottom:12px">▸ Indicative offer · 5 min</div>
-      <h2>Get a yield-backed estimate. <span class="em-sun">No credit check. No commitment.</span></h2>
-      <p>Six questions. We'll show you maximum LTV, indicative rate, monthly cost, and the recommended scheme based on your answers. Apply for the full assessment when you're ready.</p>
+      <div class="eyebrow eyebrow--ink" style="margin-bottom:12px">▸ Waitlist · Concept stage</div>
+      <h2>Tell us about your portfolio. <span class="em-sun">We'll be in touch when there's something to share.</span></h2>
+      <p>The product is being designed. Final structure, terms, and eligibility will be set in partnership with regulated lenders in each market we operate in. Join the waitlist and we'll reach out as conversations progress.</p>
     </div>
 
-    <div class="q-stage fade">
-      <!-- progress -->
-      <div class="q-progress">
-        <div class="q-progress-step is-current" data-step="1"></div>
-        <div class="q-progress-step" data-step="2"></div>
-        <div class="q-progress-step" data-step="3"></div>
-        <div class="q-progress-step" data-step="4"></div>
-        <div class="q-progress-step" data-step="5"></div>
-        <div class="q-progress-step" data-step="6"></div>
-      </div>
-
-      <!-- STEP 1: Location -->
-      <div class="q-step is-active" data-step="1">
-        <div class="step-eyebrow">Question 01 · Location</div>
-        <h3>Where is your property?</h3>
-        <p class="help">We currently lend in three jurisdictions. Other markets join the waitlist.</p>
-        <div class="q-options">
-          <button class="q-option" data-value="dubai"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🇦🇪 Dubai, UAE</span><span class="sub">Marina · Downtown · JBR · Palm</span></span></button>
-          <button class="q-option" data-value="phuket"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🇹🇭 Phuket, Thailand</span><span class="sub">Surin · Bang Tao · Layan · Kamala</span></span></button>
-          <button class="q-option" data-value="london"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🇬🇧 London, UK</span><span class="sub">Zone 1–3 · Article 4 areas excluded</span></span></button>
-          <button class="q-option" data-value="other"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">📍 Elsewhere</span><span class="sub">Join waitlist · Goa, Bali, Lisbon coming</span></span></button>
-        </div>
-        <div class="q-actions">
-          <button class="q-back" disabled style="opacity:0.3">← Back</button>
-          <span class="q-step-num">1 of 6</span>
-        </div>
-      </div>
-
-      <!-- STEP 2: Property value -->
-      <div class="q-step" data-step="2">
-        <div class="step-eyebrow">Question 02 · Valuation</div>
-        <h3>What's the property's current market value?</h3>
-        <p class="help">Your best estimate. We'll commission a formal valuation if you proceed.</p>
-        <div class="q-input-row">
-          <span class="currency" id="q-currency-symbol">£</span>
-          <input type="number" id="q-value" placeholder="500,000" inputmode="numeric">
-          <div class="q-currency-toggle">
-            <button data-cur="GBP" class="is-active">GBP</button>
-            <button data-cur="USD">USD</button>
-            <button data-cur="AED">AED</button>
+    <div class="q-stage fade" style="max-width: 720px; margin: 40px auto 0;">
+      <div style="background: var(--paper); border: 1px solid var(--slate-100); border-radius: 20px; padding: 36px 32px; box-shadow: var(--shadow-md);">
+        <form onsubmit="event.preventDefault(); alert('Thanks. We will be in touch.'); return false;" style="display: flex; flex-direction: column; gap: 18px;">
+          <div>
+            <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Email</label>
+            <input type="email" required placeholder="you@example.com" style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit;">
           </div>
-        </div>
-        <div class="q-actions">
-          <button class="q-back">← Back</button>
-          <span class="q-step-num">2 of 6</span>
-        </div>
-      </div>
-
-      <!-- STEP 3: STR status -->
-      <div class="q-step" data-step="3">
-        <div class="step-eyebrow">Question 03 · STR status</div>
-        <h3>Does it generate short-term rental yield?</h3>
-        <p class="help">This determines what we can lend against. Multi-channel verified properties qualify for higher LTV.</p>
-        <div class="q-options q-options--single">
-          <button class="q-option" data-value="multi"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">✓ Listed across multiple channels</span><span class="sub">Airbnb + Booking.com + Vrbo · 12+ months trading history</span></span></button>
-          <button class="q-option" data-value="direct"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">✓ Direct bookings only</span><span class="sub">Self-managed website or referral · 6+ months trading</span></span></button>
-          <button class="q-option" data-value="inactive"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">⏸ Listed but inactive</span><span class="sub">Currently between guests or seasonal pause</span></span></button>
-          <button class="q-option" data-value="none"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">○ Not yet listed</span><span class="sub">Owner-occupied or long-let — STR potential only</span></span></button>
-          <button class="q-option" data-value="restricted"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">✗ Restricted from STR</span><span class="sub">HOA, council, or freeholder restrictions</span></span></button>
-        </div>
-        <div class="q-actions">
-          <button class="q-back">← Back</button>
-          <span class="q-step-num">3 of 6</span>
-        </div>
-      </div>
-
-      <!-- STEP 4: Gross annual revenue -->
-      <div class="q-step" data-step="4">
-        <div class="step-eyebrow">Question 04 · Yield evidence</div>
-        <h3>Approximate gross annual STR revenue?</h3>
-        <p class="help">Last 12 months across all channels. We'll verify by pulling your channel manager data if you proceed.</p>
-        <div class="q-input-row">
-          <span class="currency q-revenue-cur">£</span>
-          <input type="number" id="q-revenue" placeholder="35,000" inputmode="numeric">
-        </div>
-        <div class="q-actions">
-          <button class="q-back">← Back</button>
-          <span class="q-step-num">4 of 6</span>
-        </div>
-      </div>
-
-      <!-- STEP 5: Existing mortgage -->
-      <div class="q-step" data-step="5">
-        <div class="step-eyebrow">Question 05 · Existing leverage</div>
-        <h3>Existing mortgage on the property?</h3>
-        <p class="help">If yes, we'll second-charge against your equity (or refinance if you'd prefer).</p>
-        <div class="q-options q-options--four">
-          <button class="q-option" data-value="none"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">No mortgage</span><span class="sub">Owned outright</span></span></button>
-          <button class="q-option" data-value="low"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">Under 30% LTV</span><span class="sub">Mostly equity</span></span></button>
-          <button class="q-option" data-value="mid"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">30–60% LTV</span><span class="sub">Standard mortgage</span></span></button>
-          <button class="q-option" data-value="high"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">Over 60% LTV</span><span class="sub">Highly leveraged</span></span></button>
-        </div>
-        <div class="q-actions">
-          <button class="q-back">← Back</button>
-          <span class="q-step-num">5 of 6</span>
-        </div>
-      </div>
-
-      <!-- STEP 6: Term + SAK toggle -->
-      <div class="q-step" data-step="6">
-        <div class="step-eyebrow">Question 06 · Term &amp; structure</div>
-        <h3>How long do you want the loan?</h3>
-        <p class="help">Plus: would you trade some appreciation upside for a lower rate?</p>
-        <div class="q-options q-options--single" style="margin-bottom:18px">
-          <button class="q-option" data-value="bridge"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">⚡ Bridge · 6–24 months</span><span class="sub">Refinance or sale planned · Interest-only</span></span></button>
-          <button class="q-option" data-value="medium"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">🏠 Medium · 3–7 years</span><span class="sub">Standard · Most common choice</span></span></button>
-          <button class="q-option" data-value="long"><span class="q-option-dot"></span><span class="q-option-text"><span class="ttl">📅 Long · 7+ years</span><span class="sub">Buy-and-hold · Lower monthly burden</span></span></button>
-        </div>
-        <button class="q-checkbox" id="q-sak">
-          <span class="q-checkbox-box"></span>
-          <span>
-            <h4>★ Add Shared Appreciation Kicker</h4>
-            <p>Drop your rate to <strong>4.9% p.a.</strong> in exchange for sharing 25% of appreciation on exit or refinance. Best for long-term holders confident in capital growth.</p>
-          </span>
-        </button>
-        <div class="q-actions">
-          <button class="q-back">← Back</button>
-          <button class="btn btn--gold" id="q-submit">See indicative offer →</button>
-        </div>
-      </div>
-
-      <!-- RESULT -->
-      <div class="q-result" data-step="result">
-        <div class="step-eyebrow">Your indicative offer · Based on your answers</div>
-        <div class="q-result-grid">
-          <div class="q-result-headline">
-            <h3 id="q-result-title">Yield-backed liquidity available.</h3>
-            <p id="q-result-blurb">Based on your inputs, here's what we'd indicatively lend. This is an estimate — final terms confirm after a full assessment.</p>
-            <div class="q-recommend">
-              <div class="q-recommend-icon">★</div>
-              <div>
-                <h4 id="q-rec-name">Recommended · Shared Appreciation Kicker</h4>
-                <strong id="q-rec-tag">Lowest rate · 25% appreciation share on exit</strong>
-                <p id="q-rec-blurb">Your long-term hold and STR-verified yield make this the most cost-effective structure. You retain 75% of any property appreciation.</p>
-              </div>
-            </div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <a href="#" class="btn btn--primary">Apply for full assessment</a>
-              <button class="btn btn--ghost" id="q-restart">Start over</button>
-            </div>
+          <div>
+            <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Market</label>
+            <select required style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--paper);">
+              <option value="">Select your primary market</option>
+              <option value="dubai">Dubai</option>
+              <option value="phuket">Phuket</option>
+              <option value="london">London</option>
+              <option value="goa">Goa</option>
+              <option value="other">Other</option>
+            </select>
           </div>
-          <div class="q-result-numbers">
-            <div class="q-result-num-row">
-              <span class="lbl">Max loan amount</span>
-              <span class="val" id="q-out-loan">£420,000</span>
-            </div>
-            <div class="q-result-num-row">
-              <span class="lbl">Effective LTV</span>
-              <span class="val" id="q-out-ltv">70%</span>
-            </div>
-            <div class="q-result-num-row">
-              <span class="lbl">Indicative rate</span>
-              <span class="val" id="q-out-rate">4.9% <small>p.a.</small></span>
-            </div>
-            <div class="q-result-num-row">
-              <span class="lbl">Monthly · interest only</span>
-              <span class="val" id="q-out-monthly">£1,715</span>
-            </div>
+          <div>
+            <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Number of properties</label>
+            <input type="number" min="1" placeholder="1" style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit;">
           </div>
-        </div>
-      </div>
-
-      <!-- DECLINE state -->
-      <div class="q-result" data-step="decline">
-        <div class="step-eyebrow" style="color:var(--coral-600)">○ Not a fit right now</div>
-        <h3 style="font-size:24px;margin-bottom:12px">Your property has STR restrictions we can't lend against today.</h3>
-        <p style="color:var(--slate-700);font-size:14px;line-height:1.6;margin-bottom:24px;max-width:560px">
-          We underwrite against verifiable short-term rental yield. If your property has HOA, council,
-          or freeholder restrictions blocking STR, the underwriting model doesn't work for us yet.
-          Want us to email when we expand into long-let underwriting?
-        </p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <a href="#" class="btn btn--primary">Join waitlist</a>
-          <button class="btn btn--ghost" id="q-restart-2">Start over</button>
-        </div>
+          <button type="submit" class="btn btn--gold" style="margin-top: 8px; align-self: flex-start;">
+            Join the waitlist
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <p style="font-size: 12px; color: var(--slate-500); line-height: 1.5; margin-top: 8px;">
+            By joining the waitlist you consent to LivAround contacting you about this proposed product.
+            This is not an offer or invitation to enter into any financial transaction.
+            No financial promotion is being made.
+          </p>
+        </form>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- ================================ SCHEMES ================================ -->
 <section class="schemes" id="schemes">
   <div class="container">
     <div class="schemes-head fade">
-      <div class="eyebrow" style="margin-bottom:12px">▸ Schemes · Pick the structure</div>
+      <div class="eyebrow" style="margin-bottom:12px">▸ Schemes · How we're structuring the thinking</div>
       <h2>Four ways to structure it. <span class="em-soft">All built around your yield.</span></h2>
-      <p>Indicative ranges. Your actual rate and LTV depend on jurisdiction, STR verification, existing leverage, and term. The questionnaire above gives you a personalized estimate.</p>
+      <p>Conceptual product structures we're exploring with regulated lending partners. Specific rates, LTVs, and eligibility will be set by the lender of record in each market when the product launches. Nothing on this page is an offer.</p>
     </div>
 
     <div class="scheme-grid">
@@ -1904,60 +1817,60 @@
       <div class="scheme-card fade">
         <div class="scheme-name">Standard LAP</div>
         <div class="scheme-tag">Predictable · Most common</div>
-        <div class="scheme-rate"><span class="scheme-rate-num">8.5</span><span class="scheme-rate-pct">%</span></div>
-        <div class="scheme-rate-from">From · p.a. · 2–10yr</div>
+        <div class="scheme-rate"><span class="scheme-rate-num" style="font-size:32px;line-height:1.1">Concept</span></div>
+        <div class="scheme-rate-from">Rate &amp; term to be set by lender</div>
         <ul class="scheme-features">
-          <li>Up to 60% LTV</li>
+          <li>Conventional loan-against-property structure</li>
           <li>Monthly EMI · principal + interest</li>
           <li>No appreciation share</li>
           <li>Fixed or variable rate options</li>
         </ul>
-        <a href="#apply" class="scheme-cta">Choose Standard</a>
+        <a href="#waitlist" class="scheme-cta">Join waitlist</a>
       </div>
 
       <!-- YIELD-LINKED -->
       <div class="scheme-card fade" style="transition-delay:0.06s">
         <div class="scheme-name">Yield-Linked</div>
         <div class="scheme-tag">Smooths seasonal income</div>
-        <div class="scheme-rate"><span class="scheme-rate-num">6.5</span><span class="scheme-rate-pct">%</span></div>
-        <div class="scheme-rate-from">From · base + 5% of monthly STR rev</div>
+        <div class="scheme-rate"><span class="scheme-rate-num" style="font-size:32px;line-height:1.1">Concept</span></div>
+        <div class="scheme-rate-from">Repayment scaled to property revenue</div>
         <ul class="scheme-features">
-          <li>Up to 65% LTV</li>
-          <li>Repayment scales with revenue</li>
+          <li>Repayment scales with monthly STR revenue</li>
           <li>Pay less in low season</li>
-          <li>Best for seasonal markets (Phuket, Goa)</li>
+          <li>Designed for seasonal markets (Phuket, Goa)</li>
+          <li>Servicing structure to be set with lending partner</li>
         </ul>
-        <a href="#apply" class="scheme-cta">Choose Yield-Linked</a>
+        <a href="#waitlist" class="scheme-cta">Join waitlist</a>
       </div>
 
       <!-- SHARED APPRECIATION KICKER (FEATURED) -->
       <div class="scheme-card scheme-card--featured fade" style="transition-delay:0.12s">
         <div class="scheme-name">Shared Appreciation Kicker</div>
-        <div class="scheme-tag">Lowest rate · Share the upside</div>
-        <div class="scheme-rate"><span class="scheme-rate-num">4.9</span><span class="scheme-rate-pct">%</span></div>
-        <div class="scheme-rate-from">From · p.a. · 3–7yr</div>
+        <div class="scheme-tag">Lower rate · Share the upside</div>
+        <div class="scheme-rate"><span class="scheme-rate-num" style="font-size:32px;line-height:1.1">Concept</span></div>
+        <div class="scheme-rate-from">Trade rate for appreciation share</div>
         <ul class="scheme-features">
-          <li>Up to 70% LTV — our highest</li>
-          <li>Lender shares 25% of appreciation on exit / refi</li>
-          <li>You retain 75% of all upside</li>
+          <li>Designed for the lowest running rate of the four</li>
+          <li>Lender takes a share of property appreciation on exit</li>
+          <li>Owner retains majority of upside</li>
           <li>Best for long-term holders confident in capital growth</li>
         </ul>
-        <a href="#apply" class="scheme-cta">Choose Shared Appreciation</a>
+        <a href="#waitlist" class="scheme-cta">Join waitlist</a>
       </div>
 
       <!-- BRIDGE -->
       <div class="scheme-card fade" style="transition-delay:0.18s">
         <div class="scheme-name">Bridge / Interest-Only</div>
         <div class="scheme-tag">Short-term flexibility</div>
-        <div class="scheme-rate"><span class="scheme-rate-num">9.9</span><span class="scheme-rate-pct">%</span></div>
-        <div class="scheme-rate-from">From · 6–24 months</div>
+        <div class="scheme-rate"><span class="scheme-rate-num" style="font-size:32px;line-height:1.1">Concept</span></div>
+        <div class="scheme-rate-from">Short-duration interest-only structure</div>
         <ul class="scheme-features">
-          <li>Up to 65% LTV</li>
-          <li>Interest-only · balloon at end</li>
-          <li>No early repayment charge after 6 months</li>
+          <li>Interest-only with balloon repayment</li>
+          <li>Designed for owners between refinance or sale</li>
+          <li>Short term · early repayment terms TBD with lender</li>
           <li>Best for refinance or sale pending</li>
         </ul>
-        <a href="#apply" class="scheme-cta">Choose Bridge</a>
+        <a href="#waitlist" class="scheme-cta">Join waitlist</a>
       </div>
 
     </div>
@@ -1966,17 +1879,11 @@
     <div class="sak-explainer fade">
       <div class="sak-explainer-icon">★</div>
       <div class="sak-explainer-text">
-        <strong>What's a Shared Appreciation Kicker?</strong> When you sell or refinance the property,
-        we take 25% of any value increase since loan origination — in exchange for a much lower running
-        rate. If the property doesn't appreciate, you owe nothing extra. If it does, we share the upside
-        proportionally. <strong>You always keep 75%.</strong>
+        <strong>What's a Shared Appreciation Kicker?</strong> A structure where, in exchange for a lower running rate,
+        the lender takes a share of any appreciation in the property when you sell or refinance. Specific split,
+        eligibility, and rate trade-offs would be set by the regulated lending partner. <strong>Listed here as a
+        product concept, not a current offer.</strong>
       </div>
-      <a href="#" class="sak-explainer-link">
-        See worked examples
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
     </div>
   </div>
 </section>
@@ -1986,13 +1893,13 @@
   <div class="container">
     <div class="trust-grid">
       <div class="trust-head fade">
-        <div class="eyebrow" style="margin-bottom:12px">▸ How we underwrite</div>
+        <div class="eyebrow" style="margin-bottom:12px">▸ How we'd underwrite</div>
         <h2>Built for STR operators. <span class="em-soft">Not legacy bank checklists.</span></h2>
-        <p>Traditional lenders treat short-term rental income as "non-standard" and discount it. We treat it as the primary asset — because for many operators, it is.</p>
+        <p>Traditional lenders treat short-term rental income as "non-standard" and discount it. Our intended approach treats it as the primary asset — because for many operators, it is. The actual underwriting would be performed by the regulated lending partner.</p>
         <ul class="trust-bullets">
-          <li><span class="ico">📊</span><span><strong>Yield-aware underwriting.</strong> We pull occupancy, ADR, and seasonality from your channel manager — no income proof letters.</span></li>
-          <li><span class="ico">🌍</span><span><strong>Multi-jurisdiction servicing.</strong> Currency-matched origination in GBP, USD, and AED. Local valuers and legal partners in each market.</span></li>
-          <li><span class="ico">📜</span><span><strong>Regulatory standing.</strong> Operating under structured pilot frameworks; FCA authorisation pending in the UK. Disclosed in full at offer stage.</span></li>
+          <li><span class="ico">📊</span><span><strong>Yield-aware underwriting.</strong> The intent is to pull occupancy, ADR, and seasonality directly from your channel manager — replacing income proof letters with verified operating data.</span></li>
+          <li><span class="ico">🌍</span><span><strong>Multi-jurisdiction by design.</strong> The product is being scoped for currency-matched origination in GBP, USD, and AED — through local regulated partners and legal counsel in each market.</span></li>
+          <li><span class="ico">📜</span><span><strong>Regulatory standing.</strong> LivAround is not itself an authorised lender. We are in conversations with regulated lending partners in each market to structure and originate this offering. Lender of record, terms, and authorisation status will be disclosed before any offer is made.</span></li>
           <li><span class="ico">🔒</span><span><strong>Privacy-first data sharing.</strong> Channel manager OAuth — read-only, revocable any time, never sold.</span></li>
         </ul>
       </div>
@@ -2000,23 +1907,23 @@
       <div class="faq fade" style="transition-delay:0.1s">
         <div class="faq-item is-open">
           <div class="faq-q">What if my property is currently owner-occupied?</div>
-          <div class="faq-a">We can still lend, but at a lower LTV (typically capped at 50%) since there's no STR yield to underwrite against. Once you list and trade for 6+ months, we'll uplift the LTV at no fee.</div>
+          <div class="faq-a">For a yield-backed product, we'd want to see operating history — ideally 6+ months of STR letting. Owner-occupied properties wouldn't fit the proposed model on day one. Specifics around eligibility for owner-occupied or recently-let properties would be set with the regulated lending partner.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">How does the appreciation share work in practice?</div>
-          <div class="faq-a">If your £500k property is worth £650k when you exit, the £150k uplift is shared 75/25 — you keep £112,500, we receive £37,500. If it's worth £450k or less, no kicker is owed. The kicker is capped at the 25% share of appreciation regardless.</div>
+          <div class="faq-q">How would the appreciation-share scheme actually work?</div>
+          <div class="faq-a">In concept: in exchange for a lower running rate, the lender takes a share of appreciation when you exit or refinance. The exact split, lender share, and any caps would be set by the regulated lending partner. We're describing a product family, not a current contract.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">Can I exit early if my plans change?</div>
-          <div class="faq-a">Yes — after a 6-month early repayment lock (12 months for SAK loans), you can repay at any time without penalty. SAK loans settle the appreciation share at fair-market valuation on exit.</div>
+          <div class="faq-q">Could I exit a loan early?</div>
+          <div class="faq-a">Standard repayment terms — including early-repayment treatment — would be set by the regulated lending partner. We expect any final product to allow early repayment after a reasonable lock period, but final terms come from the lender of record, not LivAround.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q">Why won't traditional banks do this?</div>
-          <div class="faq-a">Most banks model STR income as "self-employed rental" — which they discount by 50–70% or refuse to count entirely. We're built around verifiable channel data, so we can underwrite the actual income at face value with the right structural protections.</div>
+          <div class="faq-a">Most banks model STR income as "self-employed rental" and discount it heavily — or refuse to count it at all. The premise of the proposed product is that verifiable channel data (Airbnb, Booking, Vrbo) lets a regulated lender underwrite STR income at face value, with the right structural protections. That's the gap we're trying to bridge with partners.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">Do you lend against properties I'm still buying?</div>
-          <div class="faq-a">Not yet. We're a refi/equity-release product, not an origination mortgage. If you've owned and operated for 6+ months, you're in scope.</div>
+          <div class="faq-q">Could I borrow to buy a new property?</div>
+          <div class="faq-a">The proposed product is being scoped as a refinance / equity-release product on properties already owned and operating, not as an origination mortgage. New-purchase finance would require a different product structure with different regulatory treatment.</div>
         </div>
       </div>
     </div>
@@ -2026,16 +1933,16 @@
 <!-- ================================ CTA ================================ -->
 <section class="cta-band">
   <div class="container cta-inner">
-    <h2>Five minutes. <span class="em-sun">Indicative offer in real-time.</span></h2>
-    <p>No credit check, no commitment, no dragging documents into a portal. Just six honest questions about your property and what we can lend against the yield it generates.</p>
+    <h2>Interested in this concept? <span class="em-sun">Tell us.</span></h2>
+    <p>Join the waitlist and we'll reach out as conversations with lending partners progress. No commitment, no offer being made — just so we can shape the product around the operators it's meant for.</p>
     <div class="cta-actions">
-      <a href="#apply" class="btn btn--primary">
-        Start questionnaire
+      <a href="#waitlist" class="btn btn--primary">
+        Join the waitlist
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
-      <a href="#schemes" class="btn btn--ghost">Compare schemes</a>
+      <a href="#schemes" class="btn btn--ghost">See conceptual structures</a>
     </div>
   </div>
 </section>
@@ -2058,7 +1965,7 @@
         <a href="#properties">Markets</a>
         <a href="#how">How it works</a>
         <a href="#schemes">Schemes</a>
-        <a href="#apply">Apply</a>
+        <a href="#waitlist">Join waitlist</a>
       </div>
       <div class="footer-col">
         <h4>Sister verticals</h4>
@@ -2077,11 +1984,14 @@
     </div>
     <div class="footer-bottom">
       <p class="footer-disclaimer">
-        Your property may be repossessed if you do not keep up repayments on a loan secured against it.
-        LivAround Finance is a product of LIVAROUND LTD (England &amp; Wales). Lending in the UK is subject
-        to FCA authorisation, which is pending. Lending in Dubai and Phuket operates under jurisdictional
-        partner structures. Indicative figures shown are not offers of credit. Subject to status, valuation,
-        and STR data verification. Property values can fall as well as rise.
+        <strong>This page describes a proposed product that is not currently available.</strong>
+        Nothing on this page constitutes an offer of credit, a financial promotion, or an
+        invitation to enter into a financial transaction. LivAround Ltd is not currently
+        an authorised lender. Any future product would be originated by a regulated lending
+        partner in each market, with terms, eligibility, and authorisation status disclosed
+        at that time. If a secured-lending product is ultimately offered: your property may
+        be repossessed if you do not keep up repayments on a loan secured against it.
+        Property values can fall as well as rise.
       </p>
       <div class="footer-bottom-text">© 2026 LivAround Ltd · v1.0 · "Liquidity, in operation."</div>
     </div>
@@ -2100,189 +2010,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   item.addEventListener('click', () => item.classList.toggle('is-open'));
 });
 
-// ============ QUESTIONNAIRE ============
-const state = {
-  step: 1,
-  answers: {
-    location: null,
-    value: null,
-    currency: 'GBP',
-    str: null,
-    revenue: null,
-    mortgage: null,
-    term: null,
-    sak: false,
-  }
-};
-
-const stepEls = document.querySelectorAll('.q-step');
-const progressEls = document.querySelectorAll('.q-progress-step');
-const TOTAL_STEPS = 6;
-
-function showStep(n) {
-  stepEls.forEach(s => s.classList.remove('is-active'));
-  document.querySelectorAll('.q-result').forEach(r => r.classList.remove('is-active'));
-  if (n === 'result' || n === 'decline') {
-    document.querySelector(`.q-result[data-step="${n}"]`).classList.add('is-active');
-    progressEls.forEach(p => p.classList.add('is-done'));
-  } else {
-    document.querySelector(`.q-step[data-step="${n}"]`).classList.add('is-active');
-    progressEls.forEach((p, i) => {
-      p.classList.remove('is-done', 'is-current');
-      if (i + 1 < n) p.classList.add('is-done');
-      else if (i + 1 === n) p.classList.add('is-current');
-    });
-  }
-  state.step = n;
-}
-
-// Option selection
-document.querySelectorAll('.q-step .q-option').forEach(opt => {
-  opt.addEventListener('click', () => {
-    const step = opt.closest('.q-step').dataset.step;
-    opt.parentElement.querySelectorAll('.q-option').forEach(o => o.classList.remove('is-selected'));
-    opt.classList.add('is-selected');
-    const v = opt.dataset.value;
-    if (step === '1') state.answers.location = v;
-    else if (step === '3') {
-      state.answers.str = v;
-      if (v === 'restricted') { setTimeout(() => showStep('decline'), 350); return; }
-    }
-    else if (step === '5') state.answers.mortgage = v;
-    else if (step === '6') state.answers.term = v;
-
-    if (step !== '6') {
-      setTimeout(() => showStep(parseInt(step) + 1), 280);
-    }
-  });
-});
-
-// Currency toggle
-document.querySelectorAll('.q-currency-toggle button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('is-active'));
-    btn.classList.add('is-active');
-    state.answers.currency = btn.dataset.cur;
-    const sym = btn.dataset.cur === 'GBP' ? '£' : btn.dataset.cur === 'USD' ? '$' : 'AED ';
-    document.getElementById('q-currency-symbol').textContent = sym;
-    document.querySelectorAll('.q-revenue-cur').forEach(c => c.textContent = sym);
-  });
-});
-
-// Value input — advance on enter / blur / change with value
-function tryAdvance(id, nextStep, currentStepNum, key, minOk) {
-  const el = document.getElementById(id);
-  const handler = () => {
-    const v = parseFloat(el.value);
-    if (v >= minOk && state.step === currentStepNum) {
-      state.answers[key] = v;
-      setTimeout(() => showStep(nextStep), 200);
-    }
-  };
-  el.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
-  el.addEventListener('blur', handler);
-  el.addEventListener('change', handler);
-}
-tryAdvance('q-value', 3, 2, 'value', 1);
-tryAdvance('q-revenue', 5, 4, 'revenue', 0);
-
-// Expose for testing
-window.showStep = showStep;
-window.state = state;
-
-// SAK checkbox
-document.getElementById('q-sak').addEventListener('click', () => {
-  document.getElementById('q-sak').classList.toggle('is-selected');
-  state.answers.sak = document.getElementById('q-sak').classList.contains('is-selected');
-});
-
-// Back buttons
-document.querySelectorAll('.q-back').forEach(b => {
-  b.addEventListener('click', () => {
-    if (typeof state.step === 'number' && state.step > 1) showStep(state.step - 1);
-  });
-});
-
-// Submit
-document.getElementById('q-submit').addEventListener('click', () => {
-  if (!state.answers.term) { alert('Please pick a term first.'); return; }
-  computeOffer();
-  showStep('result');
-});
-document.getElementById('q-restart').addEventListener('click', resetQ);
-document.getElementById('q-restart-2').addEventListener('click', resetQ);
-function resetQ() {
-  state.answers = { location: null, value: null, currency: 'GBP', str: null, revenue: null, mortgage: null, term: null, sak: false };
-  document.querySelectorAll('.q-option.is-selected, .q-checkbox.is-selected').forEach(el => el.classList.remove('is-selected'));
-  document.getElementById('q-value').value = '';
-  document.getElementById('q-revenue').value = '';
-  showStep(1);
-}
-
-// Compute indicative offer
-function computeOffer() {
-  const { location, value, str, mortgage, term, sak } = state.answers;
-  const sym = state.answers.currency === 'GBP' ? '£' : state.answers.currency === 'USD' ? '$' : 'AED ';
-
-  // Max LTV
-  let maxLTV = 0.60;
-  if (str === 'multi') maxLTV = 0.70;
-  else if (str === 'direct') maxLTV = 0.65;
-  else if (str === 'inactive') maxLTV = 0.60;
-  else if (str === 'none') maxLTV = 0.50;
-
-  // Existing leverage haircut
-  const existingLTV = mortgage === 'none' ? 0 : mortgage === 'low' ? 0.20 : mortgage === 'mid' ? 0.45 : 0.65;
-  const availableLTV = Math.max(maxLTV - existingLTV, 0);
-  const loan = Math.round(value * availableLTV);
-
-  // Rate determination
-  let rate, scheme, schemeBlurb;
-  if (sak && term !== 'bridge') {
-    rate = 4.9; scheme = 'Shared Appreciation Kicker';
-    schemeBlurb = 'Your long-term hold and STR-verified yield make this the most cost-effective structure. You retain 75% of any property appreciation.';
-  } else if (term === 'bridge') {
-    rate = 9.9; scheme = 'Bridge / Interest-Only';
-    schemeBlurb = 'Short-term flexibility with no early repayment charge after 6 months. Interest-only with balloon at end.';
-  } else if (str === 'multi' || str === 'direct') {
-    rate = 6.5; scheme = 'Yield-Linked';
-    schemeBlurb = 'Repayments scale with your verified STR revenue — pay less in low season. Best fit for your operating profile.';
-  } else {
-    rate = 8.5; scheme = 'Standard LAP';
-    schemeBlurb = 'Predictable monthly EMI on principal + interest. No appreciation share. Conservative structure for non-yield-verified properties.';
-  }
-
-  const monthly = Math.round(loan * (rate/100) / 12);
-
-  // Format helpers
-  const fmt = n => sym + n.toLocaleString('en-GB');
-
-  document.getElementById('q-out-loan').textContent = fmt(loan);
-  document.getElementById('q-out-ltv').textContent = Math.round(availableLTV * 100) + '%';
-  document.getElementById('q-out-rate').innerHTML = rate.toFixed(1) + '% <small>p.a.</small>';
-  document.getElementById('q-out-monthly').textContent = fmt(monthly);
-
-  document.getElementById('q-rec-name').textContent = '★ Recommended · ' + scheme;
-  document.getElementById('q-rec-blurb').textContent = schemeBlurb;
-  if (sak && term !== 'bridge') {
-    document.getElementById('q-rec-tag').textContent = 'Lowest rate · 25% appreciation share on exit';
-  } else if (term === 'bridge') {
-    document.getElementById('q-rec-tag').textContent = 'Short-term · Interest-only · 6–24 months';
-  } else if (str === 'multi' || str === 'direct') {
-    document.getElementById('q-rec-tag').textContent = 'Variable repayment · Tied to your STR yield';
-  } else {
-    document.getElementById('q-rec-tag').textContent = 'Predictable · Most common · 2–10yr terms';
-  }
-
-  // Headline tone
-  if (loan === 0) {
-    document.getElementById('q-result-title').innerHTML = 'No headroom available <span class="em-sun">at current leverage.</span>';
-    document.getElementById('q-result-blurb').textContent = 'Your existing mortgage already uses the equity we could lend against. Consider refinancing into a single LivAround Finance facility — we can still help.';
-  } else if (loan < 50000) {
-    document.getElementById('q-result-title').innerHTML = 'Limited headroom available.';
-    document.getElementById('q-result-blurb').textContent = 'Your existing leverage caps how much we can add. The number below is the additional debt we could indicatively offer on top.';
-  }
-}
+// ============ QUESTIONNAIRE removed — page is now concept-stage with waitlist only ============
 </script>
 
 </body>
