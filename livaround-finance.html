@@ -1764,14 +1764,14 @@
 
     <div class="q-stage fade" style="max-width: 720px; margin: 40px auto 0;">
       <div style="background: var(--paper); border: 1px solid var(--slate-100); border-radius: 20px; padding: 36px 32px; box-shadow: var(--shadow-md);">
-        <form onsubmit="event.preventDefault(); alert('Thanks. We will be in touch.'); return false;" style="display: flex; flex-direction: column; gap: 18px;">
+        <form id="waitlist-form" data-source="finance" novalidate style="display: flex; flex-direction: column; gap: 18px;">
           <div>
-            <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Email</label>
-            <input type="email" required placeholder="you@example.com" style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit;">
+            <label for="waitlist-email" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Email</label>
+            <input id="waitlist-email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit;">
           </div>
           <div>
-            <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Market</label>
-            <select required style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--paper);">
+            <label for="waitlist-market" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Market</label>
+            <select id="waitlist-market" name="market" required style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--paper);">
               <option value="">Select your primary market</option>
               <option value="dubai">Dubai</option>
               <option value="phuket">Phuket</option>
@@ -1781,15 +1781,17 @@
             </select>
           </div>
           <div>
-            <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Number of properties</label>
-            <input type="number" min="1" placeholder="1" style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit;">
+            <label for="waitlist-properties" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate-500); margin-bottom: 6px;">Number of properties</label>
+            <input id="waitlist-properties" name="properties" type="number" min="1" placeholder="1" style="width: 100%; padding: 12px 14px; border: 1px solid var(--slate-200); border-radius: 10px; font-size: 15px; font-family: inherit;">
           </div>
-          <button type="submit" class="btn btn--gold" style="margin-top: 8px; align-self: flex-start;">
-            Join the waitlist
+          <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;">
+          <button id="waitlist-submit" type="submit" class="btn btn--gold" style="margin-top: 8px; align-self: flex-start;">
+            <span class="waitlist-submit-label">Join the waitlist</span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3.5 8h9m-3.5-3.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
+          <p id="waitlist-status" role="status" aria-live="polite" style="display:none; font-size: 13px; line-height: 1.5; margin: 4px 0 0;"></p>
           <p style="font-size: 12px; color: var(--slate-500); line-height: 1.5; margin-top: 8px;">
             By joining the waitlist you consent to LivAround contacting you about this proposed product.
             This is not an offer or invitation to enter into any financial transaction.
@@ -2011,6 +2013,61 @@ document.querySelectorAll('.faq-item').forEach(item => {
 });
 
 // ============ QUESTIONNAIRE removed — page is now concept-stage with waitlist only ============
+
+// ============ WAITLIST SUBMIT ============
+(function () {
+  const form = document.getElementById('waitlist-form');
+  if (!form) return;
+  const button = document.getElementById('waitlist-submit');
+  const label = button && button.querySelector('.waitlist-submit-label');
+  const status = document.getElementById('waitlist-status');
+
+  function setStatus(message, kind) {
+    if (!status) return;
+    status.textContent = message;
+    status.style.display = message ? 'block' : 'none';
+    status.style.color = kind === 'error' ? '#b3261e' : kind === 'success' ? '#1d6f3a' : 'var(--slate-500)';
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const data = {
+      email: form.email.value.trim(),
+      market: form.market.value,
+      properties: form.properties.value,
+      company: form.company.value,
+      source: form.dataset.source || 'finance',
+    };
+
+    button.disabled = true;
+    if (label) label.textContent = 'Submitting…';
+    setStatus('', 'info');
+
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.error || 'Submission failed');
+      }
+      form.reset();
+      if (label) label.textContent = 'Joined';
+      setStatus("Thanks. We'll be in touch as the product takes shape.", 'success');
+    } catch (err) {
+      console.error('waitlist submit failed', err);
+      button.disabled = false;
+      if (label) label.textContent = 'Join the waitlist';
+      setStatus("Something went wrong. Please try again or email mohit@livaround.com.", 'error');
+    }
+  });
+})();
 </script>
 
 </body>
