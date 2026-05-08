@@ -1351,6 +1351,28 @@
   .cta-box h2 .em { color: var(--sun-400); font-style: normal; }
   .cta-box p { color: rgba(255,255,255,0.75); font-size: 15px; max-width: 520px; margin: 0 auto 32px; position: relative; }
   .cta-box .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+  .cta-waitlist { position: relative; max-width: 440px; margin: 28px auto 0; }
+  .cta-waitlist-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.65); margin-bottom: 10px;
+  }
+  .cta-waitlist-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cta-waitlist-row input[type="email"] {
+    flex: 1 1 220px; min-width: 0;
+    padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.06); color: #fff; font-size: 14px; font-family: inherit;
+  }
+  .cta-waitlist-row input[type="email"]::placeholder { color: rgba(255,255,255,0.45); }
+  .cta-waitlist-row input[type="email"]:focus { outline: none; border-color: var(--sun-400); background: rgba(255,255,255,0.10); }
+  .cta-waitlist-row button {
+    padding: 12px 18px; border-radius: 10px; border: 0; cursor: pointer;
+    background: var(--sun-500); color: var(--ink); font-weight: 700; font-size: 14px;
+  }
+  .cta-waitlist-row button:disabled { opacity: 0.6; cursor: default; }
+  .cta-waitlist-status { font-size: 13px; line-height: 1.5; margin: 10px 0 0; min-height: 18px; color: rgba(255,255,255,0.75); }
+  .cta-waitlist-status.is-error { color: #ffb3ac; }
+  .cta-waitlist-status.is-success { color: #9be8b8; }
 
   /* ============================================================
      Footer
@@ -2231,6 +2253,15 @@ $ docker compose up -d
           Star on GitHub
         </a>
       </div>
+      <form id="host-waitlist-form" class="cta-waitlist" data-source="hosts" novalidate>
+        <div class="cta-waitlist-label">Or — drop your email and we'll reach out</div>
+        <div class="cta-waitlist-row">
+          <input id="host-waitlist-email" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
+          <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none">
+          <button id="host-waitlist-submit" type="submit"><span class="host-waitlist-label">Notify me</span></button>
+        </div>
+        <p id="host-waitlist-status" class="cta-waitlist-status" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </div>
 </section>
@@ -2422,6 +2453,55 @@ $ docker compose up -d
       if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
   });
+
+  // Host waitlist form
+  (function () {
+    const form = document.getElementById('host-waitlist-form');
+    if (!form) return;
+    const button = document.getElementById('host-waitlist-submit');
+    const label = button && button.querySelector('.host-waitlist-label');
+    const status = document.getElementById('host-waitlist-status');
+
+    function setStatus(message, kind) {
+      if (!status) return;
+      status.textContent = message || '';
+      status.classList.remove('is-error', 'is-success');
+      if (kind === 'error') status.classList.add('is-error');
+      if (kind === 'success') status.classList.add('is-success');
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const data = {
+        email: form.email.value.trim(),
+        company: form.company.value,
+        source: form.dataset.source || 'hosts',
+      };
+      button.disabled = true;
+      if (label) label.textContent = 'Submitting…';
+      setStatus('', 'info');
+      try {
+        const response = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.error || 'Submission failed');
+        }
+        form.reset();
+        if (label) label.textContent = 'Got it';
+        setStatus("Thanks — we'll be in touch.", 'success');
+      } catch (err) {
+        console.error('host waitlist submit failed', err);
+        button.disabled = false;
+        if (label) label.textContent = 'Notify me';
+        setStatus('Something went wrong. Try again or email mohit@livaround.com.', 'error');
+      }
+    });
+  })();
 </script>
 
 </body>
