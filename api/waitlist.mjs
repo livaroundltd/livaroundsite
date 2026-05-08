@@ -97,11 +97,17 @@ export default async function handler(req, res) {
     });
     if (error) {
       console.error('waitlist: resend error', error);
-      return res.status(502).json({ error: 'Failed to send notification' });
+      return res.status(502).json({
+        error: 'Failed to send notification',
+        details: error.message || error.name || 'Unknown Resend error',
+      });
     }
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('waitlist: unexpected error', err);
-    return res.status(500).json({ error: 'Failed to send notification' });
+    return res.status(500).json({
+      error: 'Failed to send notification',
+      details: err && err.message ? err.message : 'Unknown error',
+    });
   }
 }
