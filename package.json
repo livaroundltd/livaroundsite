@@ -9,7 +9,11 @@
     "type": "git",
     "url": "git+https://github.com/livaroundltd/livaroundsite.git"
   },
-  "keywords": ["analytics", "vercel", "static-site"],
+  "keywords": [
+    "analytics",
+    "vercel",
+    "static-site"
+  ],
   "author": "LivAround Ltd",
   "license": "ISC",
   "bugs": {
@@ -17,6 +21,7 @@
   },
   "homepage": "https://github.com/livaroundltd/livaroundsite#readme",
   "dependencies": {
-    "@vercel/analytics": "^2.0.1"
+    "@vercel/analytics": "^2.0.1",
+    "resend": "^4.8.0"
   }
 }
