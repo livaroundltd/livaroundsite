@@ -1,1775 +1,975 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LivAround Access · Fractional ownership flow</title>
+<title>LivAround Access · Own a slice — a concept we're exploring</title>
+<meta name="description" content="A concept for fractional ownership of yielding short-term rental property — Dubai, Phuket, London. Not currently offered. Subject to regulatory partnership.">
+
+<meta property="og:title" content="LivAround Access · Own a slice">
+<meta property="og:description" content="A concept for fractional ownership of yielding STR property. Not a current offering.">
+<meta property="og:type" content="website">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      brand: {50:'#EEF4FF',100:'#DBE7FE',300:'#93B2FB',500:'#3E68F0',600:'#2563EB',700:'#1E4FBF',900:'#1B3570'},
+      sun:   {50:'#FFF7E6',100:'#FFEBBF',300:'#FFC866',500:'#FFB547',600:'#E89A2B',700:'#B5781E'},
+      coral: {50:'#FFF1ED',100:'#FFDCD1',200:'#FFBDA8',300:'#FF9B7E',400:'#FF8868',500:'#FF7A59',600:'#E65F3F',700:'#B8472C'},
+      ink:   {DEFAULT:'#0B2A3B', soft:'#12314A'},
+      slate2:{50:'#F5F8FB',100:'#EEF2F7',200:'#E2EAF1',300:'#B6C4D3',400:'#91A6BE',500:'#6C88A5',700:'#32547A'},
+      sand:  '#FAFBFD',
+      paper: '#FFFFFF',
+      success: { DEFAULT:'#10B981', bg:'#D7F5E8', fg:'#046848' },
+      cream: '#FBF6EF',
+    },
+    fontFamily: {
+      sans: ['"DM Sans"','ui-sans-serif','system-ui','sans-serif'],
+      mono: ['"JetBrains Mono"','ui-monospace','monospace'],
+      serif: ['"Fraunces"','ui-serif','Georgia','serif'],
+    },
+    borderRadius: { 'xl2':'20px', 'pill':'9999px' },
+  }},
+};
+</script>
 
 <style>
-  :root {
-    --brand-600: #2563EB;
-    --brand-700: #1E4FBF;
-    --sun-300:   #FFD896;
-    --sun-500:   #FFB547;
-    --sun-700:   #C97A12;
-    --gold-tint: #FFF8E8;
-    --coral-100: #FFE2D8;
-    --coral-300: #FFAC95;
-    --coral-500: #FF7A59;
-    --coral-600: #E15A3A;
-    --coral-700: #B33D24;
-    --coral-tint:#FFEDE5;
-    --ink:       #0B2A3B;
-    --ink-soft:  #1A3F55;
-    --slate-50:  #F4F6FA;
-    --slate-100: #E7ECF2;
-    --slate-200: #D7DFE7;
-    --slate-300: #B6C2CD;
-    --slate-400: #8896A4;
-    --slate-500: #5C6E7E;
-    --slate-700: #2F4456;
-    --sand:      #FAFBFD;
-    --paper:     #FFFFFF;
-    --success:   #11A87B;
-    --success-100: #D2F1E5;
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #FAFBFD; color: #0B2A3B; -webkit-font-smoothing: antialiased; }
+  .serif { font-family: 'Fraunces', Georgia, serif; font-feature-settings: "ss01", "ss02"; letter-spacing: -0.025em; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
 
-    --r-pill: 999px;
-    --r-md: 12px;
-    --r-lg: 18px;
-    --r-xl: 24px;
-    --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --shadow-md: 0 6px 20px rgba(11,42,59,0.08);
-    --shadow-lg: 0 24px 60px rgba(11,42,59,0.10), 0 8px 20px rgba(11,42,59,0.06);
-    --shadow-coral: 0 18px 40px rgba(255,122,89,0.18), 0 6px 14px rgba(255,122,89,0.10);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'DM Sans', -apple-system, sans-serif;
-    background: linear-gradient(180deg, #FFF7F4 0%, var(--sand) 30%, var(--sand) 100%);
-    color: var(--ink);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-    padding: 60px 40px 80px;
-  }
-
-  /* ============ DECK HEADER ============ */
-  .deck-header {
-    max-width: 1100px;
-    margin: 0 auto 60px;
-    text-align: center;
-  }
-  .vertical-pill {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 8px 14px 8px 8px;
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-pill);
+  /* "concept" stamp tag style */
+  .concept-tag {
+    display: inline-flex; align-items: center; gap: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--coral-700);
-    margin-bottom: 20px;
-    box-shadow: var(--shadow-md);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: #B8472C;
+    padding: 6px 12px;
+    background: #FFF1ED;
+    border: 1px solid #FFBDA8;
+    border-radius: 999px;
   }
-  .vertical-pill::before {
-    content: '';
-    width: 22px; height: 22px;
-    background: var(--ink);
-    border-radius: 6px;
-    display: grid; place-items: center;
-    background-image:
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'><path d='M3 11L12 4L21 11V20H14V14H10V20H3V11Z' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  .concept-tag .pulse {
+    width: 7px; height: 7px;
+    background: #FF7A59; border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(255,122,89,0.55);
+    animation: pulse 2.4s cubic-bezier(0.22,1,0.36,1) infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,122,89,0.55); }
+    70% { box-shadow: 0 0 0 10px rgba(255,122,89,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,122,89,0); }
+  }
+
+  /* Editorial drop cap */
+  .dropcap::first-letter {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.85;
+    float: left;
+    padding: 0.18em 0.12em 0 0;
+    color: #B8472C;
+  }
+
+  /* Hero orbit visualization */
+  @keyframes orbit-rot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .orbit-ring { animation: orbit-rot 60s linear infinite; transform-origin: center; }
+  .orbit-ring-rev { animation: orbit-rot 90s linear infinite reverse; transform-origin: center; }
+
+  /* Underline accent */
+  .swoosh {
+    background-image: linear-gradient(120deg, #FFBDA8 0%, #FF7A59 100%);
     background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px 14px;
+    background-size: 100% 30%;
+    background-position: 0 88%;
+    padding: 0 2px;
   }
-  .vertical-pill .dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--coral-500);
-    margin-right: 2px;
-  }
-  .deck-header h1 {
-    font-size: clamp(36px, 4.4vw, 56px);
-    letter-spacing: -0.028em;
-    line-height: 1.05;
-    margin-bottom: 16px;
-  }
-  .deck-header h1 .em-coral { color: var(--coral-600); }
-  .deck-header h1 .em-sun { color: var(--sun-700); }
-  .deck-header p {
-    font-size: 17px;
-    color: var(--slate-700);
-    max-width: 620px;
-    margin: 0 auto;
-    line-height: 1.55;
-  }
-  .deck-header p strong { color: var(--ink); font-weight: 600; }
 
-  /* ============ FLOW GRID ============ */
-  .flow-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 56px 32px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .step {
-    display: flex; flex-direction: column; align-items: center;
-    position: relative;
-  }
-  .step-head {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 18px;
-  }
-  .step-num {
-    width: 32px; height: 32px;
-    background: var(--ink);
-    color: var(--coral-300);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    font-weight: 700;
-  }
-  .step-head h3 {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-  .step .caption {
-    font-size: 13px;
-    color: var(--slate-500);
-    text-align: center;
-    margin-top: 18px;
-    max-width: 260px;
-    line-height: 1.5;
-  }
-  .step .caption strong { color: var(--ink); font-weight: 600; }
-
-  /* arrow connectors (top row only) */
-  .step .arrow {
-    position: absolute;
-    top: 240px; right: -32px;
-    width: 32px;
-    pointer-events: none;
-    color: var(--coral-500);
-    opacity: 0.55;
-  }
-  .step:nth-child(3n) .arrow { display: none; }
-
-  /* ============ PHONE FRAME ============ */
-  .phone {
-    width: 280px;
-    height: 580px;
-    background: var(--ink);
-    border-radius: 38px;
+  /* Stage "phone" mockup */
+  .phone-frame {
+    background: #0B2A3B;
+    border-radius: 36px;
     padding: 8px;
-    box-shadow: var(--shadow-lg);
-    position: relative;
+    box-shadow: 0 30px 60px rgba(11,42,59,0.18), 0 12px 24px rgba(11,42,59,0.08);
+  }
+  .phone-screen {
+    background: #FAFBFD;
+    border-radius: 28px;
     overflow: hidden;
-  }
-  .phone::before {
-    /* notch */
-    content: '';
-    position: absolute;
-    top: 8px; left: 50%;
-    transform: translateX(-50%);
-    width: 88px; height: 22px;
-    background: var(--ink);
-    border-radius: 0 0 14px 14px;
-    z-index: 10;
-  }
-  .phone::after {
-    /* notch sensor dot */
-    content: '';
-    position: absolute;
-    top: 14px; left: calc(50% + 26px);
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #1f3a4f;
-    z-index: 11;
-  }
-  .screen {
-    background: var(--sand);
-    border-radius: 30px;
-    width: 100%; height: 100%;
-    overflow: hidden;
-    position: relative;
-    display: flex; flex-direction: column;
-  }
-
-  /* status bar */
-  .status-bar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 22px 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .status-bar .icons {
-    display: flex; gap: 4px; align-items: center;
-  }
-
-  /* app header (per-screen) */
-  .app-header {
-    padding: 12px 18px 14px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .app-title {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  .app-title-small {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .icon-btn {
-    width: 28px; height: 28px;
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    cursor: pointer;
-  }
-  .icon-btn svg { width: 14px; height: 14px; color: var(--ink); }
-
-  /* scrollable body */
-  .app-body {
-    flex: 1;
-    overflow: hidden;
-    padding: 0 14px;
-  }
-
-  /* bottom nav */
-  .bottom-nav {
-    background: var(--paper);
-    border-top: 1px solid var(--slate-100);
-    padding: 8px 18px 22px;
-    display: flex; justify-content: space-between;
-  }
-  .nav-item {
-    display: flex; flex-direction: column; align-items: center; gap: 2px;
-    color: var(--slate-400);
-    font-size: 9px;
-    font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .nav-item.is-active { color: var(--coral-600); }
-  .nav-item .ico {
-    width: 22px; height: 22px;
-    display: grid; place-items: center;
-  }
-  .nav-item svg { width: 18px; height: 18px; }
-
-  /* ============ SCREEN 1 · DISCOVER ============ */
-  .filter-row {
-    display: flex; gap: 5px;
-    padding: 0 14px 12px;
-    overflow: hidden;
-  }
-  .chip {
-    padding: 4px 8px;
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-pill);
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--slate-700);
-    white-space: nowrap;
-    display: flex; align-items: center; gap: 3px;
-  }
-  .chip.is-active {
-    background: var(--ink);
-    color: var(--coral-300);
-    border-color: var(--ink);
-  }
-
-  .hero-property {
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-lg);
-    overflow: hidden;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 6px rgba(11,42,59,0.04);
-  }
-  .hero-illust {
-    height: 110px;
-    position: relative;
-    background: linear-gradient(180deg, #FFE7B8 0%, #FFCB6E 60%, #FFB547 100%);
-    overflow: hidden;
-  }
-  .hero-illust svg { width: 100%; height: 100%; display: block; }
-  .hero-illust .badge {
-    position: absolute;
-    top: 8px; left: 8px;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(6px);
-    border-radius: var(--r-pill);
-    padding: 3px 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: var(--ink);
-  }
-  .hero-illust .yield-pill {
-    position: absolute;
-    top: 8px; right: 8px;
-    background: var(--ink);
-    color: var(--sun-300);
-    border-radius: var(--r-pill);
-    padding: 3px 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-  }
-  .hero-property-body {
-    padding: 10px 12px 12px;
-  }
-  .hero-property-body .name {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 2px;
-  }
-  .hero-property-body .loc {
-    font-size: 10px;
-    color: var(--slate-500);
-    margin-bottom: 8px;
-  }
-  .progress-row {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 4px;
-  }
-  .progress-row span:first-child {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--coral-700);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .progress-row span:last-child {
-    font-size: 10px;
-    color: var(--slate-500);
-  }
-  .progress-bar {
-    height: 4px;
-    background: var(--slate-100);
-    border-radius: var(--r-pill);
-    overflow: hidden;
-    position: relative;
-  }
-  .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--coral-500), var(--coral-600));
-    border-radius: var(--r-pill);
   }
-  .price-row {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--slate-100);
-  }
-  .price-row .min {
-    font-size: 10px;
-    color: var(--slate-500);
-  }
-  .price-row .min strong {
-    color: var(--ink);
-    font-weight: 700;
-    font-size: 12px;
-  }
-
-  .small-property-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .small-property {
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-md);
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(11,42,59,0.04);
-  }
-  .small-property-illust {
-    height: 60px;
+  .phone-notch {
+    width: 90px; height: 20px;
+    background: #0B2A3B;
+    border-radius: 0 0 12px 12px;
+    margin: 0 auto;
     position: relative;
-    overflow: hidden;
-  }
-  .small-property-illust svg { width: 100%; height: 100%; display: block; }
-  .small-property-body {
-    padding: 7px 9px 9px;
-  }
-  .small-property-body .name {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 1px;
-    line-height: 1.2;
-  }
-  .small-property-body .loc {
-    font-size: 9px;
-    color: var(--slate-500);
-    margin-bottom: 5px;
-  }
-  .small-property-body .yield {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--sun-700);
-  }
-  .small-property-body .min {
-    font-size: 9px;
-    color: var(--slate-500);
-    margin-top: 1px;
+    z-index: 2;
   }
 
-  /* ============ SCREEN 2 · DETAIL ============ */
-  .detail-hero {
-    height: 160px;
-    margin: 0 -14px 14px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(180deg, #FFE7B8 0%, #FFCB6E 60%, #FFB547 100%);
+  /* Property card photo placeholders (CSS scenes — no network deps) */
+  .scene-dubai {
+    background:
+      linear-gradient(180deg, rgba(11,42,59,0) 60%, rgba(11,42,59,0.45) 100%),
+      linear-gradient(180deg, #FFD27A 0%, #FF9B7E 35%, #2D3A4F 100%);
   }
-  .detail-hero svg { width: 100%; height: 100%; display: block; }
-  .detail-hero .top-bar {
-    position: absolute;
-    top: 12px; left: 12px; right: 12px;
-    display: flex; justify-content: space-between;
+  .scene-phuket {
+    background:
+      linear-gradient(180deg, rgba(11,42,59,0) 60%, rgba(11,42,59,0.45) 100%),
+      linear-gradient(180deg, #B6E4DA 0%, #4FA89A 45%, #1B3570 100%);
   }
-  .detail-hero .icon-btn-dark {
-    width: 28px; height: 28px;
-    background: rgba(11,42,59,0.6);
-    backdrop-filter: blur(6px);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    color: white;
-  }
-  .detail-hero .icon-btn-dark svg { width: 14px; height: 14px; color: white; }
-
-  .detail-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-    margin-bottom: 3px;
-  }
-  .detail-loc {
-    font-size: 11px;
-    color: var(--slate-500);
-    margin-bottom: 10px;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .tag-row {
-    display: flex; gap: 5px; flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-  .tag {
-    padding: 3px 7px;
-    background: var(--coral-tint);
-    border-radius: var(--r-pill);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--coral-700);
-    letter-spacing: 0.06em;
-  }
-  .tag.tag-sun { background: var(--gold-tint); color: var(--sun-700); }
-  .tag.tag-success { background: var(--success-100); color: var(--success); }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-  .stat-tile {
-    padding: 9px 10px;
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-md);
-  }
-  .stat-tile .lbl {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: var(--slate-500);
-    margin-bottom: 2px;
-  }
-  .stat-tile .val {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .stat-tile .val.sun { color: var(--sun-700); }
-  .stat-tile .val.coral { color: var(--coral-600); }
-
-  .funding-card {
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-md);
-    padding: 10px 12px;
-    margin-bottom: 12px;
-  }
-  .funding-card-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 6px;
-  }
-  .funding-card-head .num {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .funding-card-head .num span {
-    color: var(--coral-600);
-  }
-  .funding-card-head .target {
-    font-size: 10px;
-    color: var(--slate-500);
-  }
-  .funding-card-foot {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.06em;
-  }
-  .funding-card-foot .pct { color: var(--coral-700); font-weight: 700; }
-  .funding-card-foot .investors { color: var(--slate-500); }
-
-  .why-section h4 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--slate-500);
-    margin-bottom: 8px;
-  }
-  .why-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 14px;
-  }
-  .why-section li {
-    display: flex; gap: 8px; align-items: flex-start;
-    font-size: 11px;
-    line-height: 1.45;
-    color: var(--slate-700);
-    margin-bottom: 6px;
-  }
-  .why-section li::before {
-    content: '✓';
-    color: var(--coral-600);
-    font-weight: 700;
-    flex-shrink: 0;
-    width: 12px;
+  .scene-london {
+    background:
+      linear-gradient(180deg, rgba(11,42,59,0) 60%, rgba(11,42,59,0.45) 100%),
+      linear-gradient(180deg, #C9D4E2 0%, #7B95B2 50%, #1F2C3D 100%);
   }
 
-  .floating-cta {
-    position: absolute;
-    bottom: 18px; left: 14px; right: 14px;
-    background: var(--coral-500);
-    color: white;
-    border-radius: var(--r-pill);
-    padding: 12px 18px;
-    font-weight: 700;
-    font-size: 13px;
-    text-align: center;
-    box-shadow: var(--shadow-coral);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .floating-cta .arrow-r {
-    background: rgba(255,255,255,0.22);
-    border-radius: 50%;
-    width: 22px; height: 22px;
-    display: grid; place-items: center;
-  }
+  /* FAQ */
+  details summary { list-style: none; cursor: pointer; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary .chev { transition: transform 220ms cubic-bezier(0.22,1,0.36,1); }
+  details[open] summary .chev { transform: rotate(180deg); }
 
-  /* ============ SCREEN 3 · BUY FLOW ============ */
-  .buy-property-mini {
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-md);
-    padding: 8px;
-    display: flex; gap: 10px; align-items: center;
-    margin-bottom: 18px;
-  }
-  .buy-property-mini-thumb {
-    width: 44px; height: 44px;
-    border-radius: 8px;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: linear-gradient(180deg, #FFE7B8 0%, #FFCB6E 100%);
-  }
-  .buy-property-mini-thumb svg { width: 100%; height: 100%; display: block; }
-  .buy-property-mini .name {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .buy-property-mini .loc {
-    font-size: 10px;
-    color: var(--slate-500);
-  }
-  .buy-property-mini .yield {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--sun-700);
-    margin-top: 1px;
-  }
+  /* Vertical-rhythm divider */
+  .rule { height: 1px; background: #E2EAF1; }
 
-  .buy-q {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: var(--slate-500);
-    margin-bottom: 8px;
-  }
-  .buy-amount {
-    text-align: center;
-    margin-bottom: 16px;
-  }
-  .buy-amount .amount {
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 2px;
-  }
-  .buy-amount .currency {
-    font-size: 22px;
-    color: var(--slate-500);
-    font-weight: 600;
-    margin-right: 2px;
-    vertical-align: top;
-  }
-  .buy-amount .helper {
-    font-size: 11px;
-    color: var(--slate-500);
-  }
-  .quick-pick-row {
-    display: flex; gap: 6px;
-    margin-bottom: 18px;
-  }
-  .quick-pick {
-    flex: 1;
-    padding: 7px 6px;
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-pill);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--slate-700);
-    text-align: center;
-  }
-  .quick-pick.is-active {
-    background: var(--ink);
-    color: var(--coral-300);
-    border-color: var(--ink);
-  }
+  /* Page-load reveal */
+  .reveal { opacity: 0; transform: translateY(12px); animation: reveal 800ms cubic-bezier(0.22,1,0.36,1) forwards; }
+  @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+  .d1 { animation-delay: 80ms; } .d2 { animation-delay: 160ms; }
+  .d3 { animation-delay: 240ms; } .d4 { animation-delay: 320ms; }
+  .d5 { animation-delay: 400ms; }
 
-  .yield-projection {
-    background: var(--gold-tint);
-    border: 1px solid #FFE8BF;
-    border-radius: var(--r-md);
-    padding: 12px;
-    margin-bottom: 16px;
-  }
-  .yield-projection .lbl {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: var(--sun-700);
-    margin-bottom: 4px;
-  }
-  .yield-projection .val {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.02em;
-  }
-  .yield-projection .val .accent { color: var(--sun-700); }
-  .yield-projection .sub {
-    font-size: 10px;
-    color: var(--slate-500);
-    margin-top: 2px;
-  }
+  /* Lucide icons */
+  [data-lucide] { display:inline-block; stroke:currentColor; fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
 
-  /* ============ SCREEN 4 · CONFIRMATION ============ */
-  .confirm-stage {
-    flex: 1;
-    display: flex; flex-direction: column;
-    padding: 16px 18px;
-  }
-  .success-art {
-    width: 88px; height: 88px;
-    margin: 18px auto 18px;
-    background: var(--coral-tint);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    position: relative;
-  }
-  .success-art::before {
-    content: '';
-    position: absolute;
-    inset: -10px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,122,89,0.2), transparent 65%);
-  }
-  .success-art .check {
-    width: 44px; height: 44px;
-    background: var(--coral-500);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    color: white;
-    box-shadow: 0 6px 16px rgba(255,122,89,0.42);
-    z-index: 1;
-  }
-  .success-art .check svg { width: 22px; height: 22px; }
-  .confirm-headline {
-    text-align: center;
-    font-size: 19px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.02em;
-    margin-bottom: 4px;
-  }
-  .confirm-sub {
-    text-align: center;
-    font-size: 12px;
-    color: var(--slate-500);
-    margin-bottom: 18px;
-    line-height: 1.45;
-  }
-  .receipt {
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-md);
-    padding: 12px 14px;
-    margin-bottom: 14px;
-  }
-  .receipt-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 7px 0;
-    border-bottom: 1px dashed var(--slate-100);
-    font-size: 11px;
-  }
-  .receipt-row:last-child { border-bottom: 0; }
-  .receipt-row .lbl {
-    color: var(--slate-500);
-  }
-  .receipt-row .val {
-    color: var(--ink);
-    font-weight: 600;
-  }
-  .receipt-row .val.coral { color: var(--coral-600); }
-  .receipt-row .val.mono {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-  }
-  .confirm-actions {
-    display: flex; flex-direction: column; gap: 8px;
-    margin-top: auto;
-  }
-  .btn-coral {
-    background: var(--coral-500);
-    color: white;
-    border-radius: var(--r-pill);
-    padding: 12px;
-    font-weight: 700;
-    font-size: 13px;
-    text-align: center;
-    box-shadow: var(--shadow-coral);
-    border: none;
-    cursor: pointer;
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--slate-200);
-    border-radius: var(--r-pill);
-    padding: 12px;
-    font-weight: 600;
-    font-size: 13px;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  /* ============ SCREEN 5 · PORTFOLIO ============ */
-  .portfolio-summary {
-    background: linear-gradient(135deg, var(--ink) 0%, #1a3f55 100%);
-    color: white;
-    border-radius: var(--r-lg);
-    padding: 14px 14px 14px;
-    margin-bottom: 12px;
-    position: relative;
-    overflow: hidden;
-  }
-  .portfolio-summary::before {
-    content: '';
-    position: absolute;
-    top: -50px; right: -50px;
-    width: 160px; height: 160px;
-    background: radial-gradient(circle, rgba(255,122,89,0.20), transparent 65%);
-  }
-  .portfolio-summary .lbl {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--coral-300);
-    margin-bottom: 2px;
-    position: relative;
-  }
-  .portfolio-summary .val {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    position: relative;
-    margin-bottom: 8px;
-  }
-  .portfolio-summary .change {
-    display: inline-flex; align-items: center; gap: 4px;
-    background: rgba(17,168,123,0.18);
-    border-radius: var(--r-pill);
-    padding: 3px 8px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #4FCF99;
-    margin-left: 8px;
-  }
-  .portfolio-summary-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    position: relative;
-  }
-  .portfolio-summary-stat .lbl {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: rgba(255,172,149,0.7);
-  }
-  .portfolio-summary-stat .val {
-    font-size: 14px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 0;
-  }
-
-  .holdings-head {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 4px 2px 6px;
-  }
-  .holdings-head h4 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--slate-500);
-  }
-  .holdings-head .count {
-    font-size: 10px;
-    color: var(--slate-400);
-  }
-
-  .holding-row {
-    display: flex; gap: 10px; align-items: center;
-    padding: 8px 4px;
-    border-bottom: 1px solid var(--slate-100);
-  }
-  .holding-row:last-child { border-bottom: 0; }
-  .holding-thumb {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .holding-thumb svg { width: 100%; height: 100%; display: block; }
-  .holding-info { flex: 1; min-width: 0; }
-  .holding-info .name {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.2;
-  }
-  .holding-info .meta {
-    font-size: 10px;
-    color: var(--slate-500);
-    margin-top: 1px;
-  }
-  .holding-stat {
-    text-align: right;
-  }
-  .holding-stat .val {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .holding-stat .yield {
-    font-size: 10px;
-    color: var(--success);
-    font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* ============ SCREEN 6 · YIELD ============ */
-  .month-tabs {
-    display: flex; gap: 2px;
-    background: var(--paper);
-    border-radius: var(--r-pill);
-    padding: 3px;
-    border: 1px solid var(--slate-100);
-    margin-bottom: 14px;
-  }
-  .month-tab {
-    flex: 1;
-    text-align: center;
-    padding: 6px;
-    border-radius: var(--r-pill);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--slate-500);
-  }
-  .month-tab.is-active {
-    background: var(--ink);
-    color: var(--coral-300);
-  }
-  .payout-card {
-    background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%);
-    color: white;
-    border-radius: var(--r-lg);
-    padding: 16px;
-    text-align: center;
-    margin-bottom: 14px;
-    box-shadow: var(--shadow-coral);
-    position: relative;
-    overflow: hidden;
-  }
-  .payout-card::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 140px; height: 140px;
-    background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 65%);
-  }
-  .payout-card .lbl {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    opacity: 0.85;
-    position: relative;
-  }
-  .payout-card .val {
-    font-size: 30px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    position: relative;
-  }
-  .payout-card .sub {
-    font-size: 11px;
-    opacity: 0.8;
-    margin-top: 4px;
-    position: relative;
-  }
-
-  .breakdown-row {
-    display: flex; gap: 8px; align-items: center;
-    padding: 7px 4px;
-  }
-  .breakdown-thumb {
-    width: 26px; height: 26px;
-    border-radius: 6px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .breakdown-thumb svg { width: 100%; height: 100%; display: block; }
-  .breakdown-name {
-    flex: 1;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .breakdown-amount {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--success);
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .yield-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--slate-100);
-  }
-  .yield-action {
-    padding: 9px;
-    background: var(--paper);
-    border: 1px solid var(--slate-100);
-    border-radius: var(--r-md);
-    text-align: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--ink);
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-  }
-  .yield-action.primary {
-    background: var(--ink);
-    color: var(--coral-300);
-    border-color: var(--ink);
-  }
-  .yield-action .icon {
-    font-size: 14px;
-  }
-
-  /* ============ FOOTER ============ */
-  .deck-footer {
-    max-width: 1100px;
-    margin: 80px auto 0;
-    padding: 30px 0 0;
-    border-top: 1px solid var(--slate-100);
-    text-align: center;
-  }
-  .deck-footer p {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--slate-500);
-    letter-spacing: 0.06em;
-  }
-  .deck-footer p strong {
-    color: var(--coral-700);
-  }
-
-  @media (max-width: 1100px) {
-    .flow-grid { grid-template-columns: repeat(2, 1fr); }
-    .step .arrow { display: none !important; }
-  }
-  @media (max-width: 720px) {
-    .flow-grid { grid-template-columns: 1fr; }
-    body { padding: 30px 20px 50px; }
-  }
+  /* Marquee for vertical switcher hint */
+  ::selection { background: #FFDCD1; color: #0B2A3B; }
 </style>
 </head>
-<body>
+<body class="bg-sand text-ink overflow-x-hidden">
 
-<!-- ============ CONCEPT DISCLOSURE BANNER ============ -->
-<div style="max-width:1100px;margin:0 auto 32px;background:var(--ink);color:#fff;border-radius:14px;padding:18px 22px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
-  <span style="display:inline-flex;align-items:center;background:var(--coral-500);color:#fff;padding:4px 10px;border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;flex-shrink:0;">Concept</span>
-  <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.55;margin:0;flex:1;min-width:260px;">
-    <strong style="color:#fff;font-weight:600;">This page describes a conceptual product that is not currently available and may never be offered.</strong>
-    Fractional property ownership is a regulated activity in every market we operate in. Any future offering would be structured in partnership with regulated authorised firms. Nothing on this page is an offer, an invitation to invest, or a financial promotion. Numbers, screens, and properties shown are illustrative.
-  </p>
-</div>
+<!-- =========================================================
+     TOP BAR — Vertical switcher (Operations / Finance / Access)
+     ========================================================= -->
+<header class="sticky top-0 z-50 bg-sand/85 backdrop-blur-md border-b border-slate2-200">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2.5 group">
+      <svg viewBox="0 0 64 64" class="w-8 h-8">
+        <rect width="64" height="64" rx="16" fill="#0B2A3B"/>
+        <circle cx="32" cy="32" r="22" fill="none" stroke="#FF7A59" stroke-width="1" opacity="0.6"/>
+        <path d="M22 30 L 32 22 L 42 30 L 42 40 L 22 40 Z" fill="#FFFFFF"/>
+        <rect x="29" y="34" width="6" height="6" fill="#0B2A3B"/>
+        <circle cx="32" cy="10" r="3.5" fill="#FFB547"/>
+        <circle cx="51" cy="40" r="3" fill="#FF7A59"/>
+        <circle cx="13" cy="40" r="3" fill="#6389F7"/>
+      </svg>
+      <span class="font-bold text-[17px] tracking-tight text-ink">livaround</span>
+    </a>
 
-<!-- ============ DECK HEADER ============ -->
-<header class="deck-header">
-  <div class="vertical-pill">
-    <span class="dot"></span>livaround access
+    <!-- Vertical switcher -->
+    <nav class="hidden md:flex items-center gap-1 bg-paper border border-slate2-200 rounded-full p-1 shadow-[0_1px_2px_rgba(11,42,59,0.04)]">
+      <a href="/" class="text-[12.5px] font-semibold text-slate2-700 hover:text-ink px-3 py-1.5 rounded-full hover:bg-slate2-50 transition-colors flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>
+        Operations
+      </a>
+      <a href="/borrow" class="text-[12.5px] font-semibold text-slate2-700 hover:text-ink px-3 py-1.5 rounded-full hover:bg-slate2-50 transition-colors flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-sun-500"></span>
+        Finance
+      </a>
+      <a href="/access" aria-current="page" class="text-[12.5px] font-bold text-white bg-coral-500 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-[0_4px_12px_rgba(255,122,89,0.35)]">
+        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+        Access
+      </a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href="#waitlist" class="hidden sm:inline-flex text-[13px] font-semibold text-ink hover:text-coral-600 transition-colors px-3 py-1.5">Waitlist</a>
+      <a href="#waitlist" class="text-[13px] font-semibold text-white bg-ink hover:bg-ink-soft transition-colors px-4 py-2 rounded-full">Get notified</a>
+    </div>
   </div>
-  <h1>Own a slice. <span class="em-coral">A concept we're exploring.</span></h1>
-  <p>
-    What if fractional ownership of yielding short-term rental property could work like buying shares?
-    Below is a conceptual end-to-end flow — from discovery through monthly payouts — illustrating how
-    the product might feel. <strong>It is not a current offering.</strong>
-  </p>
 </header>
 
-<!-- ============ FLOW ============ -->
-<div class="flow-grid">
-
-  <!-- ====== SCREEN 1 · DISCOVER ====== -->
-  <div class="step">
-    <div class="step-head">
-      <div class="step-num">01</div>
-      <h3>Discover</h3>
-    </div>
-    <div class="phone">
-      <div class="screen">
-        <div class="status-bar">
-          <span>9:41</span>
-          <div class="icons">
-            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
-            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/><rect x="15" y="5" width="1.5" height="2" rx="0.5" fill="currentColor"/></svg>
-          </div>
-        </div>
-        <div class="app-header">
-          <div class="app-title">Discover</div>
-          <div class="icon-btn">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-        </div>
-        <div class="filter-row">
-          <span class="chip is-active">All</span>
-          <span class="chip">🇦🇪 Dubai</span>
-          <span class="chip">🇹🇭 Phuket</span>
-          <span class="chip">🇬🇧 London</span>
-        </div>
-        <div class="app-body">
-          <!-- Hero property: Dubai Marina Studio -->
-          <div class="hero-property">
-            <div class="hero-illust">
-              <svg viewBox="0 0 280 110" preserveAspectRatio="xMidYMax meet">
-                <circle cx="40" cy="30" r="14" fill="white" opacity="0.45"/>
-                <g fill="#0B2A3B" opacity="0.85">
-                  <rect x="20" y="55" width="14" height="55"/>
-                  <rect x="38" y="40" width="10" height="70"/>
-                </g>
-                <path d="M125 110 L125 18 L130 12 L135 18 L140 12 L145 18 L145 110 Z" fill="#0B2A3B"/>
-                <rect x="123" y="35" width="24" height="75" fill="#0B2A3B"/>
-                <rect x="95" y="45" width="22" height="65" fill="#0B2A3B"/>
-                <polygon points="95,45 106,28 117,45" fill="#0B2A3B"/>
-                <rect x="155" y="40" width="20" height="70" fill="#0B2A3B"/>
-                <polygon points="155,40 165,22 175,40" fill="#0B2A3B"/>
-                <rect x="180" y="55" width="16" height="55" fill="#0B2A3B" opacity="0.85"/>
-                <rect x="200" y="50" width="14" height="60" fill="#0B2A3B" opacity="0.85"/>
-                <rect x="220" y="60" width="18" height="50" fill="#0B2A3B" opacity="0.7"/>
-                <rect x="245" y="65" width="14" height="45" fill="#0B2A3B" opacity="0.7"/>
-                <g fill="#FFB547">
-                  <rect x="100" y="55" width="2" height="2"/><rect x="106" y="55" width="2" height="2"/><rect x="112" y="55" width="2" height="2"/>
-                  <rect x="100" y="65" width="2" height="2"/><rect x="106" y="65" width="2" height="2"/><rect x="112" y="65" width="2" height="2"/>
-                  <rect x="100" y="75" width="2" height="2"/><rect x="106" y="75" width="2" height="2"/><rect x="112" y="75" width="2" height="2"/>
-                  <rect x="128" y="50" width="2" height="2"/><rect x="135" y="50" width="2" height="2"/><rect x="142" y="50" width="2" height="2"/>
-                  <rect x="128" y="65" width="2" height="2"/><rect x="135" y="65" width="2" height="2"/><rect x="142" y="65" width="2" height="2"/>
-                  <rect x="128" y="80" width="2" height="2"/><rect x="135" y="80" width="2" height="2"/><rect x="142" y="80" width="2" height="2"/>
-                  <rect x="160" y="55" width="2" height="2"/><rect x="166" y="55" width="2" height="2"/>
-                  <rect x="160" y="68" width="2" height="2"/><rect x="166" y="68" width="2" height="2"/>
-                  <rect x="160" y="82" width="2" height="2"/><rect x="166" y="82" width="2" height="2"/>
-                </g>
-              </svg>
-              <span class="badge">🇦🇪 Dubai Marina</span>
-              <span class="yield-pill">8.4% yield</span>
-            </div>
-            <div class="hero-property-body">
-              <div class="name">Marina Studio</div>
-              <div class="loc">Premium 1-bed · STR-verified</div>
-              <div class="progress-row">
-                <span>67% funded</span>
-                <span>£59k to go</span>
-              </div>
-              <div class="progress-bar"><div class="progress-bar-fill" style="width:67%"></div></div>
-              <div class="price-row">
-                <span class="min">From <strong>£100</strong> / share</span>
-                <span class="min">1,800 shares</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Smaller cards -->
-          <div class="small-property-grid">
-            <div class="small-property">
-              <div class="small-property-illust" style="background: linear-gradient(180deg, #FFD3C2 0%, #FFAC95 60%, #FF7A59 100%);">
-                <svg viewBox="0 0 140 60" preserveAspectRatio="xMidYMax meet">
-                  <path d="M0 60 L0 35 Q40 25 80 32 Q110 38 140 30 L140 60 Z" fill="#FF7A59" opacity="0.6"/>
-                  <g>
-                    <path d="M20 60 Q20 42 24 32" stroke="#0B2A3B" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <g fill="#0B2A3B"><path d="M24 32 Q34 26 44 28 Q34 33 24 32"/><path d="M24 32 Q18 22 12 20 Q20 28 24 32"/></g>
-                    <path d="M120 60 Q120 44 116 36" stroke="#0B2A3B" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <g fill="#0B2A3B"><path d="M116 36 Q126 30 136 32 Q126 37 116 36"/><path d="M116 36 Q108 26 100 24 Q110 32 116 36"/></g>
-                  </g>
-                  <rect x="50" y="38" width="40" height="22" fill="#0B2A3B"/>
-                  <polygon points="48,38 70,28 92,38" fill="#0B2A3B"/>
-                  <rect x="56" y="44" width="6" height="6" fill="#FFB547"/>
-                  <rect x="68" y="44" width="6" height="6" fill="#FFB547"/>
-                  <rect x="80" y="44" width="6" height="6" fill="#FFB547"/>
-                  <rect x="66" y="52" width="8" height="8" fill="#FF7A59"/>
-                </svg>
-              </div>
-              <div class="small-property-body">
-                <div class="name">Surin Villa</div>
-                <div class="loc">🇹🇭 Phuket</div>
-                <div class="yield">7.2%</div>
-                <div class="min">£100 min</div>
-              </div>
-            </div>
-            <div class="small-property">
-              <div class="small-property-illust" style="background: linear-gradient(180deg, #DCE7FD 0%, #88A8F8 60%, #4574F0 100%);">
-                <svg viewBox="0 0 140 60" preserveAspectRatio="xMidYMax meet">
-                  <g fill="#1E4FBF" opacity="0.4">
-                    <rect x="118" y="22" width="11" height="38"/>
-                    <polygon points="118,22 123,12 128,22"/>
-                  </g>
-                  <g>
-                    <rect x="10" y="28" width="28" height="32" fill="#0B2A3B"/>
-                    <polygon points="10,28 24,18 38,28" fill="#0B2A3B"/>
-                    <rect x="14" y="32" width="6" height="8" fill="#FFD896"/>
-                    <rect x="28" y="32" width="6" height="8" fill="#FFD896"/>
-                    <rect x="14" y="44" width="6" height="8" fill="#FFD896"/>
-                    <rect x="20" y="52" width="8" height="8" fill="#FF7A59"/>
-                    <rect x="38" y="28" width="28" height="32" fill="#0B2A3B"/>
-                    <polygon points="38,28 52,18 66,28" fill="#0B2A3B"/>
-                    <rect x="42" y="32" width="6" height="8" fill="#FFD896"/>
-                    <rect x="56" y="32" width="6" height="8" fill="#FFD896"/>
-                    <rect x="42" y="44" width="6" height="8" fill="#FFD896"/>
-                    <rect x="48" y="52" width="8" height="8" fill="#0B2A3B"/>
-                    <rect x="66" y="28" width="28" height="32" fill="#0B2A3B"/>
-                    <polygon points="66,28 80,18 94,28" fill="#0B2A3B"/>
-                    <rect x="70" y="32" width="6" height="8" fill="#FFD896"/>
-                    <rect x="84" y="32" width="6" height="8" fill="#FFD896"/>
-                    <rect x="70" y="44" width="6" height="8" fill="#FFD896"/>
-                    <rect x="76" y="52" width="8" height="8" fill="#FF7A59"/>
-                  </g>
-                </svg>
-              </div>
-              <div class="small-property-body">
-                <div class="name">Shoreditch Loft</div>
-                <div class="loc">🇬🇧 London</div>
-                <div class="yield">5.8%</div>
-                <div class="min">£100 min</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="bottom-nav">
-          <div class="nav-item is-active">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Discover
-          </div>
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/></svg></div>
-            Portfolio
-          </div>
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-4 4 4 7-7 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            Activity
-          </div>
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Profile
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="caption">Browse <strong>STR-yielding properties</strong> across three cities. Filter by location, yield, or funding status.</p>
-    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
+<!-- =========================================================
+     CONCEPT BANNER — short, honest, persistent
+     ========================================================= -->
+<div class="bg-coral-50 border-b border-coral-200/60">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-2.5 flex items-center justify-center gap-2 flex-wrap">
+    <span class="concept-tag"><span class="pulse"></span>Concept · not a current offering</span>
+    <span class="text-[12px] text-coral-700/90 hidden sm:inline">·</span>
+    <span class="text-[12px] text-coral-700/90 hidden sm:inline">Any future product would be operated in partnership with regulated firms in each market.</span>
   </div>
-
-  <!-- ====== SCREEN 2 · PROPERTY DETAIL ====== -->
-  <div class="step">
-    <div class="step-head">
-      <div class="step-num">02</div>
-      <h3>Inspect</h3>
-    </div>
-    <div class="phone">
-      <div class="screen">
-        <div class="status-bar">
-          <span>9:42</span>
-          <div class="icons">
-            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
-            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
-          </div>
-        </div>
-        <div class="app-body" style="padding: 0; flex: 1; overflow: hidden;">
-          <div class="detail-hero">
-            <svg viewBox="0 0 280 160" preserveAspectRatio="xMidYMax meet">
-              <circle cx="50" cy="40" r="20" fill="white" opacity="0.5"/>
-              <g fill="#0B2A3B" opacity="0.8">
-                <rect x="10" y="80" width="20" height="80"/>
-                <rect x="35" y="60" width="14" height="100"/>
-              </g>
-              <path d="M125 160 L125 25 L130 18 L135 25 L140 18 L145 25 L150 18 L155 25 L155 160 Z" fill="#0B2A3B"/>
-              <rect x="123" y="40" width="34" height="120" fill="#0B2A3B"/>
-              <rect x="90" y="55" width="28" height="105" fill="#0B2A3B"/>
-              <polygon points="90,55 104,30 118,55" fill="#0B2A3B"/>
-              <rect x="160" y="48" width="26" height="112" fill="#0B2A3B"/>
-              <polygon points="160,48 173,22 186,48" fill="#0B2A3B"/>
-              <rect x="195" y="70" width="20" height="90" fill="#0B2A3B" opacity="0.85"/>
-              <rect x="220" y="65" width="18" height="95" fill="#0B2A3B" opacity="0.85"/>
-              <rect x="245" y="80" width="22" height="80" fill="#0B2A3B" opacity="0.7"/>
-              <g fill="#FFB547">
-                <rect x="95" y="68" width="3" height="3"/><rect x="103" y="68" width="3" height="3"/><rect x="111" y="68" width="3" height="3"/>
-                <rect x="95" y="82" width="3" height="3"/><rect x="103" y="82" width="3" height="3"/><rect x="111" y="82" width="3" height="3"/>
-                <rect x="95" y="96" width="3" height="3"/><rect x="103" y="96" width="3" height="3"/><rect x="111" y="96" width="3" height="3"/>
-                <rect x="128" y="58" width="3" height="3"/><rect x="138" y="58" width="3" height="3"/><rect x="148" y="58" width="3" height="3"/>
-                <rect x="128" y="75" width="3" height="3"/><rect x="138" y="75" width="3" height="3"/><rect x="148" y="75" width="3" height="3"/>
-                <rect x="128" y="92" width="3" height="3"/><rect x="138" y="92" width="3" height="3"/><rect x="148" y="92" width="3" height="3"/>
-                <rect x="128" y="109" width="3" height="3"/><rect x="138" y="109" width="3" height="3"/><rect x="148" y="109" width="3" height="3"/>
-                <rect x="165" y="63" width="3" height="3"/><rect x="174" y="63" width="3" height="3"/><rect x="183" y="63" width="3" height="3"/>
-                <rect x="165" y="80" width="3" height="3"/><rect x="174" y="80" width="3" height="3"/><rect x="183" y="80" width="3" height="3"/>
-                <rect x="165" y="97" width="3" height="3"/><rect x="174" y="97" width="3" height="3"/><rect x="183" y="97" width="3" height="3"/>
-              </g>
-            </svg>
-            <div class="top-bar">
-              <div class="icon-btn-dark">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="icon-btn-dark">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M16 6l-4-4-4 4M12 2v14M21 16v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </div>
-          </div>
-          <div style="padding: 0 14px;">
-            <div class="detail-title">Marina Studio</div>
-            <div class="detail-loc">📍 Dubai Marina, UAE · 5.0 ★ avg</div>
-            <div class="tag-row">
-              <span class="tag tag-success">✓ STR-verified</span>
-              <span class="tag tag-sun">8.4% gross yield</span>
-              <span class="tag">Premium</span>
-            </div>
-            <div class="stats-grid">
-              <div class="stat-tile">
-                <div class="lbl">Property value</div>
-                <div class="val">£180,000</div>
-              </div>
-              <div class="stat-tile">
-                <div class="lbl">Min buy-in</div>
-                <div class="val coral">£100</div>
-              </div>
-              <div class="stat-tile">
-                <div class="lbl">12-mo trading</div>
-                <div class="val">£14,300</div>
-              </div>
-              <div class="stat-tile">
-                <div class="lbl">Occupancy</div>
-                <div class="val">78%</div>
-              </div>
-            </div>
-            <div class="funding-card">
-              <div class="funding-card-head">
-                <div class="num"><span>£121,000</span> raised</div>
-                <div class="target">of £180,000</div>
-              </div>
-              <div class="progress-bar"><div class="progress-bar-fill" style="width:67%"></div></div>
-              <div class="funding-card-foot">
-                <span class="pct">67% FUNDED</span>
-                <span class="investors">1,213 owners</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="floating-cta">
-          Buy from £100
-          <span class="arrow-r">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-3-3l3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-        </div>
-      </div>
-    </div>
-    <p class="caption">See the property's <strong>operating history</strong> — occupancy, gross revenue, current funding status, and live owner count.</p>
-    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
-  </div>
-
-  <!-- ====== SCREEN 3 · BUY ====== -->
-  <div class="step">
-    <div class="step-head">
-      <div class="step-num">03</div>
-      <h3>Invest</h3>
-    </div>
-    <div class="phone">
-      <div class="screen">
-        <div class="status-bar">
-          <span>9:43</span>
-          <div class="icons">
-            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
-            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
-          </div>
-        </div>
-        <div class="app-header">
-          <div class="icon-btn">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="app-title-small">Buy share</div>
-          <div class="icon-btn">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-        </div>
-        <div class="app-body">
-          <div class="buy-property-mini">
-            <div class="buy-property-mini-thumb">
-              <svg viewBox="0 0 44 44" preserveAspectRatio="xMidYMax meet">
-                <path d="M22 44 L22 8 L24 5 L26 8 L26 44 Z" fill="#0B2A3B"/>
-                <rect x="21" y="14" width="6" height="30" fill="#0B2A3B"/>
-                <rect x="13" y="18" width="6" height="26" fill="#0B2A3B"/>
-                <rect x="29" y="16" width="6" height="28" fill="#0B2A3B"/>
-                <g fill="#FFB547">
-                  <rect x="14" y="22" width="1" height="1"/><rect x="17" y="22" width="1" height="1"/>
-                  <rect x="14" y="28" width="1" height="1"/><rect x="17" y="28" width="1" height="1"/>
-                  <rect x="22" y="20" width="1" height="1"/><rect x="25" y="20" width="1" height="1"/>
-                  <rect x="22" y="28" width="1" height="1"/><rect x="25" y="28" width="1" height="1"/>
-                  <rect x="30" y="22" width="1" height="1"/><rect x="33" y="22" width="1" height="1"/>
-                </g>
-              </svg>
-            </div>
-            <div style="flex:1">
-              <div class="name">Marina Studio</div>
-              <div class="loc">🇦🇪 Dubai · £180k value</div>
-              <div class="yield">8.4% expected yield</div>
-            </div>
-          </div>
-          <div class="buy-q">Investment amount</div>
-          <div class="buy-amount">
-            <div class="amount"><span class="currency">£</span>100</div>
-            <div class="helper">= 1 share at £100/share</div>
-          </div>
-          <div class="quick-pick-row">
-            <span class="quick-pick is-active">£100</span>
-            <span class="quick-pick">£250</span>
-            <span class="quick-pick">£500</span>
-            <span class="quick-pick">£1,000</span>
-          </div>
-          <div class="yield-projection">
-            <div class="lbl">Projected annual yield</div>
-            <div class="val"><span class="accent">£8.40</span> / year</div>
-            <div class="sub">Paid monthly · ~£0.70 every month from STR revenue</div>
-          </div>
-        </div>
-        <div class="floating-cta">
-          Confirm — £100
-          <span class="arrow-r">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-3-3l3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-        </div>
-      </div>
-    </div>
-    <p class="caption">Pick your <strong>investment amount</strong>. £100 buys 1 share — projected yield calculated in real-time from the property's STR revenue.</p>
-  </div>
-
-  <!-- ====== SCREEN 4 · CONFIRMATION ====== -->
-  <div class="step">
-    <div class="step-head">
-      <div class="step-num">04</div>
-      <h3>Own</h3>
-    </div>
-    <div class="phone">
-      <div class="screen">
-        <div class="status-bar">
-          <span>9:43</span>
-          <div class="icons">
-            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
-            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
-          </div>
-        </div>
-        <div class="confirm-stage">
-          <div class="success-art">
-            <div class="check">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-          </div>
-          <div class="confirm-headline">You're an owner.</div>
-          <div class="confirm-sub">You now own <strong>1 / 1,800</strong> of Marina Studio,<br>Dubai Marina.</div>
-          <div class="receipt">
-            <div class="receipt-row">
-              <span class="lbl">Property</span>
-              <span class="val">Marina Studio</span>
-            </div>
-            <div class="receipt-row">
-              <span class="lbl">Shares purchased</span>
-              <span class="val">1</span>
-            </div>
-            <div class="receipt-row">
-              <span class="lbl">Amount</span>
-              <span class="val coral">£100.00</span>
-            </div>
-            <div class="receipt-row">
-              <span class="lbl">Date</span>
-              <span class="val">15 Mar 2026</span>
-            </div>
-            <div class="receipt-row">
-              <span class="lbl">Transaction</span>
-              <span class="val mono">LVA-A39271</span>
-            </div>
-          </div>
-          <div class="confirm-actions">
-            <button class="btn-coral">View in portfolio</button>
-            <button class="btn-ghost">Buy more shares</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="caption">Instant settlement on share purchase. Your <strong>ownership</strong> and <strong>monthly yield rights</strong> are recorded against your account.</p>
-    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
-  </div>
-
-  <!-- ====== SCREEN 5 · PORTFOLIO ====== -->
-  <div class="step">
-    <div class="step-head">
-      <div class="step-num">05</div>
-      <h3>Portfolio</h3>
-    </div>
-    <div class="phone">
-      <div class="screen">
-        <div class="status-bar">
-          <span>9:44</span>
-          <div class="icons">
-            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
-            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
-          </div>
-        </div>
-        <div class="app-header">
-          <div class="app-title">Portfolio</div>
-          <div class="icon-btn">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 01-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-        </div>
-        <div class="app-body">
-          <div class="portfolio-summary">
-            <div class="lbl">Total portfolio value</div>
-            <div class="val">£428.40 <span class="change">+7.1%</span></div>
-            <div class="portfolio-summary-stats">
-              <div class="portfolio-summary-stat">
-                <div class="lbl">Invested</div>
-                <div class="val">£400</div>
-              </div>
-              <div class="portfolio-summary-stat">
-                <div class="lbl">Monthly income</div>
-                <div class="val">£2.48</div>
-              </div>
-            </div>
-          </div>
-          <div class="holdings-head">
-            <h4>Your properties</h4>
-            <span class="count">3 holdings</span>
-          </div>
-          <div class="holding-row">
-            <div class="holding-thumb" style="background: linear-gradient(180deg, #FFE7B8, #FFB547);">
-              <svg viewBox="0 0 36 36" preserveAspectRatio="xMidYMax meet">
-                <path d="M18 36 L18 6 L20 4 L22 6 L22 36 Z" fill="#0B2A3B"/>
-                <rect x="17" y="11" width="6" height="25" fill="#0B2A3B"/>
-                <rect x="10" y="14" width="5" height="22" fill="#0B2A3B"/>
-                <rect x="25" y="13" width="5" height="23" fill="#0B2A3B"/>
-              </svg>
-            </div>
-            <div class="holding-info">
-              <div class="name">Marina Studio</div>
-              <div class="meta">2 shares · £200 · 🇦🇪</div>
-            </div>
-            <div class="holding-stat">
-              <div class="val">£214</div>
-              <div class="yield">+£1.40/mo</div>
-            </div>
-          </div>
-          <div class="holding-row">
-            <div class="holding-thumb" style="background: linear-gradient(180deg, #FFD3C2, #FF7A59);">
-              <svg viewBox="0 0 36 36" preserveAspectRatio="xMidYMax meet">
-                <path d="M0 36 L0 22 Q12 17 24 19 Q30 21 36 18 L36 36 Z" fill="#FF7A59" opacity="0.6"/>
-                <rect x="11" y="20" width="14" height="16" fill="#0B2A3B"/>
-                <polygon points="10,20 18,14 26,20" fill="#0B2A3B"/>
-                <rect x="14" y="24" width="3" height="3" fill="#FFB547"/>
-                <rect x="19" y="24" width="3" height="3" fill="#FFB547"/>
-              </svg>
-            </div>
-            <div class="holding-info">
-              <div class="name">Surin Villa</div>
-              <div class="meta">1 share · £100 · 🇹🇭</div>
-            </div>
-            <div class="holding-stat">
-              <div class="val">£106</div>
-              <div class="yield">+£0.60/mo</div>
-            </div>
-          </div>
-          <div class="holding-row">
-            <div class="holding-thumb" style="background: linear-gradient(180deg, #DCE7FD, #4574F0);">
-              <svg viewBox="0 0 36 36" preserveAspectRatio="xMidYMax meet">
-                <rect x="4" y="12" width="9" height="24" fill="#0B2A3B"/>
-                <polygon points="4,12 8.5,8 13,12" fill="#0B2A3B"/>
-                <rect x="13" y="12" width="9" height="24" fill="#0B2A3B"/>
-                <polygon points="13,12 17.5,8 22,12" fill="#0B2A3B"/>
-                <rect x="22" y="12" width="9" height="24" fill="#0B2A3B"/>
-                <polygon points="22,12 26.5,8 31,12" fill="#0B2A3B"/>
-                <g fill="#FFD896">
-                  <rect x="6" y="16" width="2" height="3"/><rect x="10" y="16" width="2" height="3"/>
-                  <rect x="15" y="16" width="2" height="3"/><rect x="19" y="16" width="2" height="3"/>
-                  <rect x="24" y="16" width="2" height="3"/><rect x="28" y="16" width="2" height="3"/>
-                </g>
-              </svg>
-            </div>
-            <div class="holding-info">
-              <div class="name">Shoreditch Loft</div>
-              <div class="meta">1 share · £100 · 🇬🇧</div>
-            </div>
-            <div class="holding-stat">
-              <div class="val">£108</div>
-              <div class="yield">+£0.48/mo</div>
-            </div>
-          </div>
-        </div>
-        <div class="bottom-nav">
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Discover
-          </div>
-          <div class="nav-item is-active">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/></svg></div>
-            Portfolio
-          </div>
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-4 4 4 7-7 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            Activity
-          </div>
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Profile
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="caption">All holdings in one view. <strong>Total value, monthly income, and per-property yield</strong> updated daily from STR revenue.</p>
-    <svg class="arrow" viewBox="0 0 32 24" fill="none"><path d="M2 12h26m-6-7l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 4"/></svg>
-  </div>
-
-  <!-- ====== SCREEN 6 · YIELD ====== -->
-  <div class="step">
-    <div class="step-head">
-      <div class="step-num">06</div>
-      <h3>Earn</h3>
-    </div>
-    <div class="phone">
-      <div class="screen">
-        <div class="status-bar">
-          <span>9:45</span>
-          <div class="icons">
-            <svg width="13" height="9" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="2.5" height="4" rx="0.5"/><rect x="3.5" y="6" width="2.5" height="6" rx="0.5"/><rect x="7" y="3" width="2.5" height="9" rx="0.5"/><rect x="10.5" y="0" width="2.5" height="12" rx="0.5"/></svg>
-            <svg width="14" height="9" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="3" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="2" y="5" width="9" height="2" fill="currentColor"/></svg>
-          </div>
-        </div>
-        <div class="app-header">
-          <div class="app-title">Activity</div>
-          <div class="icon-btn">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="app-body">
-          <div class="month-tabs">
-            <span class="month-tab is-active">Mar 2026</span>
-            <span class="month-tab">All-time</span>
-          </div>
-          <div class="payout-card">
-            <div class="lbl">March payout</div>
-            <div class="val">+£2.48</div>
-            <div class="sub">Distributed 1 Apr · From STR revenue</div>
-          </div>
-          <div class="holdings-head">
-            <h4>Per property</h4>
-          </div>
-          <div class="breakdown-row">
-            <div class="breakdown-thumb" style="background: linear-gradient(180deg, #FFE7B8, #FFB547);">
-              <svg viewBox="0 0 26 26" preserveAspectRatio="xMidYMax meet">
-                <path d="M13 26 L13 5 L14.5 3 L16 5 L16 26 Z" fill="#0B2A3B"/>
-                <rect x="12" y="9" width="5" height="17" fill="#0B2A3B"/>
-                <rect x="6" y="11" width="4" height="15" fill="#0B2A3B"/>
-                <rect x="19" y="10" width="4" height="16" fill="#0B2A3B"/>
-              </svg>
-            </div>
-            <div class="breakdown-name">Marina Studio</div>
-            <div class="breakdown-amount">+£1.40</div>
-          </div>
-          <div class="breakdown-row">
-            <div class="breakdown-thumb" style="background: linear-gradient(180deg, #FFD3C2, #FF7A59);">
-              <svg viewBox="0 0 26 26" preserveAspectRatio="xMidYMax meet">
-                <path d="M0 26 L0 16 Q9 12 17 14 Q22 15 26 13 L26 26 Z" fill="#FF7A59" opacity="0.6"/>
-                <rect x="8" y="14" width="10" height="12" fill="#0B2A3B"/>
-                <polygon points="7,14 13,9 19,14" fill="#0B2A3B"/>
-              </svg>
-            </div>
-            <div class="breakdown-name">Surin Villa</div>
-            <div class="breakdown-amount">+£0.60</div>
-          </div>
-          <div class="breakdown-row">
-            <div class="breakdown-thumb" style="background: linear-gradient(180deg, #DCE7FD, #4574F0);">
-              <svg viewBox="0 0 26 26" preserveAspectRatio="xMidYMax meet">
-                <rect x="3" y="9" width="6" height="17" fill="#0B2A3B"/>
-                <polygon points="3,9 6,6 9,9" fill="#0B2A3B"/>
-                <rect x="9" y="9" width="6" height="17" fill="#0B2A3B"/>
-                <polygon points="9,9 12,6 15,9" fill="#0B2A3B"/>
-                <rect x="15" y="9" width="6" height="17" fill="#0B2A3B"/>
-                <polygon points="15,9 18,6 21,9" fill="#0B2A3B"/>
-              </svg>
-            </div>
-            <div class="breakdown-name">Shoreditch Loft</div>
-            <div class="breakdown-amount">+£0.48</div>
-          </div>
-          <div class="yield-actions">
-            <div class="yield-action primary">
-              <span class="icon">↻</span>
-              Auto-reinvest
-            </div>
-            <div class="yield-action">
-              <span class="icon">↗</span>
-              Withdraw
-            </div>
-          </div>
-        </div>
-        <div class="bottom-nav">
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Discover
-          </div>
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/></svg></div>
-            Portfolio
-          </div>
-          <div class="nav-item is-active">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-4 4 4 7-7 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            Activity
-          </div>
-          <div class="nav-item">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Profile
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="caption"><strong>Monthly payouts</strong> from real STR revenue across your holdings. Reinvest automatically or withdraw to bank.</p>
-  </div>
-
 </div>
 
-<!-- ============ FOOTER ============ -->
-<footer class="deck-footer">
-  <p style="margin-bottom:14px"><strong>LIVAROUND ACCESS · CONCEPT STAGE · NOT A CURRENT OFFERING</strong></p>
-  <p style="font-size:11px;color:var(--slate-500);max-width:820px;margin:0 auto;line-height:1.65;letter-spacing:0;font-family:'DM Sans',sans-serif;text-transform:none;">
-    Nothing on this page constitutes an offer of securities, units in a collective investment scheme,
-    or any other regulated investment product. LivAround Ltd is not authorised by the Financial Conduct
-    Authority or any equivalent regulator to operate, promote, or arrange a fractional property ownership
-    product. Any such product would be structured and offered in partnership with appropriately authorised
-    firms in each relevant jurisdiction. Properties, yields, share prices, and ownership flows depicted
-    are illustrative and do not represent any actual investment opportunity. Property values can fall as
-    well as rise; past performance does not indicate future returns. Do not rely on this page for
-    investment decisions.
-  </p>
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+<section class="relative overflow-hidden">
+  <!-- Background orbit -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <svg class="absolute top-[60px] -right-[120px] w-[820px] h-[820px] opacity-90" viewBox="0 0 800 800">
+      <defs>
+        <radialGradient id="orbitGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFDCD1" stop-opacity="0.4"/>
+          <stop offset="60%" stop-color="#FFDCD1" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="400" cy="400" r="380" fill="url(#orbitGlow)"/>
+
+      <g class="orbit-ring" style="transform-origin: 400px 400px;">
+        <circle cx="400" cy="400" r="280" fill="none" stroke="#B6C4D3" stroke-width="1" stroke-dasharray="3 6" opacity="0.6"/>
+        <!-- city dots on outer ring -->
+        <g transform="translate(400 120)">
+          <circle r="9" fill="#FF7A59"/>
+          <circle r="14" fill="none" stroke="#FF7A59" stroke-width="1" opacity="0.3"/>
+        </g>
+      </g>
+      <g class="orbit-ring-rev" style="transform-origin: 400px 400px;">
+        <circle cx="400" cy="400" r="200" fill="none" stroke="#FFBDA8" stroke-width="1" opacity="0.7"/>
+        <g transform="translate(595 470)">
+          <circle r="7" fill="#FFB547"/>
+          <circle r="11" fill="none" stroke="#FFB547" stroke-width="1" opacity="0.35"/>
+        </g>
+      </g>
+      <g class="orbit-ring" style="transform-origin: 400px 400px; animation-duration: 45s;">
+        <circle cx="400" cy="400" r="120" fill="none" stroke="#93B2FB" stroke-width="1" opacity="0.5"/>
+        <g transform="translate(285 440)">
+          <circle r="6" fill="#3E68F0"/>
+          <circle r="10" fill="none" stroke="#3E68F0" stroke-width="1" opacity="0.35"/>
+        </g>
+      </g>
+
+      <!-- center node -->
+      <circle cx="400" cy="400" r="36" fill="#0B2A3B"/>
+      <text x="400" y="395" text-anchor="middle" font-family="JetBrains Mono" font-size="9" font-weight="700" fill="#FFB547" letter-spacing="2">YIELD</text>
+      <text x="400" y="408" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#FFFFFF">£100</text>
+    </svg>
+  </div>
+
+  <div class="relative max-w-[1280px] mx-auto px-6 lg:px-8 pt-16 lg:pt-24 pb-20 lg:pb-28">
+    <div class="max-w-[680px]">
+      <!-- Eyebrow -->
+      <div class="reveal d1 flex items-center gap-3 mb-8">
+        <span class="mono text-[11px] font-semibold tracking-[0.18em] uppercase text-coral-600">Livaround Access</span>
+        <span class="h-px flex-1 max-w-[120px] bg-coral-300"></span>
+        <span class="mono text-[11px] font-medium tracking-[0.16em] uppercase text-slate2-500">Vertical 03</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="reveal d2 serif text-[56px] md:text-[88px] leading-[0.95] font-medium text-ink">
+        Own
+        <span class="font-light italic text-coral-600">a slice</span>
+        of a yielding home.
+      </h1>
+
+      <p class="reveal d3 text-[18px] md:text-[20px] text-slate2-700 leading-[1.55] mt-8 max-w-[580px]">
+        A concept we're exploring: fractional ownership of short-term rental property in
+        <strong class="text-ink">Dubai</strong>,
+        <strong class="text-ink">Phuket</strong>, and
+        <strong class="text-ink">London</strong>.
+        Buy a share from <span class="serif italic">£100</span>. Earn the yield. Sell when you want.
+      </p>
+
+      <p class="reveal d3 text-[14px] text-slate2-500 mt-4 max-w-[580px]">
+        It is not currently offered. We're publishing the design publicly to gather feedback from prospective owners and authorised partners.
+      </p>
+
+      <!-- CTAs -->
+      <div class="reveal d4 flex flex-wrap items-center gap-3 mt-10">
+        <a href="#waitlist" class="group inline-flex items-center gap-2 bg-ink hover:bg-ink-soft text-white font-semibold text-[15px] px-6 py-3.5 rounded-full transition-all shadow-[0_8px_24px_rgba(11,42,59,0.18)]">
+          Join the waitlist
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform"></i>
+        </a>
+        <a href="#thesis" class="inline-flex items-center gap-2 text-ink font-semibold text-[15px] px-5 py-3.5 hover:text-coral-600 transition-colors">
+          Read the concept
+          <i data-lucide="chevron-down" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- KPI strip -->
+      <div class="reveal d5 grid grid-cols-3 gap-6 lg:gap-10 mt-16 max-w-[540px] pt-8 border-t border-slate2-200">
+        <div>
+          <p class="serif italic text-[11px] tracking-[0.1em] uppercase text-coral-600 font-medium">Min ticket</p>
+          <p class="serif text-[34px] leading-none mt-2 font-medium">£100</p>
+          <p class="text-[11.5px] text-slate2-500 mt-1.5">Per share, indicative</p>
+        </div>
+        <div>
+          <p class="serif italic text-[11px] tracking-[0.1em] uppercase text-coral-600 font-medium">Yield target</p>
+          <p class="serif text-[34px] leading-none mt-2 font-medium">5–8%</p>
+          <p class="text-[11.5px] text-slate2-500 mt-1.5">Gross, illustrative</p>
+        </div>
+        <div>
+          <p class="serif italic text-[11px] tracking-[0.1em] uppercase text-coral-600 font-medium">Cities</p>
+          <p class="serif text-[34px] leading-none mt-2 font-medium">3</p>
+          <p class="text-[11.5px] text-slate2-500 mt-1.5">DXB · HKT · LHR</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     THESIS — three editorial cards
+     ========================================================= -->
+<section id="thesis" class="relative bg-paper border-y border-slate2-200">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-20 lg:py-28">
+    <div class="max-w-[760px] mb-14">
+      <p class="mono text-[11px] font-semibold tracking-[0.16em] uppercase text-coral-600 mb-4">The thesis</p>
+      <h2 class="serif text-[44px] md:text-[60px] leading-[1.02] font-medium">
+        The home you can't afford <span class="italic font-light text-coral-600">should still pay you.</span>
+      </h2>
+      <p class="text-[16px] md:text-[17px] text-slate2-700 leading-[1.65] mt-6 dropcap">
+        Short-term rental yields in well-run cities outperform most listed REITs.
+        Most people can't write a £180,000 cheque to capture them. We think a £100 ticket — backed by an actual home, run on actual operations software — could change who gets to participate.
+        That's the question. The page below sketches an answer.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-px bg-slate2-200 rounded-xl2 overflow-hidden border border-slate2-200">
+      <div class="bg-paper p-8 lg:p-10">
+        <div class="w-11 h-11 rounded-[12px] bg-coral-100 text-coral-600 flex items-center justify-center mb-6">
+          <i data-lucide="layers" class="w-5 h-5"></i>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Real asset.<br><span class="italic font-light text-coral-600">Real cashflow.</span></h3>
+        <p class="text-[14.5px] text-slate2-700 leading-[1.65] mt-4">
+          Each property is a working short-term rental managed on the LivAround operations platform.
+          Yield isn't a token mechanic — it's bookings, cleanings, and check-ins, paid out monthly.
+        </p>
+      </div>
+      <div class="bg-paper p-8 lg:p-10">
+        <div class="w-11 h-11 rounded-[12px] bg-coral-100 text-coral-600 flex items-center justify-center mb-6">
+          <i data-lucide="users-round" class="w-5 h-5"></i>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Pooled, not <span class="italic font-light text-coral-600">leveraged.</span></h3>
+        <p class="text-[14.5px] text-slate2-700 leading-[1.65] mt-4">
+          1,000–2,000 owners share one home. There is no debt against the asset and no margin call. Returns track the property's actual operating performance.
+        </p>
+      </div>
+      <div class="bg-paper p-8 lg:p-10">
+        <div class="w-11 h-11 rounded-[12px] bg-coral-100 text-coral-600 flex items-center justify-center mb-6">
+          <i data-lucide="repeat-2" class="w-5 h-5"></i>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Liquidity, <span class="italic font-light text-coral-600">eventually.</span></h3>
+        <p class="text-[14.5px] text-slate2-700 leading-[1.65] mt-4">
+          The hardest design question. Concept assumes a periodic owner-to-owner trading window inside the platform. We have not yet structured the legal mechanics; this is the part we most want feedback on.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     HOW IT WOULD WORK — six numbered features
+     ========================================================= -->
+<section class="bg-sand">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-20 lg:py-28">
+    <div class="max-w-[760px] mb-16">
+      <p class="mono text-[11px] font-semibold tracking-[0.16em] uppercase text-coral-600 mb-4">How it would work</p>
+      <h2 class="serif text-[44px] md:text-[60px] leading-[1.02] font-medium">
+        Discover. Buy. <span class="italic font-light text-coral-600">Earn.</span>
+      </h2>
+      <p class="text-[16px] text-slate2-700 leading-[1.6] mt-5">
+        Six steps, app-native, designed to feel closer to opening a brokerage account than a property purchase.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6 lg:gap-8">
+      <!-- 01 Discover -->
+      <article class="bg-paper rounded-xl2 border border-slate2-200 p-7 hover:border-coral-300 transition-colors">
+        <div class="flex items-start justify-between mb-5">
+          <span class="serif text-[44px] leading-none font-light italic text-coral-500">01</span>
+          <span class="mono text-[10px] font-semibold tracking-[0.14em] uppercase text-slate2-500">Browse</span>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Discover</h3>
+        <p class="text-[14px] text-slate2-700 leading-[1.6] mt-3">
+          A small, curated catalogue. Filter by city, yield, or how funded each property is. No infinite scroll. No vibes-based listings.
+        </p>
+        <!-- mini visual -->
+        <div class="mt-6 bg-slate2-50 rounded-lg p-4 border border-slate2-200">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-[11px] mono font-semibold text-coral-600 bg-coral-50 px-2 py-0.5 rounded">DXB</span>
+            <span class="text-[11px] mono font-semibold text-slate2-500 bg-slate2-100 px-2 py-0.5 rounded">HKT</span>
+            <span class="text-[11px] mono font-semibold text-slate2-500 bg-slate2-100 px-2 py-0.5 rounded">LHR</span>
+            <span class="ml-auto mono text-[10px] text-slate2-500">3 of 14</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-md scene-dubai"></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[12px] font-semibold truncate">Marina Studio</p>
+              <p class="text-[10px] mono text-slate2-500">8.4% · 67% funded</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate2-400"></i>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 Inspect -->
+      <article class="bg-paper rounded-xl2 border border-slate2-200 p-7 hover:border-coral-300 transition-colors">
+        <div class="flex items-start justify-between mb-5">
+          <span class="serif text-[44px] leading-none font-light italic text-coral-500">02</span>
+          <span class="mono text-[10px] font-semibold tracking-[0.14em] uppercase text-slate2-500">Diligence</span>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Inspect</h3>
+        <p class="text-[14px] text-slate2-700 leading-[1.6] mt-3">
+          Twelve months of operating history. Occupancy, gross revenue, owner count. Live funding bar. The same numbers we'd show an institutional buyer.
+        </p>
+        <div class="mt-6 bg-slate2-50 rounded-lg p-4 border border-slate2-200">
+          <div class="flex items-baseline justify-between mb-2">
+            <p class="text-[12px] font-semibold">12-mo trading</p>
+            <p class="serif text-[18px] font-medium tabular-nums">£14,300</p>
+          </div>
+          <div class="flex items-baseline justify-between mb-3">
+            <p class="text-[11px] text-slate2-500">Occupancy</p>
+            <p class="mono text-[12px] font-semibold">78%</p>
+          </div>
+          <div class="h-1.5 rounded-full bg-slate2-200 overflow-hidden">
+            <div class="h-full bg-coral-500" style="width:67%"></div>
+          </div>
+          <p class="text-[10.5px] mono text-slate2-500 mt-1.5">£121k of £180k raised</p>
+        </div>
+      </article>
+
+      <!-- 03 Invest -->
+      <article class="bg-paper rounded-xl2 border border-slate2-200 p-7 hover:border-coral-300 transition-colors">
+        <div class="flex items-start justify-between mb-5">
+          <span class="serif text-[44px] leading-none font-light italic text-coral-500">03</span>
+          <span class="mono text-[10px] font-semibold tracking-[0.14em] uppercase text-slate2-500">Buy</span>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Invest</h3>
+        <p class="text-[14px] text-slate2-700 leading-[1.6] mt-3">
+          £100 buys 1 share. Pick any amount. Projected yield calculates live from the property's operating revenue, not a marketing assumption.
+        </p>
+        <div class="mt-6 bg-slate2-50 rounded-lg p-4 border border-slate2-200">
+          <p class="text-[11px] mono text-slate2-500 mb-1">Investment amount</p>
+          <p class="serif text-[28px] font-medium leading-none">£100</p>
+          <div class="flex gap-1.5 mt-3">
+            <span class="text-[10.5px] mono px-2 py-1 bg-paper border border-slate2-200 rounded">£100</span>
+            <span class="text-[10.5px] mono px-2 py-1 bg-coral-500 text-white rounded font-semibold">£250</span>
+            <span class="text-[10.5px] mono px-2 py-1 bg-paper border border-slate2-200 rounded">£500</span>
+            <span class="text-[10.5px] mono px-2 py-1 bg-paper border border-slate2-200 rounded">£1k</span>
+          </div>
+          <p class="text-[10.5px] mono text-success-fg mt-3">↗ £8.40/yr · paid monthly</p>
+        </div>
+      </article>
+
+      <!-- 04 Own -->
+      <article class="bg-paper rounded-xl2 border border-slate2-200 p-7 hover:border-coral-300 transition-colors">
+        <div class="flex items-start justify-between mb-5">
+          <span class="serif text-[44px] leading-none font-light italic text-coral-500">04</span>
+          <span class="mono text-[10px] font-semibold tracking-[0.14em] uppercase text-slate2-500">Settle</span>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Own</h3>
+        <p class="text-[14px] text-slate2-700 leading-[1.6] mt-3">
+          Settlement is instant. Your share of the home and your share of every future payout are recorded against your account.
+        </p>
+        <div class="mt-6 bg-ink text-white rounded-lg p-4">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i>
+            <p class="text-[12px] font-semibold">You're an owner</p>
+          </div>
+          <p class="text-[10.5px] mono text-slate2-300">Owns 1 / 1,800 of</p>
+          <p class="text-[13px] font-semibold mt-0.5">Marina Studio · DXB</p>
+          <p class="text-[10.5px] mono text-slate2-400 mt-3">LVA-A39271 · 15 Mar 2026</p>
+        </div>
+      </article>
+
+      <!-- 05 Portfolio -->
+      <article class="bg-paper rounded-xl2 border border-slate2-200 p-7 hover:border-coral-300 transition-colors">
+        <div class="flex items-start justify-between mb-5">
+          <span class="serif text-[44px] leading-none font-light italic text-coral-500">05</span>
+          <span class="mono text-[10px] font-semibold tracking-[0.14em] uppercase text-slate2-500">Hold</span>
+        </div>
+        <h3 class="serif text-[26px] leading-tight font-medium">Portfolio</h3>
+        <p class="text-[14px] text-slate2-700 leading-[1.6] mt-3">
+          One screen for everything. Total value, monthly income, per-property yield — updated daily from real bookings, not month-end estimates.
+        </p>
+        <div class="mt-6 bg-slate2-50 rounded-lg p-4 border border-slate2-200">
+          <div class="flex items-baseline justify-between mb-3">
+            <p class="text-[11px] mono text-slate2-500 uppercase tracking-wide">Portfolio</p>
+            <p class="text-[10px] mono font-semibold text-success-fg">+7.1%</p>
+          </div>
+          <p class="serif text-[26px] font-medium tabular-nums">£428.40</p>
+          <p class="text-[11px] text-slate2-500 mt-0.5">3 holdings · £2.48/mo</p>
+        </div>
+      </article>
+
+      <!-- 06 Earn -->
+      <article class="bg-coral-50 rounded-xl2 border border-coral-200 p-7 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-coral-200/40 blur-2xl"></div>
+        <div class="relative">
+          <div class="flex items-start justify-between mb-5">
+            <span class="serif text-[44px] leading-none font-light italic text-coral-600">06</span>
+            <span class="mono text-[10px] font-semibold tracking-[0.14em] uppercase text-coral-700">Yield</span>
+          </div>
+          <h3 class="serif text-[26px] leading-tight font-medium">Earn</h3>
+          <p class="text-[14px] text-coral-700/90 leading-[1.6] mt-3">
+            On the first of each month, your share of the previous month's net revenue lands. Reinvest, or withdraw to bank. That's the whole product.
+          </p>
+          <div class="mt-6 bg-paper rounded-lg p-4 border border-coral-200">
+            <p class="text-[11px] mono text-coral-600 uppercase tracking-wide">March payout</p>
+            <p class="serif text-[28px] font-medium tabular-nums text-success-fg mt-1">+£2.48</p>
+            <p class="text-[10.5px] mono text-slate2-500 mt-2">Distributed 1 Apr · from STR revenue</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     CONCEPT PROPERTIES — three city cards
+     ========================================================= -->
+<section class="bg-paper border-y border-slate2-200">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-20 lg:py-28">
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-14">
+      <div class="max-w-[640px]">
+        <p class="mono text-[11px] font-semibold tracking-[0.16em] uppercase text-coral-600 mb-4">Illustrative properties</p>
+        <h2 class="serif text-[40px] md:text-[52px] leading-[1.04] font-medium">
+          Three cities we'd <span class="italic font-light text-coral-600">start with.</span>
+        </h2>
+        <p class="text-[15.5px] text-slate2-700 leading-[1.6] mt-4">
+          Each underwritten on observed STR performance, not list price. Numbers below are illustrative — actual properties would be sourced through local partners.
+        </p>
+      </div>
+      <p class="mono text-[11px] tracking-[0.1em] uppercase text-slate2-500 italic">All values illustrative</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Marina Studio -->
+      <article class="group bg-paper rounded-xl2 border border-slate2-200 overflow-hidden hover:shadow-[0_20px_40px_rgba(11,42,59,0.10)] transition-all">
+        <div class="h-[200px] scene-dubai relative overflow-hidden">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+            <!-- Dubai skyline silhouette -->
+            <rect x="20" y="120" width="40" height="80" fill="#0B2A3B" opacity="0.85"/>
+            <rect x="70" y="80" width="30" height="120" fill="#0B2A3B" opacity="0.9"/>
+            <rect x="105" y="100" width="22" height="100" fill="#0B2A3B" opacity="0.8"/>
+            <polygon points="160,200 180,40 200,200" fill="#0B2A3B" opacity="0.95"/>
+            <rect x="210" y="90" width="35" height="110" fill="#0B2A3B" opacity="0.85"/>
+            <rect x="250" y="115" width="28" height="85" fill="#0B2A3B" opacity="0.8"/>
+            <rect x="285" y="95" width="40" height="105" fill="#0B2A3B" opacity="0.88"/>
+            <rect x="335" y="125" width="35" height="75" fill="#0B2A3B" opacity="0.78"/>
+            <!-- windows scattered -->
+            <g fill="#FFC866" opacity="0.5">
+              <rect x="78" y="100" width="3" height="3"/><rect x="86" y="120" width="3" height="3"/>
+              <rect x="78" y="140" width="3" height="3"/><rect x="220" y="115" width="3" height="3"/>
+              <rect x="232" y="135" width="3" height="3"/><rect x="295" y="120" width="3" height="3"/>
+              <rect x="307" y="140" width="3" height="3"/>
+            </g>
+            <!-- water reflection -->
+            <rect x="0" y="180" width="400" height="20" fill="#1B3570" opacity="0.4"/>
+            <line x1="0" y1="186" x2="400" y2="186" stroke="#FFFFFF" stroke-width="0.5" opacity="0.2"/>
+          </svg>
+          <span class="absolute top-4 left-4 text-[10px] mono font-bold tracking-[0.14em] uppercase bg-paper/95 backdrop-blur text-ink px-2.5 py-1 rounded">🇦🇪 Dubai</span>
+          <span class="absolute top-4 right-4 text-[10px] mono font-bold tracking-[0.14em] uppercase bg-success-bg text-success-fg px-2.5 py-1 rounded">8.4% Yield</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-baseline justify-between mb-1">
+            <h3 class="serif text-[24px] font-medium">Marina Studio</h3>
+            <span class="text-[11px] mono text-slate2-500">DXB-001</span>
+          </div>
+          <p class="text-[12.5px] text-slate2-500">Premium 1-bed · STR-verified</p>
+
+          <div class="grid grid-cols-2 gap-4 mt-5 pt-5 border-t border-slate2-200">
+            <div>
+              <p class="text-[10.5px] mono text-slate2-500 uppercase tracking-wide">Value</p>
+              <p class="serif text-[18px] font-medium tabular-nums mt-0.5">£180k</p>
+            </div>
+            <div>
+              <p class="text-[10.5px] mono text-slate2-500 uppercase tracking-wide">Min ticket</p>
+              <p class="serif text-[18px] font-medium tabular-nums mt-0.5">£100</p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-slate2-200">
+            <div class="flex items-baseline justify-between text-[11px] mono">
+              <span class="text-slate2-500">Funded</span>
+              <span class="font-semibold text-coral-600">67%</span>
+            </div>
+            <div class="h-1 rounded-full bg-slate2-100 mt-2 overflow-hidden">
+              <div class="h-full bg-coral-500" style="width: 67%"></div>
+            </div>
+            <p class="text-[10.5px] mono text-slate2-500 mt-2">1,213 owners · £59k to go</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Surin Villa -->
+      <article class="group bg-paper rounded-xl2 border border-slate2-200 overflow-hidden hover:shadow-[0_20px_40px_rgba(11,42,59,0.10)] transition-all">
+        <div class="h-[200px] scene-phuket relative overflow-hidden">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+            <!-- mountain silhouette -->
+            <polygon points="0,200 80,90 140,140 200,70 260,110 320,80 400,130 400,200" fill="#0B2A3B" opacity="0.55"/>
+            <polygon points="0,200 100,140 180,170 260,150 340,170 400,160 400,200" fill="#0B2A3B" opacity="0.75"/>
+            <!-- villa with palms -->
+            <rect x="180" y="140" width="60" height="35" fill="#FFFFFF" opacity="0.95"/>
+            <polygon points="180,140 210,118 240,140" fill="#0B2A3B" opacity="0.9"/>
+            <rect x="195" y="155" width="8" height="20" fill="#0B2A3B" opacity="0.8"/>
+            <rect x="218" y="155" width="8" height="12" fill="#FFC866" opacity="0.8"/>
+            <!-- pool -->
+            <rect x="155" y="178" width="100" height="14" rx="2" fill="#3E68F0" opacity="0.5"/>
+            <!-- palms -->
+            <rect x="135" y="125" width="2" height="50" fill="#5A3320"/>
+            <path d="M136 125 Q120 115 105 122 Q120 122 130 128 Z" fill="#0B2A3B" opacity="0.85"/>
+            <path d="M136 125 Q152 115 165 122 Q152 122 142 128 Z" fill="#0B2A3B" opacity="0.85"/>
+            <path d="M136 125 Q132 110 122 105 Q138 116 140 124 Z" fill="#0B2A3B" opacity="0.95"/>
+            <rect x="270" y="135" width="2" height="40" fill="#5A3320"/>
+            <path d="M271 135 Q258 128 248 134 Q260 134 268 138 Z" fill="#0B2A3B" opacity="0.85"/>
+            <path d="M271 135 Q284 128 295 134 Q284 134 274 138 Z" fill="#0B2A3B" opacity="0.85"/>
+            <!-- sun -->
+            <circle cx="320" cy="50" r="14" fill="#FFD27A" opacity="0.7"/>
+            <circle cx="320" cy="50" r="9" fill="#FFFFFF" opacity="0.55"/>
+          </svg>
+          <span class="absolute top-4 left-4 text-[10px] mono font-bold tracking-[0.14em] uppercase bg-paper/95 backdrop-blur text-ink px-2.5 py-1 rounded">🇹🇭 Phuket</span>
+          <span class="absolute top-4 right-4 text-[10px] mono font-bold tracking-[0.14em] uppercase bg-sun-100 text-sun-700 px-2.5 py-1 rounded">7.2% Yield</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-baseline justify-between mb-1">
+            <h3 class="serif text-[24px] font-medium">Surin Villa</h3>
+            <span class="text-[11px] mono text-slate2-500">HKT-001</span>
+          </div>
+          <p class="text-[12.5px] text-slate2-500">3-bed beachfront · STR-verified</p>
+
+          <div class="grid grid-cols-2 gap-4 mt-5 pt-5 border-t border-slate2-200">
+            <div>
+              <p class="text-[10.5px] mono text-slate2-500 uppercase tracking-wide">Value</p>
+              <p class="serif text-[18px] font-medium tabular-nums mt-0.5">£420k</p>
+            </div>
+            <div>
+              <p class="text-[10.5px] mono text-slate2-500 uppercase tracking-wide">Min ticket</p>
+              <p class="serif text-[18px] font-medium tabular-nums mt-0.5">£100</p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-slate2-200">
+            <div class="flex items-baseline justify-between text-[11px] mono">
+              <span class="text-slate2-500">Funded</span>
+              <span class="font-semibold text-coral-600">42%</span>
+            </div>
+            <div class="h-1 rounded-full bg-slate2-100 mt-2 overflow-hidden">
+              <div class="h-full bg-coral-500" style="width: 42%"></div>
+            </div>
+            <p class="text-[10.5px] mono text-slate2-500 mt-2">887 owners · £243k to go</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Shoreditch Loft -->
+      <article class="group bg-paper rounded-xl2 border border-slate2-200 overflow-hidden hover:shadow-[0_20px_40px_rgba(11,42,59,0.10)] transition-all">
+        <div class="h-[200px] scene-london relative overflow-hidden">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+            <!-- terrace silhouette: warehouse + chimneys -->
+            <rect x="0" y="100" width="400" height="100" fill="#0B2A3B" opacity="0.9"/>
+            <rect x="0" y="80" width="80" height="20" fill="#0B2A3B" opacity="0.9"/>
+            <rect x="20" y="60" width="14" height="40" fill="#0B2A3B" opacity="0.95"/>
+            <rect x="40" y="65" width="14" height="35" fill="#0B2A3B" opacity="0.95"/>
+            <!-- warehouse arched windows -->
+            <g fill="#FFC866" opacity="0.6">
+              <rect x="100" y="120" width="12" height="20"/>
+              <rect x="130" y="120" width="12" height="20"/>
+              <rect x="160" y="120" width="12" height="20"/>
+              <rect x="190" y="120" width="12" height="20"/>
+              <rect x="220" y="120" width="12" height="20"/>
+              <rect x="250" y="120" width="12" height="20"/>
+              <rect x="280" y="120" width="12" height="20"/>
+              <rect x="310" y="120" width="12" height="20"/>
+              <rect x="340" y="120" width="12" height="20"/>
+            </g>
+            <g fill="#FFFFFF" opacity="0.3">
+              <rect x="100" y="160" width="12" height="20"/>
+              <rect x="160" y="160" width="12" height="20"/>
+              <rect x="220" y="160" width="12" height="20"/>
+              <rect x="280" y="160" width="12" height="20"/>
+              <rect x="340" y="160" width="12" height="20"/>
+            </g>
+            <!-- streetlight -->
+            <rect x="365" y="105" width="2" height="80" fill="#0B2A3B"/>
+            <circle cx="366" cy="105" r="3" fill="#FFD27A" opacity="0.8"/>
+            <!-- street -->
+            <rect x="0" y="195" width="400" height="5" fill="#1F2C3D"/>
+            <!-- moon -->
+            <circle cx="60" cy="35" r="14" fill="#FFFFFF" opacity="0.7"/>
+            <circle cx="56" cy="32" r="11" fill="#1F2C3D" opacity="0.5"/>
+          </svg>
+          <span class="absolute top-4 left-4 text-[10px] mono font-bold tracking-[0.14em] uppercase bg-paper/95 backdrop-blur text-ink px-2.5 py-1 rounded">🇬🇧 London</span>
+          <span class="absolute top-4 right-4 text-[10px] mono font-bold tracking-[0.14em] uppercase bg-brand-50 text-brand-700 px-2.5 py-1 rounded">5.8% Yield</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-baseline justify-between mb-1">
+            <h3 class="serif text-[24px] font-medium">Shoreditch Loft</h3>
+            <span class="text-[11px] mono text-slate2-500">LHR-001</span>
+          </div>
+          <p class="text-[12.5px] text-slate2-500">2-bed warehouse conversion · MTR-ready</p>
+
+          <div class="grid grid-cols-2 gap-4 mt-5 pt-5 border-t border-slate2-200">
+            <div>
+              <p class="text-[10.5px] mono text-slate2-500 uppercase tracking-wide">Value</p>
+              <p class="serif text-[18px] font-medium tabular-nums mt-0.5">£640k</p>
+            </div>
+            <div>
+              <p class="text-[10.5px] mono text-slate2-500 uppercase tracking-wide">Min ticket</p>
+              <p class="serif text-[18px] font-medium tabular-nums mt-0.5">£100</p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-slate2-200">
+            <div class="flex items-baseline justify-between text-[11px] mono">
+              <span class="text-slate2-500">Funded</span>
+              <span class="font-semibold text-coral-600">23%</span>
+            </div>
+            <div class="h-1 rounded-full bg-slate2-100 mt-2 overflow-hidden">
+              <div class="h-full bg-coral-500" style="width: 23%"></div>
+            </div>
+            <p class="text-[10.5px] mono text-slate2-500 mt-2">412 owners · £493k to go</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     THE HONEST PART — the bit most product pages skip
+     ========================================================= -->
+<section class="bg-ink text-white relative overflow-hidden">
+  <!-- decorative orbit -->
+  <svg class="absolute -top-40 -right-40 w-[600px] h-[600px] opacity-15" viewBox="0 0 600 600" aria-hidden="true">
+    <circle cx="300" cy="300" r="280" fill="none" stroke="#FF7A59" stroke-width="1"/>
+    <circle cx="300" cy="300" r="200" fill="none" stroke="#FF7A59" stroke-width="1" stroke-dasharray="3 6"/>
+    <circle cx="300" cy="300" r="120" fill="none" stroke="#FFB547" stroke-width="1"/>
+    <circle cx="300" cy="80" r="6" fill="#FF7A59"/>
+    <circle cx="450" cy="200" r="4" fill="#FFB547"/>
+  </svg>
+
+  <div class="relative max-w-[1280px] mx-auto px-6 lg:px-8 py-20 lg:py-28">
+    <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
+      <div>
+        <p class="mono text-[11px] font-semibold tracking-[0.16em] uppercase text-coral-300 mb-4">The honest part</p>
+        <h2 class="serif text-[44px] md:text-[56px] leading-[1.04] font-medium text-white">
+          What we <span class="italic font-light text-coral-300">don't</span> have figured out yet.
+        </h2>
+        <p class="text-[15.5px] text-slate2-300 leading-[1.65] mt-6">
+          Most landing pages bury the unresolved bits. We're publishing them. If any of these are your specialty — drop us a line.
+        </p>
+        <a href="mailto:access@livaround.com" class="inline-flex items-center gap-2 mt-6 text-[14px] font-semibold text-coral-300 hover:text-coral-200 transition-colors">
+          access@livaround.com <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <div class="space-y-2">
+        <details class="group border-b border-white/10 pb-4 pt-4 first:pt-0">
+          <summary class="flex items-start gap-4">
+            <span class="mono text-[11px] font-semibold tracking-[0.14em] uppercase text-coral-300 mt-1.5 shrink-0">Q01</span>
+            <span class="serif text-[22px] font-medium leading-tight flex-1">Is this a security?</span>
+            <i data-lucide="chevron-down" class="chev w-5 h-5 mt-1 text-slate2-400 shrink-0"></i>
+          </summary>
+          <div class="text-[14.5px] text-slate2-300 leading-[1.65] mt-4 ml-[60px] max-w-[640px]">
+            Probably yes. In every market we'd operate, fractional ownership of yield-producing real estate is a regulated activity. Any actual product would be structured and offered through authorised firms — likely as units in a collective investment scheme, a tokenised economic interest, or via a regulated SPV per market. We are not authorised to operate or promote one today.
+          </div>
+        </details>
+
+        <details class="group border-b border-white/10 pb-4 pt-4">
+          <summary class="flex items-start gap-4">
+            <span class="mono text-[11px] font-semibold tracking-[0.14em] uppercase text-coral-300 mt-1.5 shrink-0">Q02</span>
+            <span class="serif text-[22px] font-medium leading-tight flex-1">How would I exit?</span>
+            <i data-lucide="chevron-down" class="chev w-5 h-5 mt-1 text-slate2-400 shrink-0"></i>
+          </summary>
+          <div class="text-[14.5px] text-slate2-300 leading-[1.65] mt-4 ml-[60px] max-w-[640px]">
+            The hardest design question. Concept assumes a periodic in-app trading window where existing owners post offers and buyers fill them — closer to a private secondary market than a public exchange. We do not yet have the legal mechanics defined. If forced redemption isn't structurally possible, that has to be honest in the disclosure.
+          </div>
+        </details>
+
+        <details class="group border-b border-white/10 pb-4 pt-4">
+          <summary class="flex items-start gap-4">
+            <span class="mono text-[11px] font-semibold tracking-[0.14em] uppercase text-coral-300 mt-1.5 shrink-0">Q03</span>
+            <span class="serif text-[22px] font-medium leading-tight flex-1">Why these three cities?</span>
+            <i data-lucide="chevron-down" class="chev w-5 h-5 mt-1 text-slate2-400 shrink-0"></i>
+          </summary>
+          <div class="text-[14.5px] text-slate2-300 leading-[1.65] mt-4 ml-[60px] max-w-[640px]">
+            Dubai (regulator-friendly STR market under Tourism Dirham), Phuket (mature short-let economy with clear villa supply), London (the team's home market and a known mid-term rental wedge). Each would need a local authorised partner to operate. India and other markets are not on the concept map yet because the local STR regulation is more fluid.
+          </div>
+        </details>
+
+        <details class="group border-b border-white/10 pb-4 pt-4">
+          <summary class="flex items-start gap-4">
+            <span class="mono text-[11px] font-semibold tracking-[0.14em] uppercase text-coral-300 mt-1.5 shrink-0">Q04</span>
+            <span class="serif text-[22px] font-medium leading-tight flex-1">What's the operations layer?</span>
+            <i data-lucide="chevron-down" class="chev w-5 h-5 mt-1 text-slate2-400 shrink-0"></i>
+          </summary>
+          <div class="text-[14.5px] text-slate2-300 leading-[1.65] mt-4 ml-[60px] max-w-[640px]">
+            Each property would be run on the LivAround operations platform — the same software 100+ Goa hosts already use to dispatch cleaners, manage check-ins, and reconcile bookings. That's the only piece of this concept that already exists today. Owner payouts would be derived from that ledger directly, not estimated.
+          </div>
+        </details>
+
+        <details class="group border-b border-white/10 pb-4 pt-4">
+          <summary class="flex items-start gap-4">
+            <span class="mono text-[11px] font-semibold tracking-[0.14em] uppercase text-coral-300 mt-1.5 shrink-0">Q05</span>
+            <span class="serif text-[22px] font-medium leading-tight flex-1">When?</span>
+            <i data-lucide="chevron-down" class="chev w-5 h-5 mt-1 text-slate2-400 shrink-0"></i>
+          </summary>
+          <div class="text-[14.5px] text-slate2-300 leading-[1.65] mt-4 ml-[60px] max-w-[640px]">
+            We don't know. The honest answer is: not until we have an authorised partner in at least one market and a clean legal wrapper for owner-to-owner transfers. The waitlist is to gauge interest — not to imply imminence. The active business today is short-term rental operations software.
+          </div>
+        </details>
+
+        <details class="group pb-4 pt-4">
+          <summary class="flex items-start gap-4">
+            <span class="mono text-[11px] font-semibold tracking-[0.14em] uppercase text-coral-300 mt-1.5 shrink-0">Q06</span>
+            <span class="serif text-[22px] font-medium leading-tight flex-1">How is this different from a REIT?</span>
+            <i data-lucide="chevron-down" class="chev w-5 h-5 mt-1 text-slate2-400 shrink-0"></i>
+          </summary>
+          <div class="text-[14.5px] text-slate2-300 leading-[1.65] mt-4 ml-[60px] max-w-[640px]">
+            REITs pool capital across hundreds of buildings, abstracting the asset. The point of this concept is the opposite: you choose <em>this villa</em> or <em>this loft</em>, see its booking history, and track its actual performance line by line. Closer in spirit to AngelList syndicates than to a listed property fund.
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     WAITLIST
+     ========================================================= -->
+<section id="waitlist" class="bg-coral-50 relative overflow-hidden">
+  <!-- decorative -->
+  <svg class="absolute -top-32 -left-32 w-[420px] h-[420px] opacity-40" viewBox="0 0 420 420" aria-hidden="true">
+    <circle cx="210" cy="210" r="180" fill="none" stroke="#FF7A59" stroke-width="1" stroke-dasharray="2 4"/>
+    <circle cx="210" cy="210" r="120" fill="none" stroke="#FF7A59" stroke-width="1" opacity="0.6"/>
+  </svg>
+
+  <div class="relative max-w-[860px] mx-auto px-6 lg:px-8 py-20 lg:py-24 text-center">
+    <p class="mono text-[11px] font-semibold tracking-[0.16em] uppercase text-coral-600 mb-4">Stay close</p>
+    <h2 class="serif text-[44px] md:text-[64px] leading-[1.02] font-medium">
+      No promises.<br><span class="italic font-light text-coral-600">Just early word.</span>
+    </h2>
+    <p class="text-[16px] md:text-[17px] text-slate2-700 leading-[1.6] mt-6 max-w-[520px] mx-auto">
+      If Access ever launches in your market, you'll hear about it from us before it goes wide. No marketing list churn. No yield-promo emails. We'll write to you when we have something honest to say.
+    </p>
+
+    <form action="#" method="post" class="mt-10 flex flex-col sm:flex-row gap-3 max-w-[480px] mx-auto" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Added'; this.querySelector('button').disabled=true;">
+      <input
+        type="email"
+        required
+        placeholder="you@example.com"
+        class="flex-1 bg-paper border border-coral-200 focus:border-coral-500 focus:outline-none focus:ring-4 focus:ring-coral-500/15 rounded-full px-5 py-3.5 text-[15px] text-ink placeholder:text-slate2-400 transition-all"
+      >
+      <button
+        type="submit"
+        class="bg-ink hover:bg-ink-soft text-white font-semibold text-[15px] px-6 py-3.5 rounded-full transition-all whitespace-nowrap shadow-[0_8px_24px_rgba(11,42,59,0.18)]"
+      >
+        Notify me
+      </button>
+    </form>
+
+    <p class="mono text-[11px] text-slate2-500 mt-5">
+      No spam. Unsubscribe in one click. Email only used to update you on Access.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer class="bg-ink text-slate2-400">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 py-16 lg:py-20">
+    <!-- top -->
+    <div class="grid md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 mb-12">
+      <div>
+        <a href="/" class="flex items-center gap-2.5 mb-5">
+          <svg viewBox="0 0 64 64" class="w-8 h-8">
+            <rect width="64" height="64" rx="16" fill="#FFFFFF" opacity="0.06"/>
+            <path d="M22 30 L 32 22 L 42 30 L 42 40 L 22 40 Z" fill="#FFFFFF"/>
+            <rect x="29" y="34" width="6" height="6" fill="#0B2A3B"/>
+            <circle cx="32" cy="10" r="3.5" fill="#FFB547"/>
+            <circle cx="51" cy="40" r="3" fill="#FF7A59"/>
+            <circle cx="13" cy="40" r="3" fill="#6389F7"/>
+          </svg>
+          <span class="font-bold text-[17px] tracking-tight text-white">livaround</span>
+        </a>
+        <p class="text-[13.5px] leading-[1.65] max-w-[380px]">
+          Operations, Finance, Access. Three threads of how short-term rentals could be owned and run. Operations is live. Finance and Access are roadmap.
+        </p>
+        <div class="flex items-center gap-2 mt-5">
+          <span class="mono text-[10px] tracking-[0.16em] uppercase text-slate2-500">LIVAROUND LTD</span>
+          <span class="text-slate2-500">·</span>
+          <span class="mono text-[10px] tracking-[0.16em] uppercase text-slate2-500">England &amp; Wales</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="mono text-[10px] font-semibold tracking-[0.18em] uppercase text-coral-300 mb-4">Verticals</p>
+        <ul class="space-y-2.5 text-[13.5px]">
+          <li><a href="/" class="hover:text-white transition-colors">Operations</a></li>
+          <li><a href="/borrow" class="hover:text-white transition-colors">Finance</a></li>
+          <li><a href="/access" class="text-white font-semibold">Access <span class="text-coral-300">·</span></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="mono text-[10px] font-semibold tracking-[0.18em] uppercase text-coral-300 mb-4">Concept</p>
+        <ul class="space-y-2.5 text-[13.5px]">
+          <li><a href="#thesis" class="hover:text-white transition-colors">Thesis</a></li>
+          <li><a href="#waitlist" class="hover:text-white transition-colors">Waitlist</a></li>
+          <li><a href="mailto:access@livaround.com" class="hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="mono text-[10px] font-semibold tracking-[0.18em] uppercase text-coral-300 mb-4">Company</p>
+        <ul class="space-y-2.5 text-[13.5px]">
+          <li><a href="/about.html" class="hover:text-white transition-colors">About</a></li>
+          <li><a href="/privacy.html" class="hover:text-white transition-colors">Privacy</a></li>
+          <li><a href="https://github.com/mohiteu811-cloud/Livaround" target="_blank" rel="noopener" class="hover:text-white transition-colors">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Legal disclaimer block -->
+    <div class="border-t border-white/10 pt-8 lg:pt-10">
+      <div class="flex items-start gap-3 mb-4">
+        <div class="w-7 h-7 rounded-full bg-coral-500/15 border border-coral-500/30 flex items-center justify-center shrink-0 mt-0.5">
+          <i data-lucide="info" class="w-3.5 h-3.5 text-coral-300"></i>
+        </div>
+        <p class="mono text-[11px] tracking-[0.14em] uppercase text-coral-300 font-semibold pt-1">
+          LivAround Access · Concept stage · Not a current offering
+        </p>
+      </div>
+
+      <p class="text-[12px] leading-[1.7] text-slate2-400 max-w-[920px]">
+        Nothing on this page constitutes an offer of securities, units in a collective investment scheme,
+        or any other regulated investment product. LivAround Ltd is not authorised by the Financial Conduct
+        Authority or any equivalent regulator to operate, promote, or arrange a fractional property
+        ownership product. Any such product would be structured and offered in partnership with
+        appropriately authorised firms in each relevant jurisdiction. Properties, yields, share prices,
+        and ownership flows depicted are illustrative and do not represent any actual investment
+        opportunity. Property values can fall as well as rise; past performance does not indicate future
+        returns. Do not rely on this page for investment decisions.
+      </p>
+
+      <div class="mt-8 flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-white/10">
+        <p class="mono text-[10.5px] tracking-[0.14em] uppercase text-slate2-500">
+          © 2026 LivAround Ltd · All rights reserved
+        </p>
+        <p class="mono text-[10.5px] tracking-[0.14em] uppercase text-slate2-500">
+          Operations · in orbit
+        </p>
+      </div>
+    </div>
+  </div>
 </footer>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
 
 </body>
 </html>
