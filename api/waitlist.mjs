@@ -2,7 +2,13 @@ import { Resend } from 'resend';
 
 const NOTIFY_TO = 'mohit@livaround.com';
 const FROM = process.env.RESEND_FROM || 'LivAround Waitlist <onboarding@resend.dev>';
-const ALLOWED_SOURCES = new Set(['finance', 'access', 'owners']);
+const ALLOWED_SOURCES = new Set(['finance', 'access', 'owners', 'hosts']);
+const SOURCE_LABELS = {
+  hosts: 'Host signup',
+  owners: 'Owner signup',
+  finance: 'Finance waitlist',
+  access: 'Access waitlist',
+};
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function clean(value, max = 200) {
@@ -67,9 +73,11 @@ export default async function handler(req, res) {
     ['User agent', userAgent || '—'],
   ];
 
+  const label = SOURCE_LABELS[source] || `${source} waitlist`;
+
   const html = `
     <div style="font-family:system-ui,-apple-system,sans-serif;color:#111;max-width:560px;">
-      <h2 style="margin:0 0 16px;font-size:18px;">New waitlist signup — ${escapeHtml(source)}</h2>
+      <h2 style="margin:0 0 16px;font-size:18px;">${escapeHtml(label)} — ${escapeHtml(email)}</h2>
       <table style="border-collapse:collapse;font-size:14px;">
         ${rows.map(([k, v]) => `
           <tr>
@@ -91,7 +99,7 @@ export default async function handler(req, res) {
       from: FROM,
       to: NOTIFY_TO,
       replyTo: email,
-      subject: `Waitlist · ${source} · ${email}`,
+      subject: `${label} · ${email}`,
       html,
       text,
     });
